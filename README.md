@@ -5,7 +5,6 @@ A simple two player checkers game.  The rules are based on standard Internationa
 - The game board is a 12x12 board
 - The number of men per team is 30
 - Board cells are numbered 1 to 72
-- There are a total of 144 squares (72 playable)
 
 <h3>Moves and Captures</h3>
 - All moves and captures are made diagonally
