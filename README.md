@@ -1,9 +1,9 @@
 # Checkers
-A simple two player checkers game.  The rules are based on standard International and Canadian rules merged together, below you will find the rules of the game.
+A simple two player checkers game.  The rules are based on standard International and Canadian rules merged together.
 
 <h3>Starting Position</h3>
 - The game board is a 12x12 board
-- The number of men per team is 30
+- The number of pieces per team is 30
 - Board cells are numbered 1 to 72
 
 <h3>Moves and Captures</h3>
