@@ -168,11 +168,14 @@ public final class BoardGameView extends JPanel {
 		}
 		*/
 	
-		//@Override public Dimension getPreferredSize() {
-		 //   return new Dimension(64, 64);
-		//}
+	    /*
+		@Override public Dimension getPreferredSize() {
+		    return new Dimension(64, 64);
+		}
+		*/
 		
-		/*@Override public Dimension getMinimumSize() {
+		/*
+		@Override public Dimension getMinimumSize() {
 			return getPreferredSize();
 		}
 		
@@ -180,6 +183,7 @@ public final class BoardGameView extends JPanel {
 			return getPreferredSize();
 		}
 		*/
+		
 		public boolean equals(BoardPosition bp) 
 		{
 			if(bp == null || bp == this)
@@ -281,7 +285,7 @@ public final class BoardGameView extends JPanel {
 		_controller.updateScore();
 		
 		// Add our panels
-		add(_scoreboardView);
+		//add(_scoreboardView);
 		add(_gamePanel);
 	}
 
