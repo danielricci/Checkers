@@ -52,7 +52,7 @@ import mainline.controllers.BoardGameController;
 public final class BoardGameView extends JPanel {
 	
 	private BoardGameController _controller = null;
-	//private JPanel _actionPanel = new JPanel();
+
 	private final ScoreboardView _scoreboardView = new ScoreboardView();
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 		
@@ -155,6 +155,7 @@ public final class BoardGameView extends JPanel {
 	    public BoardPosition getNeighbourLeft() { return _left; }
 	    public BoardPosition getNeighbourRight() { return _right; }
 
+	    /*
 	    @Override protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
 	        Graphics2D g2d = (Graphics2D)g;
@@ -165,11 +166,20 @@ public final class BoardGameView extends JPanel {
 	        g2d.addRenderingHints(hints);
 	        g2d.drawImage(_image, 16, 16, 32, 32, null, null);       
 		}
+		*/
 	
-		@Override public Dimension getPreferredSize() {
-		    return new Dimension(64, 64);
+		//@Override public Dimension getPreferredSize() {
+		 //   return new Dimension(64, 64);
+		//}
+		
+		/*@Override public Dimension getMinimumSize() {
+			return getPreferredSize();
 		}
-
+		
+		@Override public Dimension getMaximumSize() {
+			return getPreferredSize();
+		}
+		*/
 		public boolean equals(BoardPosition bp) 
 		{
 			if(bp == null || bp == this)
@@ -209,9 +219,14 @@ public final class BoardGameView extends JPanel {
 		// get the grid selection of our user control
 		int gridSize = _controller.getGridSize();
 		
-		// Create a list of panels based on the n-by-n grid selection
 		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		
 		ArrayList<ArrayList<BoardPosition>> positions = new ArrayList<ArrayList<BoardPosition>>();
+		
+		// Create a list of panels based on the n-by-n grid selection
 		for (int row = 0; row < gridSize; ++row) {
 			
 			ArrayList<BoardPosition> rowPositions = new ArrayList<BoardPosition>();

@@ -29,10 +29,10 @@ public final class GameInstance extends JFrame {
 	
 	private GameInstance() {
 		super("Tic-Tac-Toe");
-		setSize(new Dimension(400, 400));
-		setMaximizedBounds(new Rectangle(getSize()));
-		setResizable(false);
-		setMaximumSize(getSize());
+		setSize(new Dimension(800, 800));
+		//setMaximizedBounds(new Rectangle(getSize()));
+		//setResizable(false);
+		//setMaximumSize(getSize());
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(

@@ -59,7 +59,7 @@ public class BoardGameController {
 			_turns.add(player);
 		}
 
-		_gridSize = 3;	
+		_gridSize = 12;	
 	}
 	
 	public ScoreboardView getScoreboard() {
