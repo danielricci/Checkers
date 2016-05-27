@@ -107,7 +107,6 @@ public final class WindowInstance extends JFrame {
 		
 		// Add a listener to whenever the window is closed
 		addWindowListener(new WindowAdapter() {
-			
 			@Override public void windowClosing(WindowEvent event) {
 				int response= JOptionPane.showConfirmDialog(null, "Are you sure that you wish to exit the game?", "Exit Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
