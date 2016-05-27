@@ -27,16 +27,14 @@ public final class WindowInstance extends JFrame {
 
 	private final ArrayList<Object> _controllers = new ArrayList<Object>();
 	private final JMenuBar _menu = new JMenuBar();
-	private Dimension _windowSize = new Dimension(400, 400);
+	private Dimension _windowSize = new Dimension(800, 800);
 	
 	private WindowInstance() {
 		super("Checkers");
 		setSize(_windowSize);
-		setMinimumSize(new Dimension(400, 400));
-		setUndecorated(false);
-		
-		Toolkit.getDefaultToolkit().setDynamicLayout(true);
-		
+		setResizable(false);
+		//setMinimumSize(new Dimension(400, 400));
+				
 		// Set the location of the window to be in middle of the screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(
@@ -98,7 +96,7 @@ public final class WindowInstance extends JFrame {
 					_windowSize = new Dimension(newDimensions.height, newDimensions.height);
 				}
 
-				windowInstance.setSize(_windowSize); 
+				//windowInstance.setSize(_windowSize); 
 				System.out.println(_windowSize.getSize());
 				//windowInstance.repaint();
 			}
