@@ -32,7 +32,7 @@ import java.util.Queue;
 
 import javax.swing.JPanel;
 
-import mainline.GameInstance;
+import mainline.WindowInstance;
 import mainline.models.PlayerModel;
 import mainline.models.PlayerModel.Team;
 import mainline.views.BoardGameView;
@@ -72,7 +72,7 @@ public class BoardGameController {
 	}
 	
 	private void registerController() {
-		GameInstance.getInstance().registerController(this);
+		WindowInstance.getInstance().registerController(this);
 	}
 	
 	public boolean isWinningPosition(BoardPosition position, List<BoardPosition> positions) {

@@ -1,9 +1,10 @@
 package mainline;
 
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -20,24 +21,27 @@ import mainline.controllers.BoardGameController;
 import mainline.controllers.MainWindowController;
 
 @SuppressWarnings("serial")
-public final class GameInstance extends JFrame {
+public final class WindowInstance extends JFrame {
 	
-	private static GameInstance _instance = null;
+	private static WindowInstance _instance = null;
 
 	private final ArrayList<Object> _controllers = new ArrayList<Object>();
 	private final JMenuBar _menu = new JMenuBar();
+	private Dimension _windowSize = new Dimension(400, 400);
 	
-	private GameInstance() {
-		super("Tic-Tac-Toe");
-		setSize(new Dimension(800, 800));
-		//setMaximizedBounds(new Rectangle(getSize()));
-		//setResizable(false);
-		//setMaximumSize(getSize());
+	private WindowInstance() {
+		super("Checkers");
+		setSize(_windowSize);
+		setMinimumSize(new Dimension(400, 400));
+		setUndecorated(false);
 		
+		Toolkit.getDefaultToolkit().setDynamicLayout(true);
+		
+		// Set the location of the window to be in middle of the screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(
-			(int)screenSize.getWidth() / 2 - getSize().width / 2,
-			(int)screenSize.getHeight() / 2 - getSize().height / 2
+			screenSize.width / 2 - _windowSize.width / 2,
+			screenSize.height / 2 - _windowSize.height / 2
 		);
 
 		SetWindowedInstanceListeners();
@@ -60,21 +64,51 @@ public final class GameInstance extends JFrame {
 		return null;
 	}
 
-	public static GameInstance getInstance() {
+	public static WindowInstance getInstance() {
 		if(_instance == null) {
-			_instance = new GameInstance();
+			_instance = new WindowInstance();
 		}
 		return _instance;
 	}
+
+	
 	
 	private void SetWindowedInstanceListeners() {
 		
 		// Needed to manually handle closing of the window
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+		addComponentListener(new ComponentAdapter() {
+			@Override public void componentResized(ComponentEvent e) {
+				WindowInstance windowInstance = (WindowInstance)e.getSource();
+				Dimension newDimensions = windowInstance.getSize();
+				
+				if(newDimensions.width == _windowSize.width && newDimensions.height == _windowSize.height)
+				{
+					return;
+				}
+					
+				// Resize the window uniformly
+				if(newDimensions.width != _windowSize.width)
+				{
+					_windowSize = new Dimension(newDimensions.width, newDimensions.width);
+				}
+				else
+				{
+					_windowSize = new Dimension(newDimensions.height, newDimensions.height);
+				}
+
+				windowInstance.setSize(_windowSize); 
+				System.out.println(_windowSize.getSize());
+				//windowInstance.repaint();
+			}
+		});			
+		
 		
 		// Add a listener to whenever the window is closed
 		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent event) {
+			
+			@Override public void windowClosing(WindowEvent event) {
 				int response= JOptionPane.showConfirmDialog(null, "Are you sure that you wish to exit the game?", "Exit Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
 					dispose();
