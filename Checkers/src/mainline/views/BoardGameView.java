@@ -198,8 +198,8 @@ public final class BoardGameView extends JPanel {
 		int gridSize = _controller.getGridSize();
 	
 		Color[] colors = {
-			Color.RED, 
-			Color.BLACK
+			Color.BLACK,
+			Color.RED
 		};
 		
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -212,14 +212,12 @@ public final class BoardGameView extends JPanel {
 		// Create a list of panels based on the n-by-n grid selection
 		for (int row = 0; row < gridSize; ++row) {
 			
-			
-			
-			
 			ArrayList<BoardPosition> rowPositions = new ArrayList<BoardPosition>();
-			for (int col = 0; col < gridSize; ++col) {
+			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1);  col < gridSize; ++col) {
 				gbc.gridx = col;
 				gbc.gridy = row;
-		
+			
+				/*
 				Border border = null;
 				if (row < (gridSize - 1)) {
 					if (col < (gridSize - 1)) {
@@ -233,11 +231,11 @@ public final class BoardGameView extends JPanel {
 					} else {
 						border = new MatteBorder(1, 1, 1, 1, Color.BLACK);
 					}
-				}
+				}*/
 		    
 				// Set the border and add the panel to our game panel
-				BoardPosition position = new BoardPosition(colors[col % colors.length], null);
-				position.setBorder(border);
+				BoardPosition position = new BoardPosition(colors[(col + colorOffset) % colors.length], null);
+				//position.setBorder(border);
 				_gamePanel.add(position, gbc);
 				
 				// Links them as a row, this is done so that we can associate their neighbors
