@@ -78,7 +78,8 @@ public final class WindowInstance extends JFrame {
 
 		addComponentListener(new ComponentAdapter() {
 			@Override public void componentResized(ComponentEvent e) {
-				WindowInstance windowInstance = (WindowInstance)e.getSource();
+				super.componentResized(e);
+				/*WindowInstance windowInstance = WindowInstance.getInstance();
 				Dimension newDimensions = windowInstance.getSize();
 				
 				if(newDimensions.width == _windowSize.width && newDimensions.height == _windowSize.height)
@@ -96,9 +97,9 @@ public final class WindowInstance extends JFrame {
 					_windowSize = new Dimension(newDimensions.height, newDimensions.height);
 				}
 
-				//windowInstance.setSize(_windowSize); 
+				windowInstance.setSize(_windowSize); 
 				System.out.println(_windowSize.getSize());
-				//windowInstance.repaint();
+				//windowInstance.repaint();*/
 			}
 		});			
 		

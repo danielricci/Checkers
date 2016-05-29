@@ -52,11 +52,12 @@ public final class BoardGameView extends JPanel {
 		
 	public BoardGameView() {	
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		_gamePanel.setBackground(Color.GRAY);
+		//_gamePanel.setBackground(Color.BLACK);
 	}
 	
 	public class BoardPosition extends JPanel {
 
+		private Color _color = null;
 	    private Image _image = null;
 	    private boolean _locked = false;
 	    
@@ -65,9 +66,17 @@ public final class BoardGameView extends JPanel {
 	    private BoardPosition _right = null;
 	    private BoardPosition _bottom = null;	    
 	    
-	    public BoardPosition() {	
-	    	addMouseListener(new MouseAdapter() { 
-	    		
+	    public BoardPosition(Color color, Image image) {
+	    	_color = color;
+	    	_image = image;
+	    	
+	    	setBackground(color);
+	    	
+	    	addListeners();
+		} 
+	   
+	    private void addListeners() {
+	    	addMouseListener(new MouseAdapter() {  		
 	    		@Override public void mouseEntered(MouseEvent e) {
 	    			
 	    			if(_controller.isGameOver())
@@ -91,7 +100,6 @@ public final class BoardGameView extends JPanel {
 						position.repaint();
 	    			}
 	    		}
-		
 	    		@Override public void mouseExited(MouseEvent e) {
 	    			
 	    			if(_controller.isGameOver())
@@ -103,9 +111,10 @@ public final class BoardGameView extends JPanel {
     				{
     					_image = null;	
     				}
-    				setBackground(UIManager.getColor("Panel.background"));
+    				
+    				BoardPosition position = (BoardPosition)e.getSource();
+    				setBackground(position._color);
 	    		}
-	    		
 	    		@Override public void mouseClicked(MouseEvent e) {
 					
 	    			if(_controller.isGameOver())
@@ -137,7 +146,7 @@ public final class BoardGameView extends JPanel {
 					position.repaint();
 				}
 			});
-		}
+	    }
 	    
 	    public void addLeft(BoardPosition position) { _left = position; }
 	    public void addTop(BoardPosition position) { _top = position; }
@@ -149,35 +158,6 @@ public final class BoardGameView extends JPanel {
 	    public BoardPosition getNeighbourLeft() { return _left; }
 	    public BoardPosition getNeighbourRight() { return _right; }
 
-	    /*
-	    @Override protected void paintComponent(Graphics g) {
-	        super.paintComponent(g);
-	        Graphics2D g2d = (Graphics2D)g;
-	        
-	        Map<RenderingHints.Key, Object> hints = new HashMap<RenderingHints.Key, Object>();
-	        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-	        hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	        g2d.addRenderingHints(hints);
-	        g2d.drawImage(_image, 16, 16, 32, 32, null, null);       
-		}
-		*/
-	
-	    /*
-		@Override public Dimension getPreferredSize() {
-		    return new Dimension(64, 64);
-		}
-		*/
-		
-		/*
-		@Override public Dimension getMinimumSize() {
-			return getPreferredSize();
-		}
-		
-		@Override public Dimension getMaximumSize() {
-			return getPreferredSize();
-		}
-		*/
-		
 		public boolean equals(BoardPosition bp) 
 		{
 			if(bp == null || bp == this)
@@ -191,7 +171,7 @@ public final class BoardGameView extends JPanel {
 		public void reset() {
 			_image = null;
 			_locked = false;
-			setBackground(UIManager.getColor("Panel.background"));
+			//setBackground(UIManager.getColor("Panel.background"));
 			repaint();
 		}
 	}
@@ -216,6 +196,11 @@ public final class BoardGameView extends JPanel {
 	public void render() {
 		// get the grid selection of our user control
 		int gridSize = _controller.getGridSize();
+	
+		Color[] colors = {
+			Color.RED, 
+			Color.BLACK
+		};
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -226,6 +211,9 @@ public final class BoardGameView extends JPanel {
 		
 		// Create a list of panels based on the n-by-n grid selection
 		for (int row = 0; row < gridSize; ++row) {
+			
+			
+			
 			
 			ArrayList<BoardPosition> rowPositions = new ArrayList<BoardPosition>();
 			for (int col = 0; col < gridSize; ++col) {
@@ -248,7 +236,7 @@ public final class BoardGameView extends JPanel {
 				}
 		    
 				// Set the border and add the panel to our game panel
-				BoardPosition position = new BoardPosition();
+				BoardPosition position = new BoardPosition(colors[col % colors.length], null);
 				position.setBorder(border);
 				_gamePanel.add(position, gbc);
 				
