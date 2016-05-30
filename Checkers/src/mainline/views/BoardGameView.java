@@ -35,8 +35,8 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
@@ -52,11 +52,13 @@ public final class BoardGameView extends JPanel {
 		
 	public BoardGameView() {	
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		//_gamePanel.setBackground(Color.BLACK);
 	}
 	
 	public class BoardPosition extends JPanel {
 
+		private JLabel _coordinateLabel = null;
+		private int _coordinate = 0;
+		
 		private Color _color = null;
 	    private Image _image = null;
 	    private boolean _locked = false;
@@ -66,16 +68,18 @@ public final class BoardGameView extends JPanel {
 	    private BoardPosition _right = null;
 	    private BoardPosition _bottom = null;	    
 	    
-	    public BoardPosition(Color color, Image image) {
+	    public BoardPosition(Color color, int coordinate, Image image) {
 	    	_color = color;
+	    	_coordinate = coordinate;
 	    	_image = image;
 	    	
-	    	setBackground(color);
-	    	
+	    	setBackground(_color);
+	    	setCoordinate();
 	    	addListeners();
 		} 
 	   
 	    private void addListeners() {
+
 	    	addMouseListener(new MouseAdapter() {  		
 	    		@Override public void mouseEntered(MouseEvent e) {
 	    			
@@ -147,6 +151,22 @@ public final class BoardGameView extends JPanel {
 				}
 			});
 	    }
+	    private void setCoordinate() {
+	    	_coordinateLabel = new JLabel(_coordinate + "");
+	    	_coordinateLabel.setForeground(Color.WHITE);
+	    	add(_coordinateLabel);
+	    }
+	    
+	    public void setDisplayCoordinate(boolean visibility) {
+	    	if(visibility) {
+	    		//_coordinateLabel.setForeground(new Color(_color.getRGB(), true));
+	    		_coordinateLabel.setForeground(Color.WHITE);
+	    	} else {
+	    		_coordinateLabel.setOpaque(false);
+	    		_coordinateLabel.setForeground(new Color(_color.getRGB(), true));
+	    		//_coordinateLabel.setForeground(_color);
+	    	}
+	    }
 	    
 	    public void addLeft(BoardPosition position) { _left = position; }
 	    public void addTop(BoardPosition position) { _top = position; }
@@ -198,8 +218,8 @@ public final class BoardGameView extends JPanel {
 		int gridSize = _controller.getGridSize();
 	
 		Color[] colors = {
-			Color.BLACK,
-			Color.RED
+			Color.RED,
+			Color.BLACK
 		};
 		
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -210,32 +230,39 @@ public final class BoardGameView extends JPanel {
 		ArrayList<ArrayList<BoardPosition>> positions = new ArrayList<ArrayList<BoardPosition>>();
 		
 		// Create a list of panels based on the n-by-n grid selection
-		for (int row = 0; row < gridSize; ++row) {
+		for (int row = 0, coordinate = 1; row < gridSize; ++row) {
 			
 			ArrayList<BoardPosition> rowPositions = new ArrayList<BoardPosition>();
-			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1);  col < gridSize; ++col) {
+			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1);  col < gridSize; ++col, ++coordinate) {
 				gbc.gridx = col;
 				gbc.gridy = row;
 			
-				/*
+				
 				Border border = null;
 				if (row < (gridSize - 1)) {
 					if (col < (gridSize - 1)) {
-						border = new MatteBorder(1, 1, 0, 0, Color.BLACK);
+						border = new MatteBorder(1, 1, 0, 0, Color.WHITE);
 					} else {
-						border = new MatteBorder(1, 1, 0, 1, Color.BLACK);
+						border = new MatteBorder(1, 1, 0, 1, Color.WHITE);
 					}
 				} else {
 					if (col < (gridSize - 1)) {
-						border = new MatteBorder(1, 1, 1, 0, Color.BLACK);
+						border = new MatteBorder(1, 1, 1, 0, Color.WHITE);
 					} else {
-						border = new MatteBorder(1, 1, 1, 1, Color.BLACK);
+						border = new MatteBorder(1, 1, 1, 1, Color.WHITE);
 					}
-				}*/
+				}
 		    
 				// Set the border and add the panel to our game panel
-				BoardPosition position = new BoardPosition(colors[(col + colorOffset) % colors.length], null);
-				//position.setBorder(border);
+				BoardPosition position = new BoardPosition(
+						colors[(col + colorOffset) % colors.length],
+						coordinate,
+						null
+				);
+				
+				position.setDisplayCoordinate(coordinate % 2 == 0);
+				
+				position.setBorder(border);
 				_gamePanel.add(position, gbc);
 				
 				// Links them as a row, this is done so that we can associate their neighbors
