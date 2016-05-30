@@ -24,6 +24,7 @@
 
 package mainline.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -37,6 +38,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
@@ -57,7 +59,7 @@ public final class BoardGameView extends JPanel {
 	public class BoardPosition extends JPanel {
 
 		private JLabel _coordinateLabel = null;
-		private int _coordinate = 0;
+		private int _coordinate = -1;
 		
 		private Color _color = null;
 	    private Image _image = null;
@@ -68,15 +70,12 @@ public final class BoardGameView extends JPanel {
 	    private BoardPosition _right = null;
 	    private BoardPosition _bottom = null;	    
 	    
-	    public BoardPosition(Color color, int coordinate, Image image) {
+	    public BoardPosition(Color color, Image image) {
 	    	_color = color;
-	    	_coordinate = coordinate;
 	    	_image = image;
-	    	
 	    	setBackground(_color);
-	    	setCoordinate();
 	    	addListeners();
-		} 
+	    } 
 	   
 	    private void addListeners() {
 
@@ -151,23 +150,13 @@ public final class BoardGameView extends JPanel {
 				}
 			});
 	    }
-	    private void setCoordinate() {
-	    	_coordinateLabel = new JLabel(_coordinate + "");
+	    public void setCoordinate(int coordinate) {
+	    	_coordinateLabel = new JLabel(coordinate + "");
 	    	_coordinateLabel.setForeground(Color.WHITE);
 	    	add(_coordinateLabel);
 	    }
 	    
-	    public void setDisplayCoordinate(boolean visibility) {
-	    	if(visibility) {
-	    		//_coordinateLabel.setForeground(new Color(_color.getRGB(), true));
-	    		_coordinateLabel.setForeground(Color.WHITE);
-	    	} else {
-	    		_coordinateLabel.setOpaque(false);
-	    		_coordinateLabel.setForeground(new Color(_color.getRGB(), true));
-	    		//_coordinateLabel.setForeground(_color);
-	    	}
-	    }
-	    
+
 	    public void addLeft(BoardPosition position) { _left = position; }
 	    public void addTop(BoardPosition position) { _top = position; }
 	    public void addRight(BoardPosition position) { _right = position; }
@@ -233,10 +222,12 @@ public final class BoardGameView extends JPanel {
 		for (int row = 0, coordinate = 1; row < gridSize; ++row) {
 			
 			ArrayList<BoardPosition> rowPositions = new ArrayList<BoardPosition>();
-			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1);  col < gridSize; ++col, ++coordinate) {
+			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1);  col < gridSize; ++col) {
 				gbc.gridx = col;
 				gbc.gridy = row;
 			
+				
+				
 				
 				Border border = null;
 				if (row < (gridSize - 1)) {
@@ -254,17 +245,15 @@ public final class BoardGameView extends JPanel {
 				}
 		    
 				// Set the border and add the panel to our game panel
-				BoardPosition position = new BoardPosition(
-						colors[(col + colorOffset) % colors.length],
-						coordinate,
-						null
-				);
-				
-				position.setDisplayCoordinate(coordinate % 2 == 0);
-				
+				Color tileColor = colors[(col + colorOffset) % colors.length];
+				BoardPosition position = new BoardPosition(tileColor, null);
 				position.setBorder(border);
-				_gamePanel.add(position, gbc);
+				if(tileColor == Color.BLACK) {
+					position.setCoordinate(coordinate++);
+				}
 				
+				_gamePanel.add(position, gbc);
+
 				// Links them as a row, this is done so that we can associate their neighbors
 				// accordingly
 				if(!rowPositions.isEmpty()) {
@@ -272,6 +261,7 @@ public final class BoardGameView extends JPanel {
 					position.addLeft(rowPositions.get(rowPositions.size() - 1));
 				}
 				rowPositions.add(position);
+				
 			}
 			
 			// if we have rows in our list
