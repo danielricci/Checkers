@@ -33,6 +33,7 @@ import java.util.Queue;
 import javax.swing.JPanel;
 
 import mainline.WindowInstance;
+import mainline.models.BoardPositionModel;
 import mainline.models.PlayerModel;
 import mainline.models.PlayerModel.Team;
 import mainline.views.BoardGameView;
@@ -45,9 +46,13 @@ public class BoardGameController {
 	private boolean _isGameOver = false;
 	private int _gridSize = 0;
 	
+	// TODO - remove _players and make _turns the new _players
 	private final ArrayList<PlayerModel> _players = new ArrayList<PlayerModel>();	
 	private final Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
 			
+	private final ArrayList<BoardPositionModel> _boardPositions = new ArrayList<BoardPositionModel>(); 
+	
+	
 	private BoardGameController() {
 		registerController();
 		addView(new BoardGameView());

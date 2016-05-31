@@ -225,10 +225,7 @@ public final class BoardGameView extends JPanel {
 			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1);  col < gridSize; ++col) {
 				gbc.gridx = col;
 				gbc.gridy = row;
-			
-				
-				
-				
+					
 				Border border = null;
 				if (row < (gridSize - 1)) {
 					if (col < (gridSize - 1)) {
