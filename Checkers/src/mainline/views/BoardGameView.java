@@ -34,7 +34,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -79,7 +78,8 @@ public final class BoardGameView extends JPanel {
 
 	    	addMouseListener(new MouseAdapter() {  		
 	    		@Override public void mouseEntered(MouseEvent e) {
-	    			
+	    			return;
+	    			/*
 	    			if(_controller.isGameOver())
 	    			{
 	    				return;
@@ -100,9 +100,11 @@ public final class BoardGameView extends JPanel {
     				
 						position.repaint();
 	    			}
+	    			*/
 	    		}
 	    		@Override public void mouseExited(MouseEvent e) {
-	    			
+	    			return;
+	    			/*
 	    			if(_controller.isGameOver())
 	    			{
 	    				return;
@@ -115,9 +117,11 @@ public final class BoardGameView extends JPanel {
     				
     				BoardPosition position = (BoardPosition)e.getSource();
     				setBackground(position._color);
+    				*/
 	    		}
 	    		@Override public void mouseClicked(MouseEvent e) {
-					
+					return;
+					/*
 	    			if(_controller.isGameOver())
 	    			{
 	    				return;
@@ -138,6 +142,7 @@ public final class BoardGameView extends JPanel {
 						}
 					}
 					position.repaint();
+					*/
 				}
 			});
 	    }
@@ -196,9 +201,9 @@ public final class BoardGameView extends JPanel {
 	public void render() {
 		// get the grid selection of our user control
 		int gridSize = _controller.getGridSize();
-	
+		
 		Color[] colors = {
-			Color.RED,
+			Color.WHITE,
 			Color.BLACK
 		};
 		
@@ -231,14 +236,16 @@ public final class BoardGameView extends JPanel {
 						border = new MatteBorder(1, 1, 1, 1, Color.WHITE);
 					}
 				}
-		    
-				// Set the border and add the panel to our game panel
+				
+				// If you are playing chess, these can be removed
 				Color tileColor = colors[(col + colorOffset) % colors.length];
+				if(tileColor == Color.WHITE) {
+					continue;
+				}
+					
 				BoardPosition position = new BoardPosition(tileColor, null);
 				position.setBorder(border);
-				if(tileColor == Color.BLACK) {
-					position.setCoordinate(coordinate++);
-				}
+				position.setCoordinate(coordinate++);
 				
 				_gamePanel.add(position, gbc);
 
@@ -248,8 +255,8 @@ public final class BoardGameView extends JPanel {
 					rowPositions.get(rowPositions.size() - 1).addRight(position);
 					position.addLeft(rowPositions.get(rowPositions.size() - 1));
 				}
-				rowPositions.add(position);
 				
+				rowPositions.add(position);
 			}
 			
 			// if we have rows in our list

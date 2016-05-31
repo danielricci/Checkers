@@ -33,8 +33,8 @@ import java.util.Queue;
 import javax.swing.JPanel;
 
 import mainline.WindowInstance;
-import mainline.models.GamePieceModel;
 import mainline.models.PlayerModel;
+import mainline.models.concrete.GameTileModel;
 import mainline.views.BoardGameView;
 import mainline.views.BoardGameView.BoardPosition;
 import mainline.views.ScoreboardView;
@@ -48,7 +48,7 @@ public class BoardGameController extends ABaseController {
 	// TODO - remove _players and make _turns the new _players
 	private final ArrayList<PlayerModel> _players = new ArrayList<PlayerModel>();
 	private final Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
-	private final ArrayList<GamePieceModel> _boardPositions = new ArrayList<GamePieceModel>();
+	private final ArrayList<GameTileModel> _boardPositions = new ArrayList<GameTileModel>();
 
 	private BoardGameController() {
 		registerController();

@@ -27,9 +27,9 @@ package mainline.models;
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class GameModel extends Observable 
+public abstract class AGameModel extends Observable 
 {
-	protected GameModel(Observer observer) {
+	protected AGameModel(Observer observer) {
 		addObserver(observer);
 	}
 }

@@ -26,7 +26,7 @@ package mainline.models;
 
 import java.util.Observer;
 
-public final class PlayerModel extends GameModel {
+public final class PlayerModel extends AGameModel {
 	
 	private final Team _team;
 	private int _score;
