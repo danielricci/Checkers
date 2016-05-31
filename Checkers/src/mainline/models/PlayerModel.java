@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <2016> <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -24,10 +24,12 @@
 
 package mainline.models;
 
-public class PlayerModel {
+import java.util.Observer;
+
+public final class PlayerModel extends GameModel {
 	
 	private final Team _team;
-	private int _score = 0;
+	private int _score;
 
 	public enum Team {
 		
@@ -43,21 +45,13 @@ public class PlayerModel {
 		}
 	}
 	
-	public PlayerModel(Team team) { 
+	public PlayerModel(Observer observer, Team team) {
+		super(observer);
 		_team = team;
 	}
-			
+
 	public String getTeamName() { return _team.name(); }
 	public String getTokenPath() { return _team._tokenPath; }
 	public int getWins() { return _score; }
 	public void incrementWins() { ++_score; }
-	
-	@Override public String toString()
-	{
-		return _team.name() + ": " + _score;
-	}
-
-	public void resetWins() {
-		_score = 0;
-	}
 }

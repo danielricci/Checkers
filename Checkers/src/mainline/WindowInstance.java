@@ -134,31 +134,21 @@ public final class WindowInstance extends JFrame {
         	public void actionPerformed(ActionEvent event) {	
         		int response= JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
-	
-					if(_controllers.size() > 0)
-					{
-						BoardGameController controller = (BoardGameController)getController("BoardGameController");
-						controller.reload();						
-					}
-					else
-					{
-		        		// Clears all references to our controller that this
-		        		// instance may hold
-		        		_controllers.clear();
-		        		
-		        		// Removes any lingering panels without having to worry
-		        		// about who owns what
-		        		getContentPane().removeAll();
-		        		
-		        		// Create a new controller and start the game
-		        		MainWindowController controller = new MainWindowController(getInstance());
-		        		registerController(controller);
-		        		
-		        		controller.startGame();
-		        		
-	        			validate();						
-					}
-	
+	        		// Clears all references to our controller that this
+	        		// instance may hold
+	        		_controllers.clear();
+	        		
+	        		// Removes any lingering panels without having to worry
+	        		// about who owns what
+	        		getContentPane().removeAll();
+	        		
+	        		// Create a new controller and start the game
+	        		MainWindowController controller = new MainWindowController(getInstance());
+	        		registerController(controller);
+	        		
+	        		controller.startGame();
+	        		
+        			validate();						
 				}
 			}	
         });
@@ -193,7 +183,7 @@ public final class WindowInstance extends JFrame {
         		BoardGameController controller = ((BoardGameController)getController("BoardGameController"));
         		if(controller != null)
         		{
-        			controller.resetScore();			
+        			//controller.resetScore();			
         		}
 			}	
         });

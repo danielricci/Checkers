@@ -24,7 +24,6 @@
 
 package mainline.views;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -38,7 +37,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
@@ -135,13 +133,6 @@ public final class BoardGameView extends JPanel {
 							_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
 							_controller.performMove(e);
 							position._locked = true;
-							
-							if(_controller.isGameOver())
-							{
-								_controller.updateScore();
-							}
-							
-							
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
@@ -275,8 +266,6 @@ public final class BoardGameView extends JPanel {
 			}
 			positions.add(rowPositions);
 		}
-		
-		_controller.updateScore();
 		
 		// Add our panels
 		//add(_scoreboardView);

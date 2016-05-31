@@ -24,12 +24,35 @@
 
 package mainline.models;
 
-import java.util.Observable;
 import java.util.Observer;
 
-public abstract class GameModel extends Observable 
-{
-	protected GameModel(Observer observer) {
-		addObserver(observer);
+public final class GamePieceModel extends GameModel {
+
+    private int _coordinate;
+	private boolean _isLocked; 
+	
+	private PlayerModel _player;
+
+    private GamePieceModel _left;
+    private GamePieceModel _top;
+    private GamePieceModel _right;
+    private GamePieceModel _bottom;	
+
+    public GamePieceModel(Observer observer, PlayerModel player) {
+		super(observer);
+		_player = player;
 	}
+	
+	public void setLeft(GamePieceModel position) { _left = position; }
+    public void setTop(GamePieceModel position) { _top = position; }
+    public void setRight(GamePieceModel position) { _right = position; }
+    public void setBottom(GamePieceModel position) { _bottom = position; }
+    public void setLocked(boolean isLocked) { _isLocked = isLocked; }
+    
+    public GamePieceModel getNeighbourTop() { return _top; }
+    public GamePieceModel getNeighbourBottom() { return _bottom; }
+    public GamePieceModel getNeighbourLeft() { return _left; }
+    public GamePieceModel getNeighbourRight() { return _right; }
+    public boolean getIsLocked() { return _isLocked; }
+    
 }
