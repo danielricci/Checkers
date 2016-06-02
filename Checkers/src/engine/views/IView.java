@@ -22,29 +22,8 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+package engine.views;
 
-import javax.swing.BoxLayout;
-
-import mainline.controllers.BoardGameController;
-
-@SuppressWarnings("serial")
-public final class BoardGameView extends BaseView {
-	
-	//private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
-	//_gamePanel.setBackground(Color.RED);
-
-	public static IView Create() {		
-		BoardGameView view = new BoardGameView();
-		return view;
-	}
-	
-	private BoardGameView() {
-		super(new BoardGameController());
-		render();
-	}
-	
-	@Override protected void render() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	}
+public interface IView {
+	void render();
 }

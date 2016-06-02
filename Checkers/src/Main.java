@@ -22,24 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+import engine.WindowManager;
 
-import java.awt.BorderLayout;
-
-@SuppressWarnings("serial")
-public final class MainWindowView extends BaseView {
-
-	public static IView Create() {
-		MainWindowView view = new MainWindowView();
-		return view;
-	}
-	
-    private MainWindowView() {
-    	render();
-	}
-
-	@Override protected void render() {
-		setLayout(new BorderLayout());
-		//BaseView boardGameView = new BoardGameView();
-	}
+public final class Main {
+	public static void main(String[] argv) {
+        try {
+        	WindowManager.getInstance().setVisible(true);
+        } catch (Exception exception) {
+        	System.out.println(exception.getStackTrace());
+        }
+    }
 }

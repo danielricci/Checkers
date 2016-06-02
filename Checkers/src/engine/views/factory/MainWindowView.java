@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <2016> <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,14 +22,20 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.models.core;
+package engine.views.factory;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.awt.BorderLayout;
+import java.awt.Component;
 
-public abstract class GameModel extends Observable 
-{
-	protected GameModel(Observer observer) {
-		addObserver(observer);
+import engine.views.IView;
+import engine.views.factory.ViewFactory.ViewType;
+
+@SuppressWarnings("serial")
+public final class MainWindowView extends BaseView {
+	@Override public void render() {
+		setLayout(new BorderLayout());
+		IView boardGameView = ViewFactory.getView(ViewType.BoardGameView);
+		boardGameView.render();
+		add((Component) boardGameView);
 	}
 }

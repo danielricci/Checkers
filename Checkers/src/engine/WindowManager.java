@@ -22,8 +22,9 @@
 * IN THE SOFTWARE.
 */
 
-package mainline;
+package engine;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -38,8 +39,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import mainline.views.ViewFactory;
-import mainline.views.ViewFactory.ViewType;
+import engine.views.IView;
+import engine.views.factory.ViewFactory;
+import engine.views.factory.ViewFactory.ViewType;
 
 @SuppressWarnings("serial")
 public final class WindowManager extends JFrame {
@@ -100,14 +102,14 @@ public final class WindowManager extends JFrame {
         fileMenu.setMnemonic('F');
 			        
         // Set the event handler
-        JMenuItem fileMenuNew = new JMenuItem(new AbstractAction("New") { 
-        	
-			@Override
-        	public void actionPerformed(ActionEvent event) {	
+        JMenuItem fileMenuNew = new JMenuItem(new AbstractAction("New") {   	
+			@Override public void actionPerformed(ActionEvent event) {	
         		int response= JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
 	        		getContentPane().removeAll();
-	        		ViewFactory.getView(ViewType.MainWindowView);
+        			IView mainWindowView = ViewFactory.getView(ViewType.MainWindowView);
+        			mainWindowView.render();
+        			add((Component) mainWindowView);
         			validate();						
 				}
 			}	
@@ -120,12 +122,11 @@ public final class WindowManager extends JFrame {
         
         // Set the event handler
         JMenuItem fileMenuExit = new JMenuItem(new AbstractAction("Exit") {
-        	
-        	@Override
-        	public void actionPerformed(ActionEvent event) {
+        	@Override public void actionPerformed(ActionEvent event) {
         		_instance.dispatchEvent(new WindowEvent(_instance, WindowEvent.WINDOW_CLOSING));
 			}	
 		});
+       
         fileMenu.add(fileMenuExit);
         menu.add(fileMenu);
 	}	

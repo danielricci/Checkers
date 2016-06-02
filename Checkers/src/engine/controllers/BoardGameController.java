@@ -22,14 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.controllers;
+package engine.controllers;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
 
-import mainline.models.player.PlayerModel;
-import mainline.models.tiles.GameTileModel;
+import engine.models.player.PlayerModel;
+import engine.models.tiles.GameTileModel;
 
 public class BoardGameController extends BaseController {
 

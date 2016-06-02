@@ -22,12 +22,12 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.models.tiles;
+package engine.models.tiles;
 
 import java.util.Observer;
 
-import mainline.models.core.GameModel;
-import mainline.models.player.PlayerModel;
+import engine.models.core.GameModel;
+import engine.models.player.PlayerModel;
 
 public final class GameTileModel extends GameModel implements IPlayableTile {
     private int _coordinate;

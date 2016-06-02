@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <2016> <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,54 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+package engine.models.core;
 
-import java.util.Vector;
+import java.util.Observable;
+import java.util.Observer;
 
-public abstract class ViewFactory {
-
-	private static final Vector<IView> _views = new Vector<IView>(); 
-	
-	public enum ViewType {
-		BoardGameView,
-		MainWindowView
-	}
-	
-	public static IView getView(ViewType viewType) {
-		
-		IView view = null;
-		switch(viewType) {
-			case BoardGameView: 
-			{
-				if((view = getView(BoardGameView.class)) != null) {
-					return view;
-				}
-				view = BoardGameView.Create();
-				break;
-			}
-			case MainWindowView:
-			{
-				if((view = getView(MainWindowView.class)) != null) {
-					return view;
-				}
-				view = MainWindowView.Create();
-				break;
-			}
-		}
-		
-		assert view != null : "Error: Cannot create a view of the specified type " + viewType.toString();
-		_views.add(view);
-		
-		return view;
-	}
-	
-	private static <T extends IView> IView getView(Class<T> viewClass) {
-		for(IView view : _views) {
-			if(view.getClass() == viewClass) {
-				return view;
-			}
-		}
-		
-		return null;
+public abstract class GameModel extends Observable 
+{
+	protected GameModel(Observer observer) {
+		addObserver(observer);
 	}
 }

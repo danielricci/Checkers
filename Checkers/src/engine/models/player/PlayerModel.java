@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <2016> <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,45 +22,38 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+package engine.models.player;
 
-import java.util.Vector;
+import java.util.Observer;
 
-import javax.swing.JPanel;
+import engine.models.core.GameModel;
 
-import mainline.controllers.BaseController;
-
-@SuppressWarnings("serial")
-public abstract class BaseView extends JPanel implements IView {
-
-	private final Vector<BaseController> _controllers = new Vector<BaseController>();
+public final class PlayerModel extends GameModel {
 	
-	protected BaseView(BaseController... controllers) {			
-		for(BaseController controller : controllers) {
-			boolean found = false;
-			for(BaseController _controller : _controllers) {
-				if(_controller.getClass() == controller.getClass()) {
-					found = true;
-					break;
-				}
-			}
-			
-			if(!found) {
-				_controllers.add(controller);
-			}
-		}
-	}
+	private final Team _team;
+	private int _score;
+
+	public enum Team {
 		
-	protected abstract void render();
-	
-	protected final <T extends BaseController> BaseController getController(Class<T> controllerClass) {	
-		BaseController bc = null;
-		for(BaseController controller : _controllers) {
-			if(controller.getClass() == controllerClass) {
-				bc = controller;
-				break;
-			}
+		PlayerX("resources_marker_x"),
+		PlayerY("resources_marker_o");
+		
+		public final String _tokenName;
+		public final String _tokenPath;
+		
+		private Team(String tokenName) {
+			_tokenName = tokenName;
+			_tokenPath = "/resources/" + _tokenName + ".png";
 		}
-		return bc;
 	}
+	
+	public PlayerModel(Observer observer, Team team) {
+		super(observer);
+		_team = team;
+	}
+
+	public String getTeamName() { return _team.name(); }
+	public String getTokenPath() { return _team._tokenPath; }
+	public int getWins() { return _score; }
+	public void incrementWins() { ++_score; }
 }

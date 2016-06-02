@@ -1,8 +1,8 @@
-package mainline.models.tiles;
+package engine.models.tiles;
 
 import java.util.Observer;
 
-import mainline.models.core.GameModel;
+import engine.models.core.GameModel;
 
 public class EmptyTileModel extends GameModel implements IPlayableTile {
 
