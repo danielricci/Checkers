@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <2016> <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,14 +22,45 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.models;
+package mainline.views;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Vector;
 
-public abstract class AGameModel extends Observable 
-{
-	protected AGameModel(Observer observer) {
-		addObserver(observer);
+import javax.swing.JPanel;
+
+import mainline.controllers.BaseController;
+
+@SuppressWarnings("serial")
+public abstract class BaseView extends JPanel implements IView {
+
+	private final Vector<BaseController> _controllers = new Vector<BaseController>();
+	
+	protected BaseView(BaseController... controllers) {			
+		for(BaseController controller : controllers) {
+			boolean found = false;
+			for(BaseController _controller : _controllers) {
+				if(_controller.getClass() == controller.getClass()) {
+					found = true;
+					break;
+				}
+			}
+			
+			if(!found) {
+				_controllers.add(controller);
+			}
+		}
+	}
+		
+	protected abstract void render();
+	
+	protected final <T extends BaseController> BaseController getController(Class<T> controllerClass) {	
+		BaseController bc = null;
+		for(BaseController controller : _controllers) {
+			if(controller.getClass() == controllerClass) {
+				bc = controller;
+				break;
+			}
+		}
+		return bc;
 	}
 }

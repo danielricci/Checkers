@@ -1,10 +1,10 @@
-package mainline.models.concrete;
+package mainline.models.tiles;
 
 import java.util.Observer;
 
-import mainline.models.AGameModel;
+import mainline.models.core.GameModel;
 
-public class EmptyTileModel extends AGameModel implements IPlayableTile {
+public class EmptyTileModel extends GameModel implements IPlayableTile {
 
 	protected EmptyTileModel(Observer observer) {
 		super(observer);

@@ -22,14 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.models.concrete;
+package mainline.models.tiles;
 
 import java.util.Observer;
 
-import mainline.models.AGameModel;
-import mainline.models.PlayerModel;
+import mainline.models.core.GameModel;
+import mainline.models.player.PlayerModel;
 
-public final class GameTileModel extends AGameModel implements IPlayableTile {
+public final class GameTileModel extends GameModel implements IPlayableTile {
     private int _coordinate;
 	private boolean _isLocked; 
 	

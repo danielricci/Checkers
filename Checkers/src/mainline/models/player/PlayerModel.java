@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <2016> <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,24 +22,38 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+package mainline.models.player;
 
-import java.awt.BorderLayout;
+import java.util.Observer;
 
-@SuppressWarnings("serial")
-public final class MainWindowView extends BaseView {
+import mainline.models.core.GameModel;
 
-	public static IView Create() {
-		MainWindowView view = new MainWindowView();
-		return view;
+public final class PlayerModel extends GameModel {
+	
+	private final Team _team;
+	private int _score;
+
+	public enum Team {
+		
+		PlayerX("resources_marker_x"),
+		PlayerY("resources_marker_o");
+		
+		public final String _tokenName;
+		public final String _tokenPath;
+		
+		private Team(String tokenName) {
+			_tokenName = tokenName;
+			_tokenPath = "/resources/" + _tokenName + ".png";
+		}
 	}
 	
-    private MainWindowView() {
-    	render();
+	public PlayerModel(Observer observer, Team team) {
+		super(observer);
+		_team = team;
 	}
 
-	@Override protected void render() {
-		setLayout(new BorderLayout());
-		//BaseView boardGameView = new BoardGameView();
-	}
+	public String getTeamName() { return _team.name(); }
+	public String getTokenPath() { return _team._tokenPath; }
+	public int getWins() { return _score; }
+	public void incrementWins() { ++_score; }
 }

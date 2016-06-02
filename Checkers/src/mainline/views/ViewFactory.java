@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <2016> <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,36 +22,54 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.models;
+package mainline.views;
 
-import java.util.Observer;
+import java.util.Vector;
 
-public final class PlayerModel extends AGameModel {
+public abstract class ViewFactory {
+
+	private static final Vector<IView> _views = new Vector<IView>(); 
 	
-	private final Team _team;
-	private int _score;
-
-	public enum Team {
+	public enum ViewType {
+		BoardGameView,
+		MainWindowView
+	}
+	
+	public static IView getView(ViewType viewType) {
 		
-		PlayerX("resources_marker_x"),
-		PlayerY("resources_marker_o");
-		
-		public final String _tokenName;
-		public final String _tokenPath;
-		
-		private Team(String tokenName) {
-			_tokenName = tokenName;
-			_tokenPath = "/resources/" + _tokenName + ".png";
+		IView view = null;
+		switch(viewType) {
+			case BoardGameView: 
+			{
+				if((view = getView(BoardGameView.class)) != null) {
+					return view;
+				}
+				view = BoardGameView.Create();
+				break;
+			}
+			case MainWindowView:
+			{
+				if((view = getView(MainWindowView.class)) != null) {
+					return view;
+				}
+				view = MainWindowView.Create();
+				break;
+			}
 		}
+		
+		assert view != null : "Error: Cannot create a view of the specified type " + viewType.toString();
+		_views.add(view);
+		
+		return view;
 	}
 	
-	public PlayerModel(Observer observer, Team team) {
-		super(observer);
-		_team = team;
+	private static <T extends IView> IView getView(Class<T> viewClass) {
+		for(IView view : _views) {
+			if(view.getClass() == viewClass) {
+				return view;
+			}
+		}
+		
+		return null;
 	}
-
-	public String getTeamName() { return _team.name(); }
-	public String getTokenPath() { return _team._tokenPath; }
-	public int getWins() { return _score; }
-	public void incrementWins() { ++_score; }
 }

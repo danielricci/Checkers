@@ -24,59 +24,28 @@
 
 package mainline.controllers;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
+import java.util.Vector;
 
-import javax.swing.JPanel;
+import mainline.models.player.PlayerModel;
+import mainline.models.tiles.GameTileModel;
 
-import mainline.WindowInstance;
-import mainline.models.PlayerModel;
-import mainline.models.concrete.GameTileModel;
-import mainline.views.BoardGameView;
-import mainline.views.BoardGameView.BoardPosition;
-import mainline.views.ScoreboardView;
+public class BoardGameController extends BaseController {
 
-public class BoardGameController extends ABaseController {
-
-	private BoardGameView _view = null;
-	private boolean _isGameOver = false;
-	private int _gridSize = 0;
-
-	// TODO - remove _players and make _turns the new _players
-	private final ArrayList<PlayerModel> _players = new ArrayList<PlayerModel>();
+	private final Vector<GameTileModel> _tiles = new Vector<GameTileModel>();
 	private final Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
-	private final ArrayList<GameTileModel> _boardPositions = new ArrayList<GameTileModel>();
-
-	private BoardGameController() {
-		registerController();
-		addView(new BoardGameView());
-
-		//_players.add(new PlayerModel(Team.PlayerX));
-		//_players.add(new PlayerModel(Team.PlayerY));
-
+	
+	public BoardGameController() {
+		
+		/*
 		for (PlayerModel player : _players) {
 			_turns.add(player);
 		}
-
-		_gridSize = 12;
+		*/
 	}
-
-	public ScoreboardView getScoreboard() {
-		return _view.getScoreboard();
-	}
-
-	public BoardGameController(JPanel source) {
-		this();
-		source.add(_view);
-	}
-
-	private void registerController() {
-		WindowInstance.getInstance().registerController(this);
-	}
-
+		
+/*
 	public boolean isWinningPosition(BoardPosition position, List<BoardPosition> positions) {
 
 		boolean result = isWinningRow(position, positions) || isWinningColumn(position, positions)
@@ -182,25 +151,18 @@ public class BoardGameController extends ABaseController {
 		return _turns.peek();
 	}
 
+	/*
 	private void nextPlayer() {
 		_turns.add(_turns.poll());
 	}
+	*/
 
-	public void execute() {
-		_view.render();
-	}
 
-	public int getGridSize() {
+	/*
+	  	public int getGridSize() {
 		return _gridSize;
 	}
-
-	private void addView(BoardGameView view) {
-		if (_view == null) {
-			_view = view;
-			_view.addController(this);
-		}
-	}
-
+	
 	public void performMove(java.awt.event.InputEvent event) {
 
 		List<BoardPosition> winningPositions = new ArrayList<BoardPosition>();
@@ -221,4 +183,5 @@ public class BoardGameController extends ABaseController {
 			}
 		}
 	}
+	*/
 }

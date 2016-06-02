@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <2016> <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,30 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.controllers;
+package mainline.models.core;
 
-import javax.swing.JFrame;
+import java.util.Observable;
+import java.util.Observer;
 
-import mainline.views.MainWindowView;
-
-public class MainWindowController {
-
-	private MainWindowView _view = null;
-	
-	public MainWindowController(JFrame source) {
-		addView(new MainWindowView());
-		source.add(_view);
+public abstract class GameModel extends Observable 
+{
+	protected GameModel(Observer observer) {
+		addObserver(observer);
 	}
-	
-	public void startGame() {
-		_view.render();
-	}
-	
-	private void addView(MainWindowView view) {
-		if(_view == null) {
-			_view = view;
-			_view.addController(this);
-		}
-	}
-	
 }
