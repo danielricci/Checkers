@@ -32,7 +32,9 @@ import java.util.Observable;
 
 import javax.swing.JLabel;
 
-import engine.controllers.BoardGameController;
+import engine.controllers.factory.BoardGameController;
+import engine.controllers.factory.ControllerFactory;
+import engine.controllers.factory.ControllerFactory.ControllerType;
 
 @SuppressWarnings("serial")
 public class GameTileView extends BaseView {
@@ -43,7 +45,7 @@ public class GameTileView extends BaseView {
     private Image _image;
 
     public GameTileView(int coordinate) {
-    	super(new BoardGameController());
+    	super(ControllerFactory.getController(ControllerType.BoardGameController));
     	_coordinate = coordinate;
     } 
    

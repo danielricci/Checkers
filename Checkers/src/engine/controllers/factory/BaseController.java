@@ -22,9 +22,11 @@
 * IN THE SOFTWARE.
 */
 
-package engine.controllers;
+package engine.controllers.factory;
 
-public class BaseController {
+import engine.controllers.IController;
+
+public class BaseController implements IController {
 	protected BaseController(){		
 	}
 }

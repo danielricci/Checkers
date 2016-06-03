@@ -32,7 +32,9 @@ import java.util.Observable;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import engine.controllers.BoardGameController;
+import engine.controllers.factory.BoardGameController;
+import engine.controllers.factory.ControllerFactory;
+import engine.controllers.factory.ControllerFactory.ControllerType;
 
 @SuppressWarnings("serial")
 public final class BoardGameView extends BaseView {
@@ -40,7 +42,7 @@ public final class BoardGameView extends BaseView {
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 	
 	public BoardGameView() {
-		super(new BoardGameController());
+		super(ControllerFactory.getController(ControllerType.BoardGameController));
 		BoardGameController controller = (BoardGameController) getController(BoardGameController.class);
 		controller.populatePlayers(this);
 	}

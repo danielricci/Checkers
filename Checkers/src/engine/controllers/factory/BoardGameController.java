@@ -22,7 +22,7 @@
 * IN THE SOFTWARE.
 */
 
-package engine.controllers;
+package engine.controllers.factory;
 
 import java.util.LinkedList;
 import java.util.Observer;
@@ -47,7 +47,7 @@ public class BoardGameController extends BaseController {
 	}
 
 	public void populateTile(Observer observer) {
-		GameTileModel model = new GameTileModel(observer, null/*_turns.element()*/); // TODO - remove hardcoded player
+		GameTileModel model = new GameTileModel(observer, _turns.element()); // TODO - remove hardcoded player
 		_tiles.addElement(model);
 	}
 

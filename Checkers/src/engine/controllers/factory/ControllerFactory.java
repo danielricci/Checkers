@@ -22,46 +22,47 @@
 * IN THE SOFTWARE.
 */
 
-package engine.views.factory;
+package engine.controllers.factory;
 
 import java.util.Vector;
 
-import javax.swing.JPanel;
-
 import engine.controllers.IController;
-import engine.views.IView;
 
-@SuppressWarnings("serial")
-public abstract class BaseView extends JPanel implements IView {
+public abstract class ControllerFactory {
 
-	private final Vector<IController> _controllers = new Vector<IController>();
+	private static final Vector<IController> _controllers = new Vector<IController>(); 
 	
-	protected BaseView(IController... controllers) {			
-		for(IController controller : controllers) {
-			boolean found = false;
-			for(IController _controller : _controllers) {
-				if(_controller.getClass() == controller.getClass()) {
-					found = true;
-					break;
-				}
-			}
-			
-			if(!found) {
-				_controllers.add(controller);
-			}
-		}
+	public enum ControllerType {
+		BoardGameController
 	}
-
-	protected final <T extends IController> IController getController(Class<T> controllerClass) {	
-		IController myController = null;
-		for(IController controller : _controllers) {
-			if(controller.getClass() == controllerClass) {
-				myController = controller;
+	
+	public static IController getController(ControllerType controllerType) {
+		
+		IController controller = null;
+		switch(controllerType) {
+			case BoardGameController: 
+			{
+				if((controller = getController(BoardGameController.class)) != null) {
+					return controller;
+				}
+				controller = new BoardGameController();
 				break;
 			}
 		}
-		return myController;
+				
+		assert controller != null : "Error: Cannot create a controller of the specified type " + controllerType.toString();
+		_controllers.add(controller);
+		
+		return controller;
 	}
 	
-	@Override public abstract void render();
+	private static <T extends IController> IController getController(Class<T> controllerClass) {
+		for(IController controller : _controllers) {
+			if(controller.getClass() == controllerClass) {
+				return controller;
+			}
+		}
+		
+		return null;
+	}
 }
