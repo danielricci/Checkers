@@ -51,7 +51,7 @@ public abstract class BaseView extends JPanel implements IView {
 			}
 		}
 	}
-		
+	// TODO - can we instead of returning BaseController, return a type-cast specified by the user?
 	protected final <T extends BaseController> BaseController getController(Class<T> controllerClass) {	
 		BaseController bc = null;
 		for(BaseController controller : _controllers) {

@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <2016> <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,36 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package engine.controllers;
+package engine.models;
 
-import java.util.LinkedList;
+import java.util.Observable;
 import java.util.Observer;
-import java.util.Queue;
-import java.util.Vector;
 
-import engine.models.GameTileModel;
-import engine.models.PlayerModel;
-import engine.models.PlayerModel.Team;
-
-public class BoardGameController extends BaseController {
-
-	private final Vector<GameTileModel> _tiles = new Vector<GameTileModel>();
-	private final Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
-	
-	public void populatePlayers(Observer observer) {
-		PlayerModel player1 = new PlayerModel(observer, Team.PlayerX);
-		PlayerModel player2 = new PlayerModel(observer, Team.PlayerY);
-		
-		_turns.add(player1);
-		_turns.add(player2);
+public class GameModel extends Observable 
+{
+	protected GameModel(Observer observer) {
+		addObserver(observer);
 	}
-
-	public void populateTile(Observer observer) {
-		GameTileModel model = new GameTileModel(observer, _turns.element()); // TODO - remove hardcoded player
-		_tiles.addElement(model);
-	}
-
-	public PlayerModel getCurrentPlayer() {
-		return _turns.peek();
-	}	
 }

@@ -22,14 +22,33 @@
 * IN THE SOFTWARE.
 */
 
-package engine.models.core;
+package engine.models;
 
-import java.util.Observable;
 import java.util.Observer;
 
-public abstract class GameModel extends Observable 
-{
-	protected GameModel(Observer observer) {
-		addObserver(observer);
+public final class PlayerModel extends GameModel {
+	
+	private final Team _team;
+
+	public enum Team {
+		
+		PlayerX("resources_marker_x"),
+		PlayerY("resources_marker_o");
+		
+		private final String _tokenName;
+		private final String _tokenPath;
+		
+		private Team(String tokenName) {
+			_tokenName = tokenName;
+			_tokenPath = "/resources/" + _tokenName + ".png";
+		}
 	}
+	
+	public PlayerModel(Observer observer, Team team) {
+		super(observer);
+		_team = team;
+	}
+
+	public String getTeamName() { return _team.name(); }
+	public String getTokenPath() { return _team._tokenPath; }
 }

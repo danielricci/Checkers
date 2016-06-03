@@ -26,6 +26,7 @@ package engine.views.factory;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.Observable;
 
 import engine.views.IView;
 import engine.views.factory.ViewFactory.ViewType;
@@ -37,5 +38,8 @@ public final class MainWindowView extends BaseView {
 		IView boardGameView = ViewFactory.getView(ViewType.BoardGameView);
 		boardGameView.render();
 		add((Component) boardGameView);
+	}
+
+	@Override public void update(Observable o, Object arg) {
 	}
 }

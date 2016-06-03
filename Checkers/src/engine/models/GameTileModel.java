@@ -22,42 +22,50 @@
 * IN THE SOFTWARE.
 */
 
-package engine.models.tiles;
+package engine.models;
 
 import java.util.Observer;
 
-import engine.models.core.GameModel;
-import engine.models.player.PlayerModel;
-
 public final class GameTileModel extends GameModel implements IPlayableTile {
-    private int _coordinate;
-	private boolean _isLocked; 
-	
+    
 	private PlayerModel _player;
 
+	/*
     private GameTileModel _left;
     private GameTileModel _top;
     private GameTileModel _right;
     private GameTileModel _bottom;	
+	*/
 
     public GameTileModel(Observer observer, PlayerModel player) {
 		super(observer);
 		_player = player;
+		
+		setChanged();
+		notifyObservers();
 	}
 	
-	public void setLeft(GameTileModel position) { _left = position; }
-    public void setTop(GameTileModel position) { _top = position; }
-    public void setRight(GameTileModel position) { _right = position; }
-    public void setBottom(GameTileModel position) { _bottom = position; }
-    public void setLocked(boolean isLocked) { _isLocked = isLocked; }
+    /*
+	public void setTop(GameTileModel position) { _top = position; }
+    public GameTileModel getTop() { return _top; }
     
-    public GameTileModel getNeighbourTop() { return _top; }
-    public GameTileModel getNeighbourBottom() { return _bottom; }
-    public GameTileModel getNeighbourLeft() { return _left; }
-    public GameTileModel getNeighbourRight() { return _right; }
-    public boolean getIsLocked() { return _isLocked; }
-
+    public void setBottom(GameTileModel position) { _bottom = position; }
+    public GameTileModel getBottom() { return _bottom; }
+    
+    public void setLeft(GameTileModel position) { _left = position; }
+    public GameTileModel getLeft() { return _left; }
+    
+    public void setRight(GameTileModel position) { _right = position; }
+    public GameTileModel getRight() { return _right; }
+    */
+   
+    public PlayerModel getPlayer() { return _player; } 
+   
+    @Override public boolean isMovableTo() {
+    	return _player == null;
+    }
+    
 	@Override public boolean isPlayable() {
-		return false;
+		return _player != null;
 	}
 }

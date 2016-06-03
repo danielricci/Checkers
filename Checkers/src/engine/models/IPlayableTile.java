@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <2016> <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,38 +22,21 @@
 * IN THE SOFTWARE.
 */
 
-package engine.models.player;
+package engine.models;
 
-import java.util.Observer;
-
-import engine.models.core.GameModel;
-
-public final class PlayerModel extends GameModel {
+public interface IPlayableTile {
 	
-	private final Team _team;
-	private int _score;
-
-	public enum Team {
-		
-		PlayerX("resources_marker_x"),
-		PlayerY("resources_marker_o");
-		
-		public final String _tokenName;
-		public final String _tokenPath;
-		
-		private Team(String tokenName) {
-			_tokenName = tokenName;
-			_tokenPath = "/resources/" + _tokenName + ".png";
-		}
-	}
+	/**
+	 * Indicates if the title can be played on, which means we can go onto this tile
+	 * and do something with what's on it
+	 * @return boolean
+	 */
+	public boolean isPlayable();
 	
-	public PlayerModel(Observer observer, Team team) {
-		super(observer);
-		_team = team;
-	}
-
-	public String getTeamName() { return _team.name(); }
-	public String getTokenPath() { return _team._tokenPath; }
-	public int getWins() { return _score; }
-	public void incrementWins() { ++_score; }
+	/**
+	 * Indicates if the tile is movable to, so you would take a component
+	 * and you would move that component to this implemented tile
+	 * @return boolean
+	 */
+	public boolean isMovableTo();
 }
