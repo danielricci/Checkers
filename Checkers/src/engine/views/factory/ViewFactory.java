@@ -58,7 +58,7 @@ public abstract class ViewFactory {
 				break;
 			}
 		}
-		
+				
 		assert view != null : "Error: Cannot create a view of the specified type " + viewType.toString();
 		_views.add(view);
 		
