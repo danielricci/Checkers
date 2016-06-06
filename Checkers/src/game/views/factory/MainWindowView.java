@@ -22,47 +22,20 @@
 * IN THE SOFTWARE.
 */
 
-package engine.controllers.factory;
+package game.views.factory;
 
-import java.util.Vector;
+import java.awt.BorderLayout;
+import java.awt.Component;
 
-import engine.controllers.IController;
+import game.views.IView;
+import game.views.factory.ViewFactory.ViewType;
 
-public abstract class ControllerFactory {
-
-	private static final Vector<IController> _controllers = new Vector<IController>(); 
-	
-	public enum ControllerType {
-		BoardGameController
-	}
-	
-	public static IController getController(ControllerType controllerType) {
-		
-		IController controller = null;
-		switch(controllerType) {
-			case BoardGameController: 
-			{
-				if((controller = getController(BoardGameController.class)) != null) {
-					return controller;
-				}
-				controller = new BoardGameController();
-				break;
-			}
-		}
-				
-		assert controller != null : "Error: Cannot create a controller of the specified type " + controllerType.toString();
-		_controllers.add(controller);
-		
-		return controller;
-	}
-	
-	private static <T extends IController> IController getController(Class<T> controllerClass) {
-		for(IController controller : _controllers) {
-			if(controller.getClass() == controllerClass) {
-				return controller;
-			}
-		}
-		
-		return null;
+@SuppressWarnings("serial")
+public final class MainWindowView extends BaseView {
+	@Override public void render() {
+		setLayout(new BorderLayout());
+		IView boardGameView = ViewFactory.getView(ViewType.BoardGameView);
+		boardGameView.render();
+		add((Component) boardGameView);
 	}
 }

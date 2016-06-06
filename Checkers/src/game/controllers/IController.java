@@ -1,4 +1,4 @@
-package engine.controllers;
+package game.controllers;
 
 public interface IController {
 }

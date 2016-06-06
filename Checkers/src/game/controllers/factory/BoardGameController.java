@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <2016> <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,33 +22,20 @@
 * IN THE SOFTWARE.
 */
 
-package engine.models;
+package game.controllers.factory;
 
 import java.util.Observer;
+import java.util.Vector;
 
-public final class PlayerModel extends GameModel {
+import game.models.GameTileModel;
+import game.models.PlayerModel;
+
+public class BoardGameController extends BaseController {
 	
-	private final Team _team;
-
-	public enum Team {
-		
-		PlayerX("resources_marker_x"),
-		PlayerY("resources_marker_o");
-		
-		private final String _tokenName;
-		private final String _tokenPath;
-		
-		private Team(String tokenName) {
-			_tokenName = tokenName;
-			_tokenPath = "/resources/" + _tokenName + ".png";
-		}
-	}
+	private final Vector<GameTileModel> _tiles = new Vector<GameTileModel>();
 	
-	public PlayerModel(Observer observer, Team team) {
-		super(observer);
-		_team = team;
+	public void populateTile(Observer observer, PlayerModel player) {
+		GameTileModel model = new GameTileModel(observer, player);
+		_tiles.addElement(model);
 	}
-
-	public String getTeamName() { return _team.name(); }
-	public String getTokenPath() { return _team._tokenPath; }
 }

@@ -22,53 +22,56 @@
 * IN THE SOFTWARE.
 */
 
-package engine.views.factory;
+package game.controllers.factory;
 
 import java.util.Vector;
 
-import engine.views.IView;
+import game.controllers.IController;
 
-public abstract class ViewFactory {
+public class ControllerFactory {
 
-	private static final Vector<IView> _views = new Vector<IView>(); 
+	private static final Vector<IController> _controllers = new Vector<IController>(); 
 	
-	public enum ViewType {
-		BoardGameView,
-		MainWindowView
+	public enum ControllerType {
+		BoardGameController,
+		PlayerController
 	}
 	
-	public static IView getView(ViewType viewType) {
+	protected ControllerFactory() {
+	}
+	
+	public static IController getController(ControllerType controllerType) {
 		
-		IView view = null;
-		switch(viewType) {
-			case BoardGameView: 
+		IController controller = null;
+		switch(controllerType) {
+			case BoardGameController: 
 			{
-				if((view = getView(BoardGameView.class)) != null) {
-					return view;
+				if((controller = getController(BoardGameController.class)) != null) {
+					return controller;
 				}
-				view = new BoardGameView();
+				controller = new BoardGameController();
 				break;
 			}
-			case MainWindowView:
+			case PlayerController:
 			{
-				if((view = getView(MainWindowView.class)) != null) {
-					return view;
+				if((controller = getController(PlayerController.class)) != null) {
+					return controller;
 				}
-				view = new MainWindowView();
+				controller = new PlayerController();
 				break;
 			}
 		}
 				
-		assert view != null : "Error: Cannot create a view of the specified type " + viewType.toString();
-		_views.add(view);
+		assert controller != null : "Error: Cannot create a controller of the specified type " + controllerType.toString();
+		_controllers.add(controller);
 		
-		return view;
+		return controller;
 	}
 	
-	private static <T extends IView> IView getView(Class<T> viewClass) {
-		for(IView view : _views) {
-			if(view.getClass() == viewClass) {
-				return view;
+	private static <T extends IController> IController getController(Class<T> controllerClass) {
+		for(IController controller : _controllers) {
+			if(controller.getClass() == controllerClass) {
+				return controller;
 			}
 		}
 		

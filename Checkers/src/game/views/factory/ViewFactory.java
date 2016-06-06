@@ -22,14 +22,59 @@
 * IN THE SOFTWARE.
 */
 
-import game.WindowManager;
+package game.views.factory;
 
-public final class Main {
-	public static void main(String[] argv) {
-        try {
-        	WindowManager.getInstance().setVisible(true);
-        } catch (Exception exception) {
-        	System.out.println(exception.getStackTrace());
-        }
-    }
+import java.util.Vector;
+
+import game.views.IView;
+
+public class ViewFactory {
+
+	private static final Vector<IView> _views = new Vector<IView>(); 
+	
+	public enum ViewType {
+		BoardGameView,
+		MainWindowView
+	}
+	
+	protected ViewFactory() {
+	}
+	
+	public static IView getView(ViewType viewType) {
+		
+		IView view = null;
+		switch(viewType) {
+			case BoardGameView: 
+			{
+				if((view = getView(BoardGameView.class)) != null) {
+					return view;
+				}
+				view = new BoardGameView();
+				break;
+			}
+			case MainWindowView:
+			{
+				if((view = getView(MainWindowView.class)) != null) {
+					return view;
+				}
+				view = new MainWindowView();
+				break;
+			}
+		}
+				
+		assert view != null : "Error: Cannot create a view of the specified type " + viewType.toString();
+		_views.add(view);
+		
+		return view;
+	}
+	
+	private static <T extends IView> IView getView(Class<T> viewClass) {
+		for(IView view : _views) {
+			if(view.getClass() == viewClass) {
+				return view;
+			}
+		}
+		
+		return null;
+	}
 }

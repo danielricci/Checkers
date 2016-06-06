@@ -22,24 +22,39 @@
 * IN THE SOFTWARE.
 */
 
-package engine.views.factory;
+package game.controllers.factory;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.util.Observable;
+import java.util.LinkedList;
+import java.util.Observer;
+import java.util.Queue;
 
-import engine.views.IView;
-import engine.views.factory.ViewFactory.ViewType;
+import game.models.PlayerModel;
+import game.models.PlayerModel.Team;
 
-@SuppressWarnings("serial")
-public final class MainWindowView extends BaseView {
-	@Override public void render() {
-		setLayout(new BorderLayout());
-		IView boardGameView = ViewFactory.getView(ViewType.BoardGameView);
-		boardGameView.render();
-		add((Component) boardGameView);
+public class PlayerController extends BaseController {
+
+	private final Queue<PlayerModel> _players = new LinkedList<PlayerModel>();
+	
+	public void populatePlayers(Observer observer) {
+		PlayerModel player1 = new PlayerModel(observer, Team.PlayerX);
+		PlayerModel player2 = new PlayerModel(observer, Team.PlayerY);
+		
+		_players.add(player1);
+		_players.add(player2);
 	}
-
-	@Override public void update(Observable o, Object arg) {
+	
+	public PlayerModel getPlayer(PlayerModel.Team team) {
+		PlayerModel model = null;
+		for(PlayerModel player : _players) {
+			if(player.getTeam() == team) {
+				model = player;
+				break;
+			}
+		}
+		return model;
 	}
+	
+	public PlayerModel getCurrentPlayer() {
+		return _players.peek();
+	}	
 }

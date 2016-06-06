@@ -22,17 +22,18 @@
 * IN THE SOFTWARE.
 */
 
-package engine.views.factory;
+package game.views.factory;
 
+import java.util.Observable;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import engine.controllers.IController;
-import engine.views.IView;
+import game.controllers.IController;
+import game.views.IView;
 
 @SuppressWarnings("serial")
-public abstract class BaseView extends JPanel implements IView {
+public class BaseView extends JPanel implements IView {
 
 	private final Vector<IController> _controllers = new Vector<IController>();
 	
@@ -63,5 +64,9 @@ public abstract class BaseView extends JPanel implements IView {
 		return myController;
 	}
 	
-	@Override public abstract void render();
+	@Override public void render() {
+	}
+
+	@Override public void update(Observable o, Object arg) {
+	}
 }

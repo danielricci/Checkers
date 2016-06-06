@@ -22,9 +22,9 @@
 * IN THE SOFTWARE.
 */
 
-package engine.controllers.factory;
+package game.controllers.factory;
 
-import engine.controllers.IController;
+import game.controllers.IController;
 
 public class BaseController implements IController {
 	protected BaseController(){		

@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <2016> <thedanny09@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -22,36 +22,32 @@
 * IN THE SOFTWARE.
 */
 
-package engine.controllers.factory;
+package game.models;
 
-import java.util.LinkedList;
 import java.util.Observer;
-import java.util.Queue;
-import java.util.Vector;
 
-import engine.models.GameTileModel;
-import engine.models.PlayerModel;
-import engine.models.PlayerModel.Team;
-
-public class BoardGameController extends BaseController {
-
-	private final Vector<GameTileModel> _tiles = new Vector<GameTileModel>();
-	private final Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
+public final class PlayerModel extends GameModel {
 	
-	public void populatePlayers(Observer observer) {
-		PlayerModel player1 = new PlayerModel(observer, Team.PlayerX);
-		PlayerModel player2 = new PlayerModel(observer, Team.PlayerY);
+	private final Team _team;
+
+	public enum Team {
 		
-		_turns.add(player1);
-		_turns.add(player2);
+		PlayerX("resources_marker_x"),
+		PlayerY("resources_marker_o");
+		
+		public final String _tokenName;
+		public final String _tokenPath;
+		
+		private Team(String tokenName) {
+			_tokenName = tokenName;
+			_tokenPath = "/data/" + _tokenName + ".png";
+		}
+	}
+	
+	public PlayerModel(Observer observer, Team team) {
+		super(observer);
+		_team = team;
 	}
 
-	public void populateTile(Observer observer) {
-		GameTileModel model = new GameTileModel(observer, _turns.element()); // TODO - remove hardcoded player
-		_tiles.addElement(model);
-	}
-
-	public PlayerModel getCurrentPlayer() {
-		return _turns.peek();
-	}	
+	public Team getTeam() { return _team; }
 }

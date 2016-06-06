@@ -22,7 +22,7 @@
 * IN THE SOFTWARE.
 */
 
-package engine;
+package game;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -39,9 +39,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import engine.views.IView;
-import engine.views.factory.ViewFactory;
-import engine.views.factory.ViewFactory.ViewType;
+import game.views.IView;
+import game.views.factory.ViewFactory;
+import game.views.factory.ViewFactory.ViewType;
 
 @SuppressWarnings("serial")
 public final class WindowManager extends JFrame {

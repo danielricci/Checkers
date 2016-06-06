@@ -22,19 +22,21 @@
 * IN THE SOFTWARE.
 */
 
-package engine.views.factory;
+package game.views.factory;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Observable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import engine.controllers.factory.BoardGameController;
-import engine.controllers.factory.ControllerFactory;
-import engine.controllers.factory.ControllerFactory.ControllerType;
+import game.controllers.factory.BoardGameController;
+import game.controllers.factory.ControllerFactory;
+import game.controllers.factory.ControllerFactory.ControllerType;
+import game.controllers.factory.PlayerController;
+import game.external.EngineHelper;
+import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
 public final class BoardGameView extends BaseView {
@@ -42,17 +44,13 @@ public final class BoardGameView extends BaseView {
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 	
 	public BoardGameView() {
-		super(ControllerFactory.getController(ControllerType.BoardGameController));
-		BoardGameController controller = (BoardGameController) getController(BoardGameController.class);
+		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
 		controller.populatePlayers(this);
 	}
 
-	@Override public void update(Observable obs, Object arg) {	
-	}
-	
 	@Override public void render() {
 	
-		_gamePanel.setBackground(Color.RED);
+		_gamePanel.setBackground(Color.WHITE);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -60,7 +58,19 @@ public final class BoardGameView extends BaseView {
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		
-		for (int row = 0, coordinate = 1; row < 12; ++row) {		
+		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+    	
+		for (int row = 0, coordinate = 1; row < 12; ++row) {
+			
+			PlayerModel.Team team = null;
+			if(EngineHelper.isBetweenOrEqual(row, 0, 4)) {
+				team = PlayerModel.Team.PlayerX;				
+			} else if(EngineHelper.isBetweenOrEqual(row, 7, 11)) {
+				team = PlayerModel.Team.PlayerY;
+			}
+			
+			PlayerModel player = playerController.getPlayer(team);
 			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < 12; ++col, ++coordinate) {
 				
 				// determine if we should render our game tile for this cell
@@ -75,7 +85,9 @@ public final class BoardGameView extends BaseView {
 				
 				// Create the game tile and add it to our view
 				GameTileView view = new GameTileView(coordinate);
+				boardGameController.populateTile(view, player);
 				view.render();
+								
 				_gamePanel.add(view, gbc);
 			}
 		}

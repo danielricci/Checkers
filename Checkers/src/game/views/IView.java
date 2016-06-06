@@ -22,7 +22,7 @@
 * IN THE SOFTWARE.
 */
 
-package engine.views;
+package game.views;
 
 import java.util.Observer;
 
