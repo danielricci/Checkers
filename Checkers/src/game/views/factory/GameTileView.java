@@ -46,7 +46,8 @@ public class GameTileView extends BaseView {
 
 	private JLabel _coordinateLabel;
 	private int _coordinate = -1;
-	private static Color _defaultColor = Color.LIGHT_GRAY;
+	private static final Color _defaultColor = Color.LIGHT_GRAY;
+	private static final Color _hoverColor = Color.DARK_GRAY;
     private Image _image;
 
     public GameTileView(int coordinate) {
@@ -58,14 +59,12 @@ public class GameTileView extends BaseView {
     	
     	addMouseListener(new MouseAdapter() {  		
     		
-    		@Override public void mouseEntered(MouseEvent event) {	    		
-				// TODO unset the border highlight
-    			//setBackground(Color.LIGHT_GRAY);
+    		@Override public void mouseEntered(MouseEvent event) {
+    			setBackground(_hoverColor);
 			}
     		
     		@Override public void mouseExited(MouseEvent event) {
-    			// TODO set the border to be highligted
-    			//setBackground(_defaultColor);
+    			setBackground(_defaultColor);
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
