@@ -33,23 +33,20 @@ import game.controllers.IController;
 import game.views.IView;
 
 @SuppressWarnings("serial")
-public class BaseView extends JPanel implements IView {
+public abstract class BaseView extends JPanel implements IView {
 
 	private final Vector<IController> _controllers = new Vector<IController>();
 	
+	protected BaseView(){
+		registerListeners();
+	}
+	
 	protected BaseView(IController... controllers) {			
+		this();
 		for(IController controller : controllers) {
-			boolean found = false;
-			for(IController _controller : _controllers) {
-				if(_controller.getClass() == controller.getClass()) {
-					found = true;
-					break;
-				}
-			}
-			
-			if(!found) {
+			if(!controllerExists(controller)) {
 				_controllers.add(controller);
-			}
+			}			
 		}
 	}
 
@@ -64,6 +61,28 @@ public class BaseView extends JPanel implements IView {
 		return myController;
 	}
 	
+	public final <T extends IController> void setController(T controller) {
+		if(!controllerExists(controller)) {
+			_controllers.add(controller);
+		}
+	}
+	
+	private boolean controllerExists(IController controller) {
+		assert controller != null : "Cannot pass a null controller";
+		boolean found = false;
+		
+		for(IController _controller : _controllers) {
+			if(_controller.getClass() == controller.getClass()) {
+				found = true;
+				break;
+			}
+		}
+		
+		return found;
+	}
+	
+	protected abstract void registerListeners();
+
 	@Override public void render() {
 	}
 

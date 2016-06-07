@@ -38,4 +38,7 @@ public final class MainWindowView extends BaseView {
 		boardGameView.render();
 		add((Component) boardGameView);
 	}
+
+	@Override protected void registerListeners() {		
+	}
 }

@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Observable;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import game.models.GameTileModel;
 import game.models.PlayerModel;
@@ -44,18 +43,13 @@ import game.models.PlayerModel;
 @SuppressWarnings("serial")
 public class GameTileView extends BaseView {
 
-	private JLabel _coordinateLabel;
-	private int _coordinate = -1;
 	private static final Color _defaultColor = Color.LIGHT_GRAY;
 	private static final Color _hoverColor = Color.DARK_GRAY;
-    private Image _image;
-
-    public GameTileView(int coordinate) {
-    	_coordinate = coordinate;
-    	addListeners();
-    } 
-   
-    private void addListeners() {
+    
+	private Image _image;
+    private boolean _active = false;
+	
+    @Override protected void registerListeners() {
     	
     	addMouseListener(new MouseAdapter() {  		
     		
@@ -68,32 +62,10 @@ public class GameTileView extends BaseView {
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
-				return;
-				/*
-				if(!_locked) {
-					try {
-						_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
-						_controller.performMove(e);
-						position._locked = true;
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-				position.repaint();
-				*/
 			}
 		});
     }
     
-    private void setCoordinate(int coordinate) {
-		_coordinateLabel = new JLabel(coordinate + "");
-		_coordinateLabel.setForeground(Color.WHITE);
-		//add(_coordinateLabel);    		
-    }
-
-    // TODO Instead of using observable, can we wrap around it
-    // so we get back something that has some more added helpers like getSourceAs
-    // and it returns back the object as that or null
 	@Override public void update(Observable obs, Object arg) {
 		if(_image == null) {
 			GameTileModel model = (GameTileModel)obs;
@@ -123,6 +95,5 @@ public class GameTileView extends BaseView {
 	
 	@Override public void render() {
 		setBackground(_defaultColor);
-    	setCoordinate(_coordinate);    	
 	}
 }

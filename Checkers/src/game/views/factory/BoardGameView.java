@@ -31,9 +31,9 @@ import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
 import game.controllers.factory.ControllerFactory.ControllerType;
+import game.controllers.factory.GameTileController;
 import game.controllers.factory.PlayerController;
 import game.external.EngineHelper;
 import game.models.PlayerModel;
@@ -58,10 +58,9 @@ public final class BoardGameView extends BaseView {
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		
-		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
     	
-		for (int row = 0, coordinate = 1; row < 12; ++row) {
+		for (int row = 0; row < 12; ++row) {
 			
 			PlayerModel.Team team = null;
 			if(EngineHelper.isBetweenOrEqual(row, 0, 4)) {
@@ -71,7 +70,7 @@ public final class BoardGameView extends BaseView {
 			}
 			
 			PlayerModel player = playerController.getPlayer(team);
-			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < 12; ++col, ++coordinate) {
+			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < 12; ++col) {
 				
 				// determine if we should render our game tile for this cell
 				boolean shouldRender = (col + colorOffset) % 2 == 0 ? false : true;
@@ -84,8 +83,8 @@ public final class BoardGameView extends BaseView {
 				gbc.gridy = row;
 				
 				// Create the game tile and add it to our view
-				GameTileView view = new GameTileView(coordinate);
-				boardGameController.populateTile(view, player);
+				GameTileView view = new GameTileView();
+				view.setController(new GameTileController(view, player));
 				view.render();
 								
 				_gamePanel.add(view, gbc);
@@ -93,5 +92,8 @@ public final class BoardGameView extends BaseView {
 		}
 		
 		add(_gamePanel);
+	}
+
+	@Override protected void registerListeners() {		
 	}
 }

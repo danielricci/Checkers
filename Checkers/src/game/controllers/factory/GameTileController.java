@@ -24,5 +24,17 @@
 
 package game.controllers.factory;
 
-public class BoardGameController extends BaseController {
+import java.util.Observer;
+
+import game.models.GameTileModel;
+import game.models.PlayerModel;
+
+public class GameTileController extends BaseController {
+	
+	private GameTileModel _tile;
+
+	public GameTileController(Observer observer, PlayerModel player) {
+		_tile = new GameTileModel(observer, player);
+	}
+	
 }
