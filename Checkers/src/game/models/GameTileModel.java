@@ -29,38 +29,34 @@ import java.util.Observer;
 public final class GameTileModel extends GameModel implements IPlayableTile {
     
 	private PlayerModel _player;
-
-	/*
-    private GameTileModel _left;
-    private GameTileModel _top;
-    private GameTileModel _right;
-    private GameTileModel _bottom;	
-	*/
-
-    public GameTileModel(Observer observer, PlayerModel player) {
-		super(observer);
+	private boolean _activated;
+	private final GameTileModel[] _neighbors = new GameTileModel[4];	
+	
+	public enum NeighborPosition { 
+		LEFT(0), 
+		RIGHT(1), 
+		TOP(2),
+		BOTTOM(3);
+		
+		private int _value;
+		private NeighborPosition(int value) {
+			_value = value;
+		}
+	};
+	
+    public GameTileModel(PlayerModel player, Observer... observers) {
+		super(observers);
 		_player = player;
 		
-		setChanged();
-		notifyObservers();
+		doneUpdating();
 	}
+
+	public void setNeighbor(NeighborPosition position, GameTileModel tile) { _neighbors[position._value] = tile; }
+	public GameTileModel getNeighbor(NeighborPosition position) { return _neighbors[position._value]; }
+   
+	// TODO - can we avoid this?
+	public PlayerModel getPlayer() { return _player; }
 	
-    /*
-	public void setTop(GameTileModel position) { _top = position; }
-    public GameTileModel getTop() { return _top; }
-    
-    public void setBottom(GameTileModel position) { _bottom = position; }
-    public GameTileModel getBottom() { return _bottom; }
-    
-    public void setLeft(GameTileModel position) { _left = position; }
-    public GameTileModel getLeft() { return _left; }
-    
-    public void setRight(GameTileModel position) { _right = position; }
-    public GameTileModel getRight() { return _right; }
-    */
-   
-    public PlayerModel getPlayer() { return _player; } 
-   
     @Override public boolean isMovableTo() {
     	return _player == null;
     }
@@ -68,4 +64,7 @@ public final class GameTileModel extends GameModel implements IPlayableTile {
 	@Override public boolean isPlayable() {
 		return _player != null;
 	}
+	
+	public boolean getIsActivated() { return _activated; }
+	public void setIsActivated(boolean isActivated) { _activated = isActivated; }
 }

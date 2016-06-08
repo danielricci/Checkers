@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 import game.controllers.IController;
 import game.views.IView;
 
-@SuppressWarnings("serial")
 public abstract class BaseView extends JPanel implements IView {
 
 	private final Vector<IController> _controllers = new Vector<IController>();
@@ -50,7 +49,7 @@ public abstract class BaseView extends JPanel implements IView {
 		}
 	}
 
-	protected final <T extends IController> IController getController(Class<T> controllerClass) {	
+	protected final <T extends IController> T getController(Class<T> controllerClass) {	
 		IController myController = null;
 		for(IController controller : _controllers) {
 			if(controller.getClass() == controllerClass) {
@@ -58,10 +57,11 @@ public abstract class BaseView extends JPanel implements IView {
 				break;
 			}
 		}
-		return myController;
+		return (T) myController;
 	}
 	
 	public final <T extends IController> void setController(T controller) {
+		assert controller != null : "Cannot add null controller into baseview";
 		if(!controllerExists(controller)) {
 			_controllers.add(controller);
 		}

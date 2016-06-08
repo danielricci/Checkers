@@ -37,6 +37,7 @@ import java.util.Observable;
 
 import javax.swing.ImageIcon;
 
+import game.controllers.factory.GameTileController;
 import game.models.GameTileModel;
 import game.models.PlayerModel;
 
@@ -47,7 +48,6 @@ public class GameTileView extends BaseView {
 	private static final Color _hoverColor = Color.DARK_GRAY;
     
 	private Image _image;
-    private boolean _active = false;
 	
     @Override protected void registerListeners() {
     	
@@ -62,6 +62,8 @@ public class GameTileView extends BaseView {
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
+    			GameTileController controller = getController(GameTileController.class);
+    			controller.tileSelected();
 			}
 		});
     }

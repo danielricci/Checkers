@@ -27,15 +27,18 @@ package game.views.factory;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Observable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
 import game.controllers.factory.ControllerFactory.ControllerType;
 import game.controllers.factory.GameTileController;
 import game.controllers.factory.PlayerController;
 import game.external.EngineHelper;
+import game.models.GameTileModel;
 import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
@@ -48,6 +51,9 @@ public final class BoardGameView extends BaseView {
 		controller.populatePlayers(this);
 	}
 
+	@Override public void update(Observable obs, Object arg) {
+	};
+	
 	@Override public void render() {
 	
 		_gamePanel.setBackground(Color.WHITE);
@@ -59,7 +65,10 @@ public final class BoardGameView extends BaseView {
 		gbc.weighty = 1.0;
 		
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
-    	
+		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+
+		// TASK - We need to port the code for neighbor setting over here, and use the functionality of GameTileModel and GameTileController
+		
 		for (int row = 0; row < 12; ++row) {
 			
 			PlayerModel.Team team = null;
@@ -81,10 +90,11 @@ public final class BoardGameView extends BaseView {
 				// Set our grid-bad-constraints and create the game tile
 				gbc.gridx = col;
 				gbc.gridy = row;
-				
-				// Create the game tile and add it to our view
+
+				// TODO - can we refactor this a bit better?
 				GameTileView view = new GameTileView();
-				view.setController(new GameTileController(view, player));
+				GameTileModel tile = boardGameController.populateTile(player, view, this);
+				view.setController(new GameTileController(tile));
 				view.render();
 								
 				_gamePanel.add(view, gbc);

@@ -40,6 +40,7 @@ public class ControllerFactory {
 	protected ControllerFactory() {
 	}
 	
+	// TODO - remove this enum and replace it with more generic Class<T> like below
 	public static IController getController(ControllerType controllerType) {
 		
 		IController controller = null;
@@ -68,10 +69,10 @@ public class ControllerFactory {
 		return controller;
 	}
 	
-	private static <T extends IController> IController getController(Class<T> controllerClass) {
+	private static <T extends IController> T getController(Class<T> controllerClass) {
 		for(IController controller : _controllers) {
 			if(controller.getClass() == controllerClass) {
-				return controller;
+				return (T) controller;
 			}
 		}
 		

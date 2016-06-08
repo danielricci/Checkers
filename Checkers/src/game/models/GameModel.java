@@ -29,7 +29,14 @@ import java.util.Observer;
 
 public class GameModel extends Observable 
 {
-	protected GameModel(Observer observer) {
-		addObserver(observer);
+	protected GameModel(Observer... observer) {
+		for(Observer obs : observer) {
+			addObserver(obs);
+		}
+	}
+	
+	protected final void doneUpdating() {
+		setChanged();
+		notifyObservers();
 	}
 }

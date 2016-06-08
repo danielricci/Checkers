@@ -34,7 +34,7 @@ import game.models.PlayerModel.Team;
 public class PlayerController extends BaseController {
 
 	private final Queue<PlayerModel> _players = new LinkedList<PlayerModel>();
-	
+		
 	public void populatePlayers(Observer observer) {
 		PlayerModel player1 = new PlayerModel(observer, Team.PlayerX);
 		PlayerModel player2 = new PlayerModel(observer, Team.PlayerY);

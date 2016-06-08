@@ -24,5 +24,19 @@
 
 package game.controllers.factory;
 
+import java.util.Observer;
+import java.util.Vector;
+
+import game.models.GameTileModel;
+import game.models.PlayerModel;
+
 public class BoardGameController extends BaseController {
+
+	private final Vector<GameTileModel> _tiles = new Vector<GameTileModel>();		
+	 
+	public GameTileModel populateTile(PlayerModel player, Observer... observers) {		
+		GameTileModel model = new GameTileModel(player, observers);
+		_tiles.addElement(model);
+		return model;
+	}
 }

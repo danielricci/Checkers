@@ -24,17 +24,24 @@
 
 package game.controllers.factory;
 
-import java.util.Observer;
-
 import game.models.GameTileModel;
-import game.models.PlayerModel;
 
 public class GameTileController extends BaseController {
 	
 	private GameTileModel _tile;
 
-	public GameTileController(Observer observer, PlayerModel player) {
-		_tile = new GameTileModel(observer, player);
+	public GameTileController(GameTileModel tile) {
+		_tile = tile;
 	}
 	
+	public boolean isActivated() { return _tile.getIsActivated(); } 
+
+	public void tileSelected() {
+	}
+	
+	public void setNeighbor(GameTileModel.NeighborPosition position, GameTileModel tile) { 
+		_tile.setNeighbor(position, tile);
+	}
+	
+	public void setIsActivated(boolean isActivated) { _tile.setIsActivated(isActivated); }
 }
