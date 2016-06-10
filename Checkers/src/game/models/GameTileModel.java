@@ -31,6 +31,7 @@ public final class GameTileModel extends GameModel implements IPlayableTile {
 	private PlayerModel _player;
 	private boolean _activated;
 	private final GameTileModel[] _neighbors = new GameTileModel[4];	
+	private boolean _selected;
 	
 	public enum NeighborPosition { 
 		LEFT(0), 
@@ -67,4 +68,11 @@ public final class GameTileModel extends GameModel implements IPlayableTile {
 	
 	public boolean getIsActivated() { return _activated; }
 	public void setIsActivated(boolean isActivated) { _activated = isActivated; }
+
+	public void setSelected(boolean selected) {
+		_selected = selected;
+		doneUpdating();
+	}
+	
+	public boolean getSelected() { return _selected; }
 }

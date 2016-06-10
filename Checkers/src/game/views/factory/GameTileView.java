@@ -31,6 +31,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -39,6 +40,7 @@ import javax.swing.ImageIcon;
 
 import game.controllers.factory.GameTileController;
 import game.models.GameTileModel;
+import game.models.GameTileModel.NeighborPosition;
 import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
@@ -63,25 +65,28 @@ public class GameTileView extends BaseView {
 
     		@Override public void mouseClicked(MouseEvent event) {
     			GameTileController controller = getController(GameTileController.class);
-    			controller.tileSelected();
+    			GameTileModel model = controller.tileSelected();
+    			model.getNeighbor(NeighborPosition.TOP).setSelected(true);
 			}
 		});
     }
     
 	@Override public void update(Observable obs, Object arg) {
+		
+		GameTileModel model = (GameTileModel)obs;
 		if(_image == null) {
-			GameTileModel model = (GameTileModel)obs;
-			if(model != null) {
-				PlayerModel player = model.getPlayer();
-				if(player == null) {
-					// clear - TODO
-				} 
-				else {
-					_image = new ImageIcon(getClass().getResource(player.getTeam()._tokenPath)).getImage();							
-				}
-				repaint();
+			PlayerModel player = model.getPlayer();
+			if(player != null) {
+				_image = new ImageIcon(getClass().getResource(player.getTeam()._tokenPath)).getImage();
 			}
+			repaint();
 		}
+		
+		
+		MouseListener[] mouseListeners = getListeners(MouseListener.class);
+		for(MouseListener ml : mouseListeners) {
+			ml.mouseEntered(null);
+		}		
 	}
 	
 	@Override protected void paintComponent(Graphics g) {

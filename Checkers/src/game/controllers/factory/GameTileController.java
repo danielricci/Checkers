@@ -36,7 +36,8 @@ public class GameTileController extends BaseController {
 	
 	public boolean isActivated() { return _tile.getIsActivated(); } 
 
-	public void tileSelected() {
+	public GameTileModel tileSelected() {
+		return _tile;
 	}
 	
 	public void setNeighbor(GameTileModel.NeighborPosition position, GameTileModel tile) { 
