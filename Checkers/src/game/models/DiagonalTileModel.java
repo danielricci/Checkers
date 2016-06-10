@@ -24,20 +24,22 @@
 
 package game.models;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observer;
+import java.util.Vector;
 
-public final class GameTileModel extends GameModel implements IPlayableTile {
+public final class DiagonalTileModel extends GameModel implements IPlayableTile {
     
 	private PlayerModel _player;
 	private boolean _activated;
-	private final GameTileModel[] _neighbors = new GameTileModel[4];	
+	
+	private final Map<NeighborPosition, Vector<DiagonalTileModel>> _neighbors = new HashMap<NeighborPosition, Vector<DiagonalTileModel>>(); 
 	private boolean _selected;
 	
 	public enum NeighborPosition { 
-		LEFT(0), 
-		RIGHT(1), 
-		TOP(2),
-		BOTTOM(3);
+		TOP(0),
+		BOTTOM(1);
 		
 		private int _value;
 		private NeighborPosition(int value) {
@@ -45,15 +47,27 @@ public final class GameTileModel extends GameModel implements IPlayableTile {
 		}
 	};
 	
-    public GameTileModel(PlayerModel player, Observer... observers) {
+    public DiagonalTileModel(PlayerModel player, Observer... observers) {
 		super(observers);
 		_player = player;
 		
 		doneUpdating();
 	}
 
-	public void setNeighbor(NeighborPosition position, GameTileModel tile) { _neighbors[position._value] = tile; }
-	public GameTileModel getNeighbor(NeighborPosition position) { return _neighbors[position._value]; }
+	public void setNeighbors(NeighborPosition neighborPosition, DiagonalTileModel... neighborTiles) {	
+		
+		Vector<DiagonalTileModel> tiles = new Vector<DiagonalTileModel>();
+		for(DiagonalTileModel neighborTile : neighborTiles) {
+			tiles.add(neighborTile);
+		}
+		
+		_neighbors.remove(neighborPosition);
+		_neighbors.put(neighborPosition, tiles);
+	}
+	
+	public DiagonalTileModel[] getNeighbors(NeighborPosition position) { 
+		return (DiagonalTileModel[]) _neighbors.get(position).toArray(); 
+	}
    
 	// TODO - can we avoid this?
 	public PlayerModel getPlayer() { return _player; }

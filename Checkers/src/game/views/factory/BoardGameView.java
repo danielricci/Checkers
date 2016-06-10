@@ -36,11 +36,10 @@ import javax.swing.JPanel;
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
 import game.controllers.factory.ControllerFactory.ControllerType;
-import game.controllers.factory.GameTileController;
+import game.controllers.factory.DiagonalTileController;
 import game.controllers.factory.PlayerController;
 import game.external.EngineHelper;
-import game.models.GameTileModel;
-import game.models.GameTileModel.NeighborPosition;
+import game.models.DiagonalTileModel;
 import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
@@ -69,7 +68,7 @@ public final class BoardGameView extends BaseView {
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
 		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
 
-		Vector<Vector<GameTileModel>> tiles = new Vector<Vector<GameTileModel>>();
+		Vector<Vector<DiagonalTileModel>> tiles = new Vector<Vector<DiagonalTileModel>>();
 		for (int row = 0; row < 12; ++row) {
 			
 			PlayerModel.Team team = null;
@@ -80,7 +79,7 @@ public final class BoardGameView extends BaseView {
 			}
 			
 			PlayerModel player = playerController.getPlayer(team);
-			Vector<GameTileModel> tilesRow = new Vector<GameTileModel>();
+			Vector<DiagonalTileModel> tilesRow = new Vector<DiagonalTileModel>();
 
 			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < 12; ++col) {
 				
@@ -95,19 +94,21 @@ public final class BoardGameView extends BaseView {
 				gbc.gridy = row;
 
 				// TODO --------- REFACTOR / SEPERATION OF CONCERNS
-				GameTileView view = new GameTileView();
-				GameTileModel tile = boardGameController.populateTile(player, view, this);
-				view.setController(new GameTileController(tile));
+				DiagonalTileView view = new DiagonalTileView();
+				DiagonalTileModel tile = boardGameController.populateTile(player, view, this);
+				view.setController(new DiagonalTileController(tile));
 				view.render();
 				
 				// Add our view to the game panel w.r.t the grid-constraints
 				_gamePanel.add(view, gbc);
 				
-				// Populate neighbor row association
+
+				/* Populate neighbor row association
 				if(!tilesRow.isEmpty()) {
 					tilesRow.get(tilesRow.size() - 1).setNeighbor(NeighborPosition.RIGHT, tile);
 					tile.setNeighbor(NeighborPosition.LEFT, tilesRow.get(tilesRow.size() - 1));
 				}
+				*/
 				tilesRow.add(tile);
 				// TODO END REFACTOR / SEPERATION OF CONCERNS
 			}
@@ -116,10 +117,11 @@ public final class BoardGameView extends BaseView {
 				// Get the last row that has been rendered and link them together by 
 				// reference each others top and bottom.  Once this block gets executed
 				// they will be able to reference each other as neighbors
-				Vector<GameTileModel> previous = tiles.get(tiles.size() - 1);
+				Vector<DiagonalTileModel> previous = tiles.get(tiles.size() - 1);
 				for(int i = 0; i < previous.size(); ++i) {
-					previous.get(i).setNeighbor(NeighborPosition.BOTTOM, tilesRow.get(i));
-					tilesRow.get(i).setNeighbor(NeighborPosition.TOP, previous.get(i));
+					// TODO - we need to fill this in now!
+					//tilesRow.get(i).setNeighbor(NeighborPosition.TOP, previous.get(i));
+					//previous.get(i).setNeighbor(NeighborPosition.BOTTOM, tilesRow.get(i));
 				}
 			}
 			tiles.add(tilesRow);

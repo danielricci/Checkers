@@ -38,13 +38,13 @@ import java.util.Observable;
 
 import javax.swing.ImageIcon;
 
-import game.controllers.factory.GameTileController;
-import game.models.GameTileModel;
-import game.models.GameTileModel.NeighborPosition;
+import game.controllers.factory.DiagonalTileController;
+import game.models.DiagonalTileModel;
+import game.models.DiagonalTileModel.NeighborPosition;
 import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
-public class GameTileView extends BaseView {
+public class DiagonalTileView extends BaseView {
 
 	private static final Color _defaultColor = Color.LIGHT_GRAY;
 	private static final Color _hoverColor = Color.DARK_GRAY;
@@ -64,16 +64,18 @@ public class GameTileView extends BaseView {
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
-    			GameTileController controller = getController(GameTileController.class);
-    			GameTileModel model = controller.tileSelected();
-    			model.getNeighbor(NeighborPosition.TOP).setSelected(true);
+    			DiagonalTileController controller = getController(DiagonalTileController.class);
+    			DiagonalTileModel model = controller.tileSelected();
+    			for(DiagonalTileModel tile : model.getNeighbors(NeighborPosition.TOP)) {
+    				tile.setSelected(true);
+    			}
 			}
 		});
     }
     
 	@Override public void update(Observable obs, Object arg) {
 		
-		GameTileModel model = (GameTileModel)obs;
+		DiagonalTileModel model = (DiagonalTileModel)obs;
 		if(_image == null) {
 			PlayerModel player = model.getPlayer();
 			if(player != null) {
