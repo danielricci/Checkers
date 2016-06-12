@@ -31,8 +31,8 @@ public final class PlayerModel extends GameModel {
 	private final Team _team;
 	public enum Team {
 		
-		PlayerX("resources_marker_x"),
-		PlayerY("resources_marker_o");
+		PlayerX("black_piece"),
+		PlayerY("red_piece");
 		
 		public final String _tokenName;
 		public final String _tokenPath;
