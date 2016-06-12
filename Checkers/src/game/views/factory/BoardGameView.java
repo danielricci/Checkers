@@ -40,6 +40,7 @@ import game.controllers.factory.DiagonalTileController;
 import game.controllers.factory.PlayerController;
 import game.external.EngineHelper;
 import game.models.DiagonalTileModel;
+import game.models.DiagonalTileModel.NeighborPosition;
 import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
@@ -107,7 +108,47 @@ public final class BoardGameView extends BaseView {
 				// reference each others top and bottom.  Once this block gets executed
 				// they will be able to reference each other as neighbors
 				Vector<DiagonalTileModel> previous = tiles.get(tiles.size() - 1);
-				for(int i = 0; i < previous.size(); ++i) {
+				for(int index = 0, oddRow = index, evenRow = index + 1; 
+					index < previous.size(); 
+					++index, oddRow = index - 1, evenRow = Math.min(index + 1, previous.size() - 1)) 
+				{
+					if(row % 2 == 0) {
+						
+						DiagonalTileModel[] neighbors = new DiagonalTileModel[] {
+							previous.get(index),
+							evenRow == index ? previous.get(index) : previous.get(evenRow)
+						};
+					
+						tilesRow.get(index).setNeighbors(
+							NeighborPosition.TOP,
+							neighbors
+						);
+						
+						for(DiagonalTileModel neighbor : neighbors) {
+							neighbor.setNeighbors(NeighborPosition.BOTTOM, tilesRow.get(index));
+						}
+						
+						//System.out.println("[" + index + "] ->" + "[" + index  +"]");
+						//System.out.println("[" + index + "] ->" + "[" + (evenRow == index ? index : evenRow) +"]\n");
+					}
+					else {
+						
+						DiagonalTileModel[] neighbors = new DiagonalTileModel[] {
+							oddRow == index ? previous.get(index) : previous.get(oddRow),
+							previous.get(index)
+						};
+						
+						tilesRow.get(index).setNeighbors(
+							NeighborPosition.TOP,
+							neighbors
+						);
+						
+						for(DiagonalTileModel neighbor : neighbors) {
+							neighbor.setNeighbors(NeighborPosition.BOTTOM, tilesRow.get(index));
+						}
+					}
+					
+					
 					
 					
 					

@@ -66,6 +66,9 @@ public class DiagonalTileView extends BaseView {
     		@Override public void mouseClicked(MouseEvent event) {
     			DiagonalTileController controller = getController(DiagonalTileController.class);
     			DiagonalTileModel model = controller.tileSelected();
+    			for(DiagonalTileModel tile : model.getNeighbors(NeighborPosition.BOTTOM)) {
+    				tile.setSelected(true);
+    			}
     			for(DiagonalTileModel tile : model.getNeighbors(NeighborPosition.TOP)) {
     				tile.setSelected(true);
     			}

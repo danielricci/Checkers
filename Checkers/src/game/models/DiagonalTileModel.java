@@ -25,16 +25,17 @@
 package game.models;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Observer;
-import java.util.Vector;
+import java.util.Set;
 
 public final class DiagonalTileModel extends GameModel implements IPlayableTile {
     
 	private PlayerModel _player;
 	private boolean _activated;
 	
-	private final Map<NeighborPosition, Vector<DiagonalTileModel>> _neighbors = new HashMap<NeighborPosition, Vector<DiagonalTileModel>>(); 
+	private final Map<NeighborPosition, Set<DiagonalTileModel>> _neighbors = new HashMap<NeighborPosition, Set<DiagonalTileModel>>(); 
 	private boolean _selected;
 	
 	public enum NeighborPosition { 
@@ -54,20 +55,26 @@ public final class DiagonalTileModel extends GameModel implements IPlayableTile 
 		doneUpdating();
 	}
 
+    // TODO - this functionality should be in the controller!!!!!!!
 	public void setNeighbors(NeighborPosition neighborPosition, DiagonalTileModel... neighborTiles) {	
 		
-		Vector<DiagonalTileModel> tiles = new Vector<DiagonalTileModel>();
+		Set<DiagonalTileModel> tiles = new HashSet<DiagonalTileModel>();
 		for(DiagonalTileModel neighborTile : neighborTiles) {
 			tiles.add(neighborTile);
 		}
 		
-		_neighbors.remove(neighborPosition);
-		_neighbors.put(neighborPosition, tiles);
+		if(_neighbors.containsKey(neighborPosition)) {
+			_neighbors.get(neighborPosition).addAll(tiles);
+		} 
+		else {
+			_neighbors.put(neighborPosition, tiles);	
+		}
+		
 	}
 	
-	public Vector<DiagonalTileModel> getNeighbors(NeighborPosition position) { 	
+	public Set<DiagonalTileModel> getNeighbors(NeighborPosition position) { 	
 		return _neighbors.containsKey(position) ?
-				_neighbors.get(position) : new Vector<DiagonalTileModel>(); 
+				_neighbors.get(position) : new HashSet<DiagonalTileModel>(); 
 	}
    
 	// TODO - can we avoid this?
