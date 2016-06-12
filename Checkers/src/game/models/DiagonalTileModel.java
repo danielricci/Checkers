@@ -65,8 +65,9 @@ public final class DiagonalTileModel extends GameModel implements IPlayableTile 
 		_neighbors.put(neighborPosition, tiles);
 	}
 	
-	public DiagonalTileModel[] getNeighbors(NeighborPosition position) { 
-		return (DiagonalTileModel[]) _neighbors.get(position).toArray(); 
+	public Vector<DiagonalTileModel> getNeighbors(NeighborPosition position) { 	
+		return _neighbors.containsKey(position) ?
+				_neighbors.get(position) : new Vector<DiagonalTileModel>(); 
 	}
    
 	// TODO - can we avoid this?

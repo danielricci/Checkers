@@ -57,7 +57,7 @@ public final class BoardGameView extends BaseView {
 	
 	@Override public void render() {
 	
-		_gamePanel.setBackground(Color.WHITE);
+		_gamePanel.setBackground(Color.BLACK);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -93,24 +93,13 @@ public final class BoardGameView extends BaseView {
 				gbc.gridx = col;
 				gbc.gridy = row;
 
-				// TODO --------- REFACTOR / SEPERATION OF CONCERNS
 				DiagonalTileView view = new DiagonalTileView();
 				DiagonalTileModel tile = boardGameController.populateTile(player, view, this);
 				view.setController(new DiagonalTileController(tile));
 				view.render();
 				
-				// Add our view to the game panel w.r.t the grid-constraints
-				_gamePanel.add(view, gbc);
-				
-
-				/* Populate neighbor row association
-				if(!tilesRow.isEmpty()) {
-					tilesRow.get(tilesRow.size() - 1).setNeighbor(NeighborPosition.RIGHT, tile);
-					tile.setNeighbor(NeighborPosition.LEFT, tilesRow.get(tilesRow.size() - 1));
-				}
-				*/
+				_gamePanel.add(view, gbc);			
 				tilesRow.add(tile);
-				// TODO END REFACTOR / SEPERATION OF CONCERNS
 			}
 
 			if(!tiles.isEmpty()) {
@@ -119,6 +108,9 @@ public final class BoardGameView extends BaseView {
 				// they will be able to reference each other as neighbors
 				Vector<DiagonalTileModel> previous = tiles.get(tiles.size() - 1);
 				for(int i = 0; i < previous.size(); ++i) {
+					
+					
+					
 					// TODO - we need to fill this in now!
 					//tilesRow.get(i).setNeighbor(NeighborPosition.TOP, previous.get(i));
 					//previous.get(i).setNeighbor(NeighborPosition.BOTTOM, tilesRow.get(i));
