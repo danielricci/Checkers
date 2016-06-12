@@ -38,13 +38,13 @@ import java.util.Observable;
 
 import javax.swing.ImageIcon;
 
-import game.controllers.factory.DiagonalTileController;
-import game.models.DiagonalTileModel;
-import game.models.DiagonalTileModel.NeighborPosition;
+import game.controllers.factory.TileController;
+import game.models.TileModel;
+import game.models.TileModel.NeighborPosition;
 import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
-public class DiagonalTileView extends BaseView {
+public class TileView extends BaseView {
 
 	private static final Color _defaultColor = Color.LIGHT_GRAY;
 	private static final Color _hoverColor = Color.DARK_GRAY;
@@ -64,12 +64,12 @@ public class DiagonalTileView extends BaseView {
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
-    			DiagonalTileController controller = getController(DiagonalTileController.class);
-    			DiagonalTileModel model = controller.tileSelected();
-    			for(DiagonalTileModel tile : model.getNeighbors(NeighborPosition.BOTTOM)) {
+    			TileController controller = getController(TileController.class);
+    			TileModel model = controller.tileSelected();
+    			for(TileModel tile : model.getNeighbors(NeighborPosition.BOTTOM)) {
     				tile.setSelected(true);
     			}
-    			for(DiagonalTileModel tile : model.getNeighbors(NeighborPosition.TOP)) {
+    			for(TileModel tile : model.getNeighbors(NeighborPosition.TOP)) {
     				tile.setSelected(true);
     			}
 			}
@@ -78,7 +78,7 @@ public class DiagonalTileView extends BaseView {
     
 	@Override public void update(Observable obs, Object arg) {
 		
-		DiagonalTileModel model = (DiagonalTileModel)obs;
+		TileModel model = (TileModel)obs;
 		if(_image == null) {
 			PlayerModel player = model.getPlayer();
 			if(player != null) {

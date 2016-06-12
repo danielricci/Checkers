@@ -24,26 +24,22 @@
 
 package game.controllers.factory;
 
-import game.models.DiagonalTileModel;
-import game.models.DiagonalTileModel.NeighborPosition;
+import game.models.TileModel;
+import game.models.TileModel.NeighborPosition;
 
-public class DiagonalTileController extends BaseController {
+public class TileController extends BaseController {
 	
-	private DiagonalTileModel _tile;
+	private TileModel _tile;
 
-	public DiagonalTileController(DiagonalTileModel tile) {
+	public TileController(TileModel tile) {
 		_tile = tile;
 	}
 	
-	public boolean isActivated() { return _tile.getIsActivated(); } 
-
-	public DiagonalTileModel tileSelected() {
+	public TileModel tileSelected() {
 		return _tile;
 	}
 	
-	public void setNeighbors(NeighborPosition neighborPosition, DiagonalTileModel... neighborTiles) {	
+	public void setNeighbors(NeighborPosition neighborPosition, TileModel... neighborTiles) {	
 		_tile.setNeighbors(neighborPosition, neighborTiles);
 	}
-	
-	public void setIsActivated(boolean isActivated) { _tile.setIsActivated(isActivated); }
 }

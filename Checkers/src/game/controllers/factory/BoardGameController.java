@@ -27,15 +27,15 @@ package game.controllers.factory;
 import java.util.Observer;
 import java.util.Vector;
 
-import game.models.DiagonalTileModel;
+import game.models.TileModel;
 import game.models.PlayerModel;
 
 public class BoardGameController extends BaseController {
 
-	private final Vector<DiagonalTileModel> _tiles = new Vector<DiagonalTileModel>();		
+	private final Vector<TileModel> _tiles = new Vector<TileModel>();		
 	 
-	public DiagonalTileModel populateTile(PlayerModel player, Observer... observers) {		
-		DiagonalTileModel model = new DiagonalTileModel(player, observers);
+	public TileModel populateTile(PlayerModel player, Observer... observers) {		
+		TileModel model = new TileModel(player, observers);
 		_tiles.addElement(model);
 		return model;
 	}

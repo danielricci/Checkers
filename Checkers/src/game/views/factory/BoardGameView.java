@@ -36,12 +36,12 @@ import javax.swing.JPanel;
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
 import game.controllers.factory.ControllerFactory.ControllerType;
-import game.controllers.factory.DiagonalTileController;
+import game.controllers.factory.TileController;
 import game.controllers.factory.PlayerController;
 import game.external.EngineHelper;
-import game.models.DiagonalTileModel;
-import game.models.DiagonalTileModel.NeighborPosition;
 import game.models.PlayerModel;
+import game.models.TileModel;
+import game.models.TileModel.NeighborPosition;
 
 @SuppressWarnings("serial")
 public final class BoardGameView extends BaseView {
@@ -69,7 +69,7 @@ public final class BoardGameView extends BaseView {
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
 		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
 
-		Vector<Vector<DiagonalTileModel>> tiles = new Vector<Vector<DiagonalTileModel>>();
+		Vector<Vector<TileModel>> tiles = new Vector<Vector<TileModel>>();
 		for (int row = 0; row < 12; ++row) {
 			
 			PlayerModel.Team team = null;
@@ -80,7 +80,7 @@ public final class BoardGameView extends BaseView {
 			}
 			
 			PlayerModel player = playerController.getPlayer(team);
-			Vector<DiagonalTileModel> tilesRow = new Vector<DiagonalTileModel>();
+			Vector<TileModel> tilesRow = new Vector<TileModel>();
 
 			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < 12; ++col) {
 				
@@ -94,9 +94,9 @@ public final class BoardGameView extends BaseView {
 				gbc.gridx = col;
 				gbc.gridy = row;
 
-				DiagonalTileView view = new DiagonalTileView();
-				DiagonalTileModel tile = boardGameController.populateTile(player, view, this);
-				view.setController(new DiagonalTileController(tile));
+				TileView view = new TileView();
+				TileModel tile = boardGameController.populateTile(player, view, this);
+				view.setController(new TileController(tile));
 				view.render();
 				
 				_gamePanel.add(view, gbc);			
@@ -107,14 +107,14 @@ public final class BoardGameView extends BaseView {
 				// Get the last row that has been rendered and link them together by 
 				// reference each others top and bottom.  Once this block gets executed
 				// they will be able to reference each other as neighbors
-				Vector<DiagonalTileModel> previous = tiles.get(tiles.size() - 1);
+				Vector<TileModel> previous = tiles.get(tiles.size() - 1);
 				for(int index = 0, oddRow = index, evenRow = index + 1; 
 					index < previous.size(); 
 					++index, oddRow = index - 1, evenRow = Math.min(index + 1, previous.size() - 1)) 
 				{
 					if(row % 2 == 0) {
 						
-						DiagonalTileModel[] neighbors = new DiagonalTileModel[] {
+						TileModel[] neighbors = new TileModel[] {
 							previous.get(index),
 							evenRow == index ? previous.get(index) : previous.get(evenRow)
 						};
@@ -124,16 +124,13 @@ public final class BoardGameView extends BaseView {
 							neighbors
 						);
 						
-						for(DiagonalTileModel neighbor : neighbors) {
+						for(TileModel neighbor : neighbors) {
 							neighbor.setNeighbors(NeighborPosition.BOTTOM, tilesRow.get(index));
 						}
-						
-						//System.out.println("[" + index + "] ->" + "[" + index  +"]");
-						//System.out.println("[" + index + "] ->" + "[" + (evenRow == index ? index : evenRow) +"]\n");
 					}
 					else {
 						
-						DiagonalTileModel[] neighbors = new DiagonalTileModel[] {
+						TileModel[] neighbors = new TileModel[] {
 							oddRow == index ? previous.get(index) : previous.get(oddRow),
 							previous.get(index)
 						};
@@ -143,18 +140,10 @@ public final class BoardGameView extends BaseView {
 							neighbors
 						);
 						
-						for(DiagonalTileModel neighbor : neighbors) {
+						for(TileModel neighbor : neighbors) {
 							neighbor.setNeighbors(NeighborPosition.BOTTOM, tilesRow.get(index));
 						}
 					}
-					
-					
-					
-					
-					
-					// TODO - we need to fill this in now!
-					//tilesRow.get(i).setNeighbor(NeighborPosition.TOP, previous.get(i));
-					//previous.get(i).setNeighbor(NeighborPosition.BOTTOM, tilesRow.get(i));
 				}
 			}
 			tiles.add(tilesRow);

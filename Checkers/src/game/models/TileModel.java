@@ -30,12 +30,11 @@ import java.util.Map;
 import java.util.Observer;
 import java.util.Set;
 
-public final class DiagonalTileModel extends GameModel implements IPlayableTile {
+public class TileModel extends GameModel implements IPlayableTile {
     
 	private PlayerModel _player;
-	private boolean _activated;
 	
-	private final Map<NeighborPosition, Set<DiagonalTileModel>> _neighbors = new HashMap<NeighborPosition, Set<DiagonalTileModel>>(); 
+	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>(); 
 	private boolean _selected;
 	
 	public enum NeighborPosition { 
@@ -48,18 +47,17 @@ public final class DiagonalTileModel extends GameModel implements IPlayableTile 
 		}
 	};
 	
-    public DiagonalTileModel(PlayerModel player, Observer... observers) {
+    public TileModel(PlayerModel player, Observer... observers) {
 		super(observers);
 		_player = player;
 		
 		doneUpdating();
 	}
 
-    // TODO - this functionality should be in the controller!!!!!!!
-	public void setNeighbors(NeighborPosition neighborPosition, DiagonalTileModel... neighborTiles) {	
+	public void setNeighbors(NeighborPosition neighborPosition, TileModel... neighborTiles) {	
 		
-		Set<DiagonalTileModel> tiles = new HashSet<DiagonalTileModel>();
-		for(DiagonalTileModel neighborTile : neighborTiles) {
+		Set<TileModel> tiles = new HashSet<TileModel>();
+		for(TileModel neighborTile : neighborTiles) {
 			tiles.add(neighborTile);
 		}
 		
@@ -69,15 +67,13 @@ public final class DiagonalTileModel extends GameModel implements IPlayableTile 
 		else {
 			_neighbors.put(neighborPosition, tiles);	
 		}
-		
 	}
 	
-	public Set<DiagonalTileModel> getNeighbors(NeighborPosition position) { 	
+	public Set<TileModel> getNeighbors(NeighborPosition position) { 	
 		return _neighbors.containsKey(position) ?
-				_neighbors.get(position) : new HashSet<DiagonalTileModel>(); 
+				_neighbors.get(position) : new HashSet<TileModel>(); 
 	}
    
-	// TODO - can we avoid this?
 	public PlayerModel getPlayer() { return _player; }
 	
     @Override public boolean isMovableTo() {
@@ -87,9 +83,6 @@ public final class DiagonalTileModel extends GameModel implements IPlayableTile 
 	@Override public boolean isPlayable() {
 		return _player != null;
 	}
-	
-	public boolean getIsActivated() { return _activated; }
-	public void setIsActivated(boolean isActivated) { _activated = isActivated; }
 
 	public void setSelected(boolean selected) {
 		_selected = selected;

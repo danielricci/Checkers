@@ -29,7 +29,6 @@ import java.util.Observer;
 public final class PlayerModel extends GameModel {
 	
 	private final Team _team;
-
 	public enum Team {
 		
 		PlayerX("resources_marker_x"),
