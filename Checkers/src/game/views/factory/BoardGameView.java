@@ -77,7 +77,7 @@ public final class BoardGameView extends BaseView {
 			
 			PlayerModel player = null;
 			if(EngineHelper.isBetweenOrEqual(row, 0, 4)) {
-				player = playerController.getPlayer(0);
+				//player = playerController.getPlayer(0);
 			} else if(EngineHelper.isBetweenOrEqual(row, 7, 11)) {
 				player = playerController.getPlayer(1);
 			}

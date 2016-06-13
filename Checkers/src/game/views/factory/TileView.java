@@ -40,7 +40,6 @@ import game.controllers.factory.TileController;
 import game.models.CheckerPiece;
 import game.models.PlayerModel;
 import game.models.TileModel;
-import game.models.TileModel.NeighborPosition;
 
 @SuppressWarnings("serial")
 public class TileView extends BaseView {
@@ -63,19 +62,29 @@ public class TileView extends BaseView {
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
+    			/*
+    			 * Clicking on a tile results in potentially a range of things
+    			 * It is not the views job to determine what these things are,
+    			 * so we need to query a bunch of things, and this is done in 
+    			 * the controller
+    			 */
     			TileController controller = getController(TileController.class);
+    			controller.event_mouseClicked();
+    			
+    			/*
     			TileModel model = controller.tileSelected();
     			for(TileModel tile : model.getNeighbors(NeighborPosition.BOTTOM)) {
     				tile.setSelected(true);
     			}
     			for(TileModel tile : model.getNeighbors(NeighborPosition.TOP)) {
     				tile.setSelected(true);
-    			}
+    			}*/
 			}
 		});
     }
     
 	@Override public void update(Observable obs, Object arg) {
+	
 		TileModel model = (TileModel)obs;
 		
 		if(_image == null) {
@@ -94,6 +103,11 @@ public class TileView extends BaseView {
 			ml.mouseEntered(null);
 		}		
 	}
+	
+	private void callback_onSelectedTile(Observable obs, Object arg) {
+		
+	}
+	
 	
 	@Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);

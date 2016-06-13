@@ -42,4 +42,8 @@ public class TileController extends BaseController {
 	public void setNeighbors(NeighborPosition neighborPosition, TileModel... neighborTiles) {	
 		_tile.setNeighbors(neighborPosition, neighborTiles);
 	}
+
+	public void event_mouseClicked() {
+		System.out.println("Someone just clicked me!");
+	}
 }
