@@ -81,7 +81,8 @@ public abstract class BaseView extends JPanel implements IView {
 		return found;
 	}
 	
-	protected abstract void registerListeners();
+	protected void registerListeners() {
+	}
 
 	@Override public void render() {
 	}

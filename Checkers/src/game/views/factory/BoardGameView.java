@@ -36,8 +36,8 @@ import javax.swing.JPanel;
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
 import game.controllers.factory.ControllerFactory.ControllerType;
-import game.controllers.factory.TileController;
 import game.controllers.factory.PlayerController;
+import game.controllers.factory.TileController;
 import game.external.EngineHelper;
 import game.models.PlayerModel;
 import game.models.TileModel;
@@ -54,6 +54,7 @@ public final class BoardGameView extends BaseView {
 	}
 
 	@Override public void update(Observable obs, Object arg) {
+		// TODO ?
 	};
 	
 	@Override public void render() {
@@ -69,17 +70,18 @@ public final class BoardGameView extends BaseView {
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
 		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
 
+		int boardDimensions = boardGameController.getBoardDimensions();
+		
 		Vector<Vector<TileModel>> tiles = new Vector<Vector<TileModel>>();
-		for (int row = 0; row < 12; ++row) {
+		for (int row = 0; row < boardDimensions; ++row) {
 			
-			PlayerModel.Team team = null;
+			PlayerModel player = null;
 			if(EngineHelper.isBetweenOrEqual(row, 0, 4)) {
-				team = PlayerModel.Team.PlayerX;				
+				player = playerController.getPlayer(0);
 			} else if(EngineHelper.isBetweenOrEqual(row, 7, 11)) {
-				team = PlayerModel.Team.PlayerY;
+				player = playerController.getPlayer(1);
 			}
 			
-			PlayerModel player = playerController.getPlayer(team);
 			Vector<TileModel> tilesRow = new Vector<TileModel>();
 
 			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < 12; ++col) {
@@ -131,8 +133,8 @@ public final class BoardGameView extends BaseView {
 					else {
 						
 						TileModel[] neighbors = new TileModel[] {
-							oddRow == index ? previous.get(index) : previous.get(oddRow),
-							previous.get(index)
+							previous.get(index),
+							oddRow == index ? previous.get(index) : previous.get(oddRow)
 						};
 						
 						tilesRow.get(index).setNeighbors(
@@ -150,8 +152,5 @@ public final class BoardGameView extends BaseView {
 		}
 		
 		add(_gamePanel);
-	}
-
-	@Override protected void registerListeners() {		
 	}
 }

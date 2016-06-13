@@ -27,16 +27,22 @@ package game.controllers.factory;
 import java.util.Observer;
 import java.util.Vector;
 
-import game.models.TileModel;
 import game.models.PlayerModel;
+import game.models.TileModel;
 
 public class BoardGameController extends BaseController {
 
 	private final Vector<TileModel> _tiles = new Vector<TileModel>();		
-	 
+	private static final int _rows = 12;
+	
 	public TileModel populateTile(PlayerModel player, Observer... observers) {		
 		TileModel model = new TileModel(player, observers);
 		_tiles.addElement(model);
+		
 		return model;
+	}
+	
+	public int getBoardDimensions() {
+		return _rows;
 	}
 }

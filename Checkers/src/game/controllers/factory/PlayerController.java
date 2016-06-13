@@ -24,25 +24,24 @@
 
 package game.controllers.factory;
 
-import java.util.LinkedList;
 import java.util.Observer;
-import java.util.Queue;
+import java.util.Vector;
 
 import game.models.PlayerModel;
-import game.models.PlayerModel.Team;
 
 public class PlayerController extends BaseController {
 
-	private final Queue<PlayerModel> _players = new LinkedList<PlayerModel>();
+	private final Vector<PlayerModel> _players = new Vector<PlayerModel>();
 		
 	public void populatePlayers(Observer observer) {
-		PlayerModel player1 = new PlayerModel(observer, Team.PlayerX);
-		PlayerModel player2 = new PlayerModel(observer, Team.PlayerY);
+		PlayerModel player1 = new PlayerModel(observer);
+		PlayerModel player2 = new PlayerModel(observer);
 		
 		_players.add(player1);
 		_players.add(player2);
 	}
 	
+	/*
 	public PlayerModel getPlayer(PlayerModel.Team team) {
 		PlayerModel model = null;
 		for(PlayerModel player : _players) {
@@ -53,8 +52,13 @@ public class PlayerController extends BaseController {
 		}
 		return model;
 	}
+	*/
 	
-	public PlayerModel getCurrentPlayer() {
-		return _players.peek();
+	/*public PlayerModel getCurrentPlayer() {
+		//return _players.peek();
+	}*/
+
+	public PlayerModel getPlayer(int index) {
+		return _players.elementAt(index);
 	}	
 }

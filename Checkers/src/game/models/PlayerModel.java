@@ -24,29 +24,49 @@
 
 package game.models;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observer;
 
 public final class PlayerModel extends GameModel {
+
+	private static int TEAM_INDEX = 0;
 	
 	private final Team _team;
-	public enum Team {
+	private final Map<TileModel, CheckerPiece> _pieces = new HashMap<TileModel, CheckerPiece>();
+
+	protected enum Team {
+		PlayerX("/data/black_piece.png"), // TODO - can we not hc this
+		PlayerY("/data/red_piece.png"); // TODO - can we not hc this
 		
-		PlayerX("black_piece"),
-		PlayerY("red_piece");
-		
-		public final String _tokenName;
-		public final String _tokenPath;
-		
-		private Team(String tokenName) {
-			_tokenName = tokenName;
-			_tokenPath = "/data/" + _tokenName + ".png";
+		public final String _teamName;	
+		private Team(String teamName) {
+			this._teamName = teamName;
 		}
 	}
 	
-	public PlayerModel(Observer observer, Team team) {
+	public PlayerModel(Observer observer) {
 		super(observer);
-		_team = team;
+		_team = Team.values()[TEAM_INDEX];
+		TEAM_INDEX++;
 	}
 
-	public Team getTeam() { return _team; }
+	public void removeTilePiece(TileModel tile) {
+		_pieces.remove(tile);
+	}
+	
+	public void addTilePiece(TileModel tile) {
+		removeTilePiece(tile);
+		_pieces.put(tile, new CheckerPiece(_team));
+	}
+	
+	public void updateTilePiece(TileModel oldTile, TileModel newTile) {
+		CheckerPiece piece = _pieces.get(oldTile);
+		removeTilePiece(oldTile);
+		_pieces.put(newTile, piece);
+	}	
+	
+	public CheckerPiece getPiece(TileModel tile) {
+		return _pieces.getOrDefault(tile, null);
+	}
 }

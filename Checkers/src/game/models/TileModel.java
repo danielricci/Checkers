@@ -30,11 +30,25 @@ import java.util.Map;
 import java.util.Observer;
 import java.util.Set;
 
+/** 
+ * A tile model represents a tile that knows about what it currently holds on itself
+ * and its current state; it also is aware of its immediate neighbors
+ */
 public class TileModel extends GameModel implements IPlayableTile {
     
+	/**
+	 * The player, if any, that controls this tile
+	 */
 	private PlayerModel _player;
 	
-	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>(); 
+	/**
+	 * The immediate neighbors of this tile 
+	 */
+	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>();
+	
+	/**
+	 * If this tile is currently in a selected state
+	 */
 	private boolean _selected;
 	
 	public enum NeighborPosition { 
@@ -50,7 +64,9 @@ public class TileModel extends GameModel implements IPlayableTile {
     public TileModel(PlayerModel player, Observer... observers) {
 		super(observers);
 		_player = player;
-		
+		if(player != null) {
+			player.addTilePiece(this);
+		}
 		doneUpdating();
 	}
 
@@ -74,6 +90,12 @@ public class TileModel extends GameModel implements IPlayableTile {
 				_neighbors.get(position) : new HashSet<TileModel>(); 
 	}
    
+	public void setSelected(boolean selected) {
+		_selected = selected;
+		doneUpdating();
+	}
+	
+	public boolean getSelected() { return _selected; }
 	public PlayerModel getPlayer() { return _player; }
 	
     @Override public boolean isMovableTo() {
@@ -83,11 +105,4 @@ public class TileModel extends GameModel implements IPlayableTile {
 	@Override public boolean isPlayable() {
 		return _player != null;
 	}
-
-	public void setSelected(boolean selected) {
-		_selected = selected;
-		doneUpdating();
-	}
-	
-	public boolean getSelected() { return _selected; }
 }
