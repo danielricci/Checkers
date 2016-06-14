@@ -24,11 +24,22 @@
 
 package game.models;
 
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 public class GameModel extends Observable 
 {
+	private final Set<Operation> _operations = new HashSet<Operation>();
+	
+	public enum Operation {
+		PlayerPieceSelected,
+		PlayerPieceCancel,
+		EmptyTileSelected, 
+		EmptyTileCancel,
+	}
+	
 	protected GameModel(Observer... observer) {
 		for(Observer obs : observer) {
 			addObserver(obs);
@@ -37,6 +48,12 @@ public class GameModel extends Observable
 	
 	protected final void doneUpdating() {
 		setChanged();
-		notifyObservers();
+		notifyObservers(_operations);
+		_operations.clear();
+	}
+	
+	protected final void addOperation(Operation operation) { _operations.add(operation); }
+	public final Set<Operation> getOperations() {
+		return _operations;
 	}
 }

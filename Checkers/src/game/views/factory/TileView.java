@@ -31,13 +31,13 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
 import game.controllers.factory.TileController;
 import game.models.CheckerPiece;
+import game.models.GameModel;
 import game.models.PlayerModel;
 import game.models.TileModel;
 
@@ -54,11 +54,11 @@ public class TileView extends BaseView {
     	addMouseListener(new MouseAdapter() {  		
     		
     		@Override public void mouseEntered(MouseEvent event) {
-    			setBackground(_hoverColor);
+    			//setBackground(_hoverColor);
 			}
     		
     		@Override public void mouseExited(MouseEvent event) {
-    			setBackground(_defaultColor);
+    			//setBackground(_defaultColor);
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
@@ -83,9 +83,28 @@ public class TileView extends BaseView {
 		});
     }
     
+    private void updateSelectedCommand(boolean selected) {
+    	setBackground(selected ? _hoverColor : _defaultColor);
+    }
+    
 	@Override public void update(Observable obs, Object arg) {
 	
 		TileModel model = (TileModel)obs;
+		
+		for(GameModel.Operation operation : model.getOperations()) {
+			switch(operation) {
+			case EmptyTileSelected:
+			case PlayerPieceSelected:
+				updateSelectedCommand(true);
+				break;
+			case PlayerPieceCancel:
+			case EmptyTileCancel:
+				updateSelectedCommand(false);
+				break;
+			default:
+				break;
+			}
+		}
 		
 		if(_image == null) {
 			PlayerModel player = model.getPlayer();
@@ -98,16 +117,11 @@ public class TileView extends BaseView {
 			}
 		}
 		
-		MouseListener[] mouseListeners = getListeners(MouseListener.class);
+		/*MouseListener[] mouseListeners = getListeners(MouseListener.class);
 		for(MouseListener ml : mouseListeners) {
 			ml.mouseEntered(null);
-		}		
+		}*/
 	}
-	
-	private void callback_onSelectedTile(Observable obs, Object arg) {
-		
-	}
-	
 	
 	@Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);

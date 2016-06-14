@@ -41,16 +41,13 @@ public class TileModel extends GameModel implements IPlayableTile {
 	 */
 	private PlayerModel _player;
 	
+	private boolean _selected;
+	
 	/**
 	 * The immediate neighbors of this tile 
 	 */
 	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>();
-	
-	/**
-	 * If this tile is currently in a selected state
-	 */
-	private boolean _selected;
-	
+		
 	public enum NeighborPosition { 
 		TOP(0),
 		BOTTOM(1);
@@ -90,19 +87,21 @@ public class TileModel extends GameModel implements IPlayableTile {
 				_neighbors.get(position) : new HashSet<TileModel>(); 
 	}
    
-	public void setSelected(boolean selected) {
-		_selected = selected;
+	public void setSelected(Operation operation) {
+		addOperation(operation);
+		_selected = !_selected;
 		doneUpdating();
 	}
 	
-	public boolean getSelected() { return _selected; }
+	public boolean isSelected() { return _selected; }
+
 	public PlayerModel getPlayer() { return _player; }
 	
     @Override public boolean isMovableTo() {
-    	return _player == null;
+    	return _player == null && !_selected;
     }
     
 	@Override public boolean isPlayable() {
-		return _player != null;
+		return _player != null && !_selected;
 	}
 }

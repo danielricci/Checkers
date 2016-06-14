@@ -36,8 +36,8 @@ public final class PlayerModel extends GameModel {
 	private final Map<TileModel, CheckerPiece> _pieces = new HashMap<TileModel, CheckerPiece>();
 
 	protected enum Team {
-		PlayerX("/data/black_piece.png"), // TODO - can we not hc this
-		PlayerY("/data/red_piece.png"); // TODO - can we not hc this
+		PlayerX("/data/red_piece.png"), // TODO - can we not hc this
+		PlayerY("/data/black_piece.png"); // TODO - can we not hc this
 		
 		public final String _teamName;	
 		private Team(String teamName) {

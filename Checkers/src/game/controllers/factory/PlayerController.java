@@ -41,22 +41,9 @@ public class PlayerController extends BaseController {
 		_players.add(player2);
 	}
 	
-	/*
-	public PlayerModel getPlayer(PlayerModel.Team team) {
-		PlayerModel model = null;
-		for(PlayerModel player : _players) {
-			if(player.getTeam() == team) {
-				model = player;
-				break;
-			}
-		}
-		return model;
+	public PlayerModel getCurrentPlayer() {
+		return _players.firstElement();
 	}
-	*/
-	
-	/*public PlayerModel getCurrentPlayer() {
-		//return _players.peek();
-	}*/
 
 	public PlayerModel getPlayer(int index) {
 		return _players.elementAt(index);

@@ -24,6 +24,8 @@
 
 package game.controllers.factory;
 
+import game.controllers.factory.ControllerFactory.ControllerType;
+import game.models.GameModel.Operation;
 import game.models.TileModel;
 import game.models.TileModel.NeighborPosition;
 
@@ -44,6 +46,32 @@ public class TileController extends BaseController {
 	}
 
 	public void event_mouseClicked() {
-		System.out.println("Someone just clicked me!");
+		
+		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		if(_tile.getPlayer() != null && _tile.getPlayer() != playerController.getCurrentPlayer()) {
+			System.out.println("Cannot select other players pieces!");	
+			return;
+		}
+		
+		if(_tile.isSelected()) {
+			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
+				System.out.println("Player is deselecting his own selected tile with his piece on it");
+				_tile.setSelected(Operation.PlayerPieceCancel);				
+			}
+			else {
+				System.out.println("Player is deselecting on an empty tile that was selected");
+				_tile.setSelected(Operation.EmptyTileCancel);
+			}
+		}
+		else {
+			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
+				System.out.println("Player is selecting his own tile for the first time");
+				_tile.setSelected(Operation.PlayerPieceSelected);
+			}
+			else {
+				System.out.println("Player is selecting an empty tile");
+				_tile.setSelected(Operation.EmptyTileSelected);				
+			}
+		}
 	}
 }
