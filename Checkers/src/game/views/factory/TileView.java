@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Observable;
 
 import game.controllers.factory.TileController;
-import game.models.CheckerPiece;
+import game.models.PlayerPiece;
 import game.models.GameModel;
 import game.models.PlayerModel;
 import game.models.TileModel;
@@ -109,7 +109,7 @@ public class TileView extends BaseView {
 		if(_image == null) {
 			PlayerModel player = model.getPlayer();
 			if(player != null) {
-				CheckerPiece piece = player.getPiece(model);
+				PlayerPiece piece = player.getPiece(model);
 				if(piece != null) {
 					_image = piece.getImage();
 					repaint();

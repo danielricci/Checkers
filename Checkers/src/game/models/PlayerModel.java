@@ -33,7 +33,7 @@ public final class PlayerModel extends GameModel {
 	private static int TEAM_INDEX = 0;
 	
 	private final Team _team;
-	private final Map<TileModel, CheckerPiece> _pieces = new HashMap<TileModel, CheckerPiece>();
+	private final Map<TileModel, PlayerPiece> _pieces = new HashMap<TileModel, PlayerPiece>();
 
 	protected enum Team {
 		PlayerX("/data/red_piece.png"), // TODO - can we not hc this
@@ -57,16 +57,16 @@ public final class PlayerModel extends GameModel {
 	
 	public void addTilePiece(TileModel tile) {
 		removeTilePiece(tile);
-		_pieces.put(tile, new CheckerPiece(_team));
+		_pieces.put(tile, new PlayerPiece(_team));
 	}
 	
 	public void updateTilePiece(TileModel oldTile, TileModel newTile) {
-		CheckerPiece piece = _pieces.get(oldTile);
+		PlayerPiece piece = _pieces.get(oldTile);
 		removeTilePiece(oldTile);
 		_pieces.put(newTile, piece);
 	}	
 	
-	public CheckerPiece getPiece(TileModel tile) {
+	public PlayerPiece getPiece(TileModel tile) {
 		return _pieces.getOrDefault(tile, null);
 	}
 }

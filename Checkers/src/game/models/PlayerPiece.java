@@ -28,12 +28,12 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class CheckerPiece {
+public class PlayerPiece {
 	
 	private PlayerModel.Team _team;
 	private Image _image;
 	
-	public CheckerPiece(PlayerModel.Team team) {
+	public PlayerPiece(PlayerModel.Team team) {
 		_team = team;
 		_image = new ImageIcon(getClass().getResource(_team._teamName)).getImage();
 	}	
