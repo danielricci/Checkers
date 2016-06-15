@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Observer;
 import java.util.Set;
 
+import game.models.PlayerModel.Team.Orientation;
+
 /** 
  * A tile model represents a tile that knows about what it currently holds on itself
  * and its current state; it also is aware of its immediate neighbors
@@ -49,12 +51,18 @@ public class TileModel extends GameModel implements IPlayableTile {
 	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>();
 		
 	public enum NeighborPosition { 
-		TOP(0),
-		BOTTOM(1);
+		TOP,
+		BOTTOM;
 		
-		private int _value;
-		private NeighborPosition(int value) {
-			_value = value;
+		public static NeighborPosition flip(NeighborPosition pos) {
+			switch(pos) {
+			case BOTTOM:
+				return TOP;
+			case TOP:
+				return BOTTOM;
+			default:
+				return pos;
+			}
 		}
 	};
 	
@@ -81,10 +89,35 @@ public class TileModel extends GameModel implements IPlayableTile {
 			_neighbors.put(neighborPosition, tiles);	
 		}
 	}
-	
-	public Set<TileModel> getNeighbors(NeighborPosition position) { 	
+
+	private Set<TileModel> getNeighbors(NeighborPosition position) {
+		
+		// Fetch the correct point of view of the player
+		if(_player.getPlayerOrientation() == Orientation.DOWN)
+		{
+			position = NeighborPosition.flip(position);
+		}
+		
 		return _neighbors.containsKey(position) ?
 				_neighbors.get(position) : new HashSet<TileModel>(); 
+	}
+
+	public Set<TileModel> getNeighbors() {
+		
+		NeighborPosition neighborPosition = NeighborPosition.TOP;
+		if(_player.getPlayerOrientation() == Orientation.DOWN)
+		{
+			neighborPosition = NeighborPosition.flip(neighborPosition);
+		}
+		
+		return _neighbors.containsKey(neighborPosition) ?
+				_neighbors.get(neighborPosition) : new HashSet<TileModel>();
+	}
+	
+	public Set<TileModel> getAllNeighbors() {
+		Set<TileModel> allNeighbours = getNeighbors(NeighborPosition.TOP);
+		allNeighbours.addAll(getNeighbors(NeighborPosition.BOTTOM));
+		return allNeighbours;
 	}
    
 	public void setSelected(Operation operation) {

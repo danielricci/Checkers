@@ -28,6 +28,8 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import game.models.PlayerModel.Team.Orientation;
+
 public class PlayerPiece {
 	
 	private PlayerModel.Team _team;
@@ -39,4 +41,7 @@ public class PlayerPiece {
 	}	
 	
 	public Image getImage() { return _image; }
+	public Orientation getPlayerOrientation() {
+		return _team._orientation;
+	}
 }

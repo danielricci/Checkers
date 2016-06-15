@@ -24,6 +24,8 @@
 
 package game.controllers.factory;
 
+import java.util.Set;
+
 import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
 import game.models.TileModel;
@@ -48,6 +50,8 @@ public class TileController extends BaseController {
 	public void event_mouseClicked() {
 		
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		
+		// Check if the player tries to select the piece of our opponent
 		if(_tile.getPlayer() != null && _tile.getPlayer() != playerController.getCurrentPlayer()) {
 			System.out.println("Cannot select other players pieces!");	
 			return;
@@ -65,13 +69,36 @@ public class TileController extends BaseController {
 		}
 		else {
 			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
-				System.out.println("Player is selecting his own tile for the first time");
-				_tile.setSelected(Operation.PlayerPieceSelected);
+				if(hasMoves())
+				{
+					System.out.println("Player is selecting his own tile for the first time");
+					_tile.setSelected(Operation.PlayerPieceSelected);	
+				}
+				else 
+				{
+					System.out.println("Player is selecting his own tile but there are no moves");
+				}
 			}
 			else {
 				System.out.println("Player is selecting an empty tile");
 				_tile.setSelected(Operation.EmptyTileSelected);				
 			}
 		}
+	}
+	
+	private boolean hasMoves() {
+		
+		Set<TileModel> neighbors = _tile.getNeighbors();
+		if(neighbors.size() == 0) {
+			return false;
+		}
+
+		for(TileModel neighbor : neighbors) {
+			if(neighbor.isMovableTo()) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

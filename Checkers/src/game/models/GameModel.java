@@ -37,7 +37,9 @@ public class GameModel extends Observable
 		PlayerPieceSelected,
 		PlayerPieceCancel,
 		EmptyTileSelected, 
-		EmptyTileCancel,
+		EmptyTileCancel, 
+		ShowGuides,
+		HideGuides
 	}
 	
 	protected GameModel(Observer... observer) {

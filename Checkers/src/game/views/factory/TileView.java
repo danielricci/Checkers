@@ -36,9 +36,9 @@ import java.util.Map;
 import java.util.Observable;
 
 import game.controllers.factory.TileController;
-import game.models.PlayerPiece;
 import game.models.GameModel;
 import game.models.PlayerModel;
+import game.models.PlayerPiece;
 import game.models.TileModel;
 
 @SuppressWarnings("serial")
@@ -47,7 +47,7 @@ public class TileView extends BaseView {
 	private static final Color _defaultColor = Color.LIGHT_GRAY;
 	private static final Color _hoverColor = Color.DARK_GRAY;
     
-	private Image _image; // todo - we can remove this, and do a component based removal afterwards?
+	private Image _image;
 	
     @Override protected void registerListeners() {
     	
@@ -62,23 +62,8 @@ public class TileView extends BaseView {
     		}
 
     		@Override public void mouseClicked(MouseEvent event) {
-    			/*
-    			 * Clicking on a tile results in potentially a range of things
-    			 * It is not the views job to determine what these things are,
-    			 * so we need to query a bunch of things, and this is done in 
-    			 * the controller
-    			 */
     			TileController controller = getController(TileController.class);
     			controller.event_mouseClicked();
-    			
-    			/*
-    			TileModel model = controller.tileSelected();
-    			for(TileModel tile : model.getNeighbors(NeighborPosition.BOTTOM)) {
-    				tile.setSelected(true);
-    			}
-    			for(TileModel tile : model.getNeighbors(NeighborPosition.TOP)) {
-    				tile.setSelected(true);
-    			}*/
 			}
 		});
     }
@@ -88,7 +73,7 @@ public class TileView extends BaseView {
     }
     
 	@Override public void update(Observable obs, Object arg) {
-	
+		
 		TileModel model = (TileModel)obs;
 		
 		for(GameModel.Operation operation : model.getOperations()) {
@@ -100,6 +85,9 @@ public class TileView extends BaseView {
 			case PlayerPieceCancel:
 			case EmptyTileCancel:
 				updateSelectedCommand(false);
+				break;
+			case ShowGuides:
+				updateSelectedCommand(true);
 				break;
 			default:
 				break;
@@ -116,11 +104,6 @@ public class TileView extends BaseView {
 				}
 			}
 		}
-		
-		/*MouseListener[] mouseListeners = getListeners(MouseListener.class);
-		for(MouseListener ml : mouseListeners) {
-			ml.mouseEntered(null);
-		}*/
 	}
 	
 	@Override protected void paintComponent(Graphics g) {

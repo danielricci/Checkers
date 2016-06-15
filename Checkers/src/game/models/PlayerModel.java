@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observer;
 
+import game.models.PlayerModel.Team.Orientation;
+
 public final class PlayerModel extends GameModel {
 
 	private static int TEAM_INDEX = 0;
@@ -36,19 +38,26 @@ public final class PlayerModel extends GameModel {
 	private final Map<TileModel, PlayerPiece> _pieces = new HashMap<TileModel, PlayerPiece>();
 
 	protected enum Team {
-		PlayerX("/data/red_piece.png"), // TODO - can we not hc this
-		PlayerY("/data/black_piece.png"); // TODO - can we not hc this
+		PlayerX("/data/red_piece.png", Orientation.DOWN), 
+		PlayerY("/data/black_piece.png", Orientation.UP);
 		
-		public final String _teamName;	
-		private Team(String teamName) {
+		protected enum Orientation { 
+			UP, 
+			DOWN
+		}
+		
+		protected final String _teamName;	
+		protected final Orientation _orientation;
+		
+		private Team(String teamName, Orientation orientation) {
 			this._teamName = teamName;
+			this._orientation = orientation;
 		}
 	}
 	
 	public PlayerModel(Observer observer) {
 		super(observer);
-		_team = Team.values()[TEAM_INDEX];
-		TEAM_INDEX++;
+		_team = Team.values()[TEAM_INDEX++];
 	}
 
 	public void removeTilePiece(TileModel tile) {
@@ -68,5 +77,9 @@ public final class PlayerModel extends GameModel {
 	
 	public PlayerPiece getPiece(TileModel tile) {
 		return _pieces.getOrDefault(tile, null);
+	}
+	
+	protected Orientation getPlayerOrientation() {
+		return _team._orientation;
 	}
 }

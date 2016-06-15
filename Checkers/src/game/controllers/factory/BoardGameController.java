@@ -27,6 +27,7 @@ package game.controllers.factory;
 import java.util.Observer;
 import java.util.Vector;
 
+import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
 
@@ -34,14 +35,30 @@ public class BoardGameController extends BaseController {
 
 	private final Vector<TileModel> _tiles = new Vector<TileModel>();		
 	private static final int _rows = 12;
+	private final Vector<Operation> _operations = new Vector<Operation>();
 	
-	public TileModel populateTile(PlayerModel player, Observer... observers) {		
+  	public TileModel populateTile(PlayerModel player, Observer... observers) {		
 		TileModel model = new TileModel(player, observers);
 		_tiles.addElement(model);
 		
 		return model;
 	}
 	
+  	public void addGameOperation(Operation operation) { _operations.addElement(operation); };
+  	
+  	public void processOperations() {
+  		_operations.clear();
+  	}
+  	
+  	public void showTileGuides(TileModel tileModel) {
+		for(TileModel neighbor : tileModel.getNeighbors()) {
+			neighbor.setSelected(Operation.ShowGuides);
+		}
+  	}
+  	
+  	
+  	
+  	
 	public int getBoardDimensions() {
 		return _rows;
 	}
