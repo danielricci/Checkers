@@ -100,4 +100,12 @@ public class TileController extends BaseController {
 		
 		return false;
 	}
+	
+	public void tileGuidesCommand(TileModel tileModel, Operation operation) {
+		for(TileModel neighbor : tileModel.getNeighbors()) {
+			neighbor.setSelected(operation);
+		}
+  	}
+	
+	
 }

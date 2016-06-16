@@ -75,17 +75,24 @@ public class TileView extends BaseView {
     
 	@Override public void update(Observable obs, Object arg) {
 		
-		TileModel model = (TileModel)obs;
+		TileModel tileModel = (TileModel)obs;
+		TileController tileController = getController(TileController.class);
+
 		
-		for(Operation operation : model.getOperations()) {
+		for(Operation operation : tileModel.getOperations()) {
 			switch(operation) {
 			case EmptyTileSelected:
 				break;
 			case PlayerPieceSelected:
 				updateSelectedCommand(_selectedColor);
+				tileController.tileGuidesCommand(tileModel, Operation.ShowGuides);
 				break;
 			case PlayerPieceMoveCancel:
+				updateSelectedCommand(_defaultColor);
+				tileController.tileGuidesCommand(tileModel, Operation.HideGuides);
+				break;
 			case PlayerPieceMoveAccepted:
+				break;
 			case HideGuides:
 				updateSelectedCommand(_defaultColor);
 				break;
@@ -98,9 +105,9 @@ public class TileView extends BaseView {
 		}
 		
 		if(_image == null) {
-			PlayerModel player = model.getPlayer();
+			PlayerModel player = tileModel.getPlayer();
 			if(player != null) {
-				PlayerPiece piece = player.getPiece(model);
+				PlayerPiece piece = player.getPiece(tileModel);
 				if(piece != null) {
 					_image = piece.getImage();
 					repaint();

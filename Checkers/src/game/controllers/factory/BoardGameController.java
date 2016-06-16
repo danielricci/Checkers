@@ -38,6 +38,7 @@ public class BoardGameController extends BaseController {
 	private final Vector<TileModel> _tiles = new Vector<TileModel>();		
 	private static final int _rows = 12;
 	private final Queue<Operation> _operations = new LinkedList<Operation>();
+	private final Queue<TileModel> _selectedTiles = new LinkedList<TileModel>();
 	
   	public TileModel populateTile(PlayerModel player, Observer... observers) {		
 		TileModel model = new TileModel(player, observers);
@@ -45,7 +46,11 @@ public class BoardGameController extends BaseController {
 		
 		return model;
 	}
-	
+
+  	public void addTileModelSelected(TileModel tile) {
+  		_selectedTiles.add(tile);  		
+  	}
+  	
   	public void addGameOperation(Operation operation) { 
   		_operations.add(operation);
 	}
@@ -57,13 +62,11 @@ public class BoardGameController extends BaseController {
   		}
   	}
   	
-  	public void tileGuidesCommand(TileModel tileModel, Operation operation) {
-		for(TileModel neighbor : tileModel.getNeighbors()) {
-			neighbor.setSelected(operation);
-		}
-  	}
+  
   	
 	public int getBoardDimensions() {
 		return _rows;
 	}
+
+	public void clear() { _selectedTiles.clear(); _operations.clear(); }
 }
