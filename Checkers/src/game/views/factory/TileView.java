@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Observable;
 
 import game.controllers.factory.TileController;
-import game.models.GameModel;
+import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.PlayerPiece;
 import game.models.TileModel;
@@ -45,8 +45,9 @@ import game.models.TileModel;
 public class TileView extends BaseView {
 
 	private static final Color _defaultColor = Color.LIGHT_GRAY;
-	private static final Color _hoverColor = Color.DARK_GRAY;
-    
+	private static final Color _selectedColor = Color.DARK_GRAY;
+	private static final Color _guideColor = Color.BLUE;
+	
 	private Image _image;
 	
     @Override protected void registerListeners() {
@@ -68,26 +69,28 @@ public class TileView extends BaseView {
 		});
     }
     
-    private void updateSelectedCommand(boolean selected) {
-    	setBackground(selected ? _hoverColor : _defaultColor);
+    private void updateSelectedCommand(Color color) {
+    	setBackground(color);
     }
     
 	@Override public void update(Observable obs, Object arg) {
 		
 		TileModel model = (TileModel)obs;
 		
-		for(GameModel.Operation operation : model.getOperations()) {
+		for(Operation operation : model.getOperations()) {
 			switch(operation) {
 			case EmptyTileSelected:
-			case PlayerPieceSelected:
-				updateSelectedCommand(true);
 				break;
-			case PlayerPieceCancel:
-			case EmptyTileCancel:
-				updateSelectedCommand(false);
+			case PlayerPieceSelected:
+				updateSelectedCommand(_selectedColor);
+				break;
+			case PlayerPieceMoveCancel:
+			case PlayerPieceMoveAccepted:
+			case HideGuides:
+				updateSelectedCommand(_defaultColor);
 				break;
 			case ShowGuides:
-				updateSelectedCommand(true);
+				updateSelectedCommand(_guideColor);
 				break;
 			default:
 				break;

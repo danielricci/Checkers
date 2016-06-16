@@ -59,19 +59,19 @@ public class TileController extends BaseController {
 		
 		if(_tile.isSelected()) {
 			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
-				System.out.println("Player is deselecting his own selected tile with his piece on it");
-				_tile.setSelected(Operation.PlayerPieceCancel);				
+				System.out.println("Player is cancelling a move");
+				_tile.setSelected(Operation.PlayerPieceMoveCancel);				
 			}
 			else {
-				System.out.println("Player is deselecting on an empty tile that was selected");
-				_tile.setSelected(Operation.EmptyTileCancel);
+				System.out.println("Player is accepting a move to a valid location");
+				_tile.setSelected(Operation.PlayerPieceMoveAccepted);
 			}
 		}
 		else {
 			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
 				if(hasMoves())
 				{
-					System.out.println("Player is selecting his own tile for the first time");
+					System.out.println("Player has selected a piece to be moved");
 					_tile.setSelected(Operation.PlayerPieceSelected);	
 				}
 				else 
@@ -80,8 +80,7 @@ public class TileController extends BaseController {
 				}
 			}
 			else {
-				System.out.println("Player is selecting an empty tile");
-				_tile.setSelected(Operation.EmptyTileSelected);				
+				System.out.println("Player is selecting a tile that is not a valid move");
 			}
 		}
 	}

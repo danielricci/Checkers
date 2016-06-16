@@ -35,9 +35,9 @@ public class GameModel extends Observable
 	
 	public enum Operation {
 		PlayerPieceSelected,
-		PlayerPieceCancel,
+		PlayerPieceMoveCancel,
 		EmptyTileSelected, 
-		EmptyTileCancel, 
+		PlayerPieceMoveAccepted, 
 		ShowGuides,
 		HideGuides
 	}

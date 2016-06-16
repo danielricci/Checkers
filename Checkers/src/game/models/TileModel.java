@@ -49,11 +49,11 @@ public class TileModel extends GameModel implements IPlayableTile {
 	 * The immediate neighbors of this tile 
 	 */
 	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>();
-		
+	
 	public enum NeighborPosition { 
 		TOP,
 		BOTTOM;
-		
+	
 		public static NeighborPosition flip(NeighborPosition pos) {
 			switch(pos) {
 			case BOTTOM:

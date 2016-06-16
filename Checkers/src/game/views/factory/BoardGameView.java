@@ -40,6 +40,7 @@ import game.controllers.factory.PlayerController;
 import game.controllers.factory.TileController;
 import game.external.EngineHelper;
 import game.models.GameModel;
+import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
 import game.models.TileModel.NeighborPosition;
@@ -59,24 +60,21 @@ public final class BoardGameView extends BaseView {
 		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
 		
 		for(GameModel.Operation operation : tileModel.getOperations()) {
+			boardGameController.addGameOperation(operation);
+			boardGameController.processCommands();
 			switch(operation) {
 			case EmptyTileSelected:
-				break;
 			case PlayerPieceSelected:
-				boardGameController.showTileGuides(tileModel);
+				boardGameController.tileGuidesCommand(tileModel, Operation.ShowGuides);
 				break;
-			case PlayerPieceCancel:
+			case PlayerPieceMoveCancel:
+				boardGameController.tileGuidesCommand(tileModel, Operation.HideGuides);
 				break;
-			case EmptyTileCancel:
-				break;
-			default:
+			case PlayerPieceMoveAccepted:
 				break;
 			}
 		}
 	};
-	
-	
-	
 	
 	@Override public void render() {
 	
