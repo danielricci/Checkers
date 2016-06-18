@@ -24,21 +24,20 @@
 
 package game.controllers.factory;
 
-import java.util.LinkedList;
 import java.util.Observer;
-import java.util.Queue;
 import java.util.Vector;
 
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
+import game.models.TileModel.Selection;
 
 public class BoardGameController extends BaseController {
 
 	private final Vector<TileModel> _tiles = new Vector<TileModel>();		
 	private static final int _rows = 12;
-	private final Queue<Operation> _operations = new LinkedList<Operation>();
-	private final Queue<TileModel> _selectedTiles = new LinkedList<TileModel>();
+	
+	private TileModel _selectedTile;
 	
   	public TileModel populateTile(PlayerModel player, Observer... observers) {		
 		TileModel model = new TileModel(player, observers);
@@ -47,26 +46,33 @@ public class BoardGameController extends BaseController {
 		return model;
 	}
 
-  	public void addTileModelSelected(TileModel tile) {
-  		_selectedTiles.add(tile);  		
-  	}
-  	
-  	public void addGameOperation(Operation operation) { 
-  		_operations.add(operation);
-	}
-  	
-  	public void processCommands() {  		
-  		while(_operations.size() > 0){
-  	  		Operation operation = _operations.poll();
-  	  		System.out.println("performing operation " + operation.toString());  	  		
-  		}
-  	}
-  	
-  
-  	
+  	public void addTileModelOnSelected(TileModel tile) {
+		if(_selectedTile != null) {
+			_selectedTile.setSelected(Operation.PlayerPieceMoveCancel, Selection.None, true);			
+			if(_selectedTile != tile) {
+				_selectedTile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected);
+				_selectedTile = tile;
+			}
+			else {
+				_selectedTile = null;				
+			}
+		} 
+		else {
+			_selectedTile = tile;	
+		}
+  	} 	
+
 	public int getBoardDimensions() {
 		return _rows;
 	}
 
-	public void clear() { _selectedTiles.clear(); _operations.clear(); }
+	public void processTileMove(TileModel tileModel) {		
+		_selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
+		for(TileModel model : _selectedTile.getNeighbors()) {
+			model.setSelected(Operation.HideGuides, Selection.None, true);
+		}
+		
+		_selectedTile.swapWith(tileModel);
+		_selectedTile = null;
+	}
 }

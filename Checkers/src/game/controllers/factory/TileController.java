@@ -24,12 +24,15 @@
 
 package game.controllers.factory;
 
+import java.awt.Image;
 import java.util.Set;
 
 import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
+import game.models.PlayerModel;
 import game.models.TileModel;
 import game.models.TileModel.NeighborPosition;
+import game.models.TileModel.Selection;
 
 public class TileController extends BaseController {
 	
@@ -57,22 +60,16 @@ public class TileController extends BaseController {
 			return;
 		}
 		
-		if(_tile.isSelected()) {
-			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
-				System.out.println("Player is cancelling a move");
-				_tile.setSelected(Operation.PlayerPieceMoveCancel);				
-			}
-			else {
-				System.out.println("Player is accepting a move to a valid location");
-				_tile.setSelected(Operation.PlayerPieceMoveAccepted);
-			}
+		if(_tile.isSelected() || _tile.isGuideSelected() && _tile.getPlayer() != playerController.getCurrentPlayer()) {
+			System.out.println("Player is accepting a move to a valid location");
+			_tile.setSelected(Operation.PlayerPieceMoveAccepted, Selection.None, true);
 		}
 		else {
 			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
 				if(hasMoves())
 				{
 					System.out.println("Player has selected a piece to be moved");
-					_tile.setSelected(Operation.PlayerPieceSelected);	
+					_tile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected, true);	
 				}
 				else 
 				{
@@ -101,9 +98,22 @@ public class TileController extends BaseController {
 		return false;
 	}
 	
+	public Image getTileImage() {
+		PlayerModel model = _tile.getPlayer();
+		if(model != null) {
+			return model.getPiece(_tile).getImage();
+		}
+		
+		return null;
+	}
+	
 	public void tileGuidesCommand(TileModel tileModel, Operation operation) {
 		for(TileModel neighbor : tileModel.getNeighbors()) {
-			neighbor.setSelected(operation);
+			neighbor.setSelected(
+				operation, 
+				operation == Operation.ShowGuides ? Selection.GuideSelected : Selection.None,
+				false
+			);
 		}
   	}
 	

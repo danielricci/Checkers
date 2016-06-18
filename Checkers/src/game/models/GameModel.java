@@ -24,14 +24,14 @@
 
 package game.models;
 
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
+import java.util.Queue;
 
 public class GameModel extends Observable 
 {
-	private final Set<Operation> _operations = new HashSet<Operation>();
+	private final Queue<Operation> _operations = new LinkedList<Operation>();
 	
 	public enum Operation {
 		PlayerPieceSelected,
@@ -39,7 +39,8 @@ public class GameModel extends Observable
 		EmptyTileSelected, 
 		PlayerPieceMoveAccepted, 
 		ShowGuides,
-		HideGuides
+		HideGuides,
+		Refresh
 	}
 	
 	protected GameModel(Observer... observer) {
@@ -50,12 +51,18 @@ public class GameModel extends Observable
 	
 	protected final void doneUpdating() {
 		setChanged();
+		if(_operations.size() == 0) {
+			_operations.add(Operation.Refresh);
+		}
 		notifyObservers(_operations);
 		_operations.clear();
 	}
 	
+	
 	protected final void addOperation(Operation operation) { _operations.add(operation); }
-	public final Set<Operation> getOperations() {
+	protected final void clearOperations() { _operations.clear(); }
+	
+	public final Queue<Operation> getOperations() {
 		return _operations;
 	}
 }

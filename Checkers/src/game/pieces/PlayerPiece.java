@@ -22,12 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package game.models;
+package game.pieces;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import game.models.PlayerModel;
+import game.models.PlayerModel.Team;
 import game.models.PlayerModel.Team.Orientation;
 
 public class PlayerPiece {

@@ -30,6 +30,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import game.controllers.IController;
+import game.models.GameModel;
 import game.views.IView;
 
 public abstract class BaseView extends JPanel implements IView {
@@ -85,6 +86,9 @@ public abstract class BaseView extends JPanel implements IView {
 	}
 
 	@Override public void render() {
+	}
+	
+	@Override public void refresh(GameModel model){
 	}
 
 	@Override public void update(Observable o, Object arg) {

@@ -38,17 +38,16 @@ import game.models.PlayerModel.Team.Orientation;
  */
 public class TileModel extends GameModel implements IPlayableTile {
     
-	/**
-	 * The player, if any, that controls this tile
-	 */
-	private PlayerModel _player;
+	private PlayerModel _player;	
+	private Selection _selection;
 	
-	private boolean _selected;
-	
-	/**
-	 * The immediate neighbors of this tile 
-	 */
 	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>();
+		
+	public enum Selection {
+		GuideSelected,
+		MoveSelected,
+		None;
+	}
 	
 	public enum NeighborPosition { 
 		TOP,
@@ -120,21 +119,44 @@ public class TileModel extends GameModel implements IPlayableTile {
 		return allNeighbours;
 	}
    
-	public void setSelected(Operation operation) {
+	public void setSelected(Operation operation, Selection selection, boolean flushBuffer) {
+		if(flushBuffer) {
+			clearOperations();
+		}
 		addOperation(operation);
-		_selected = !_selected;
+		_selection = selection;
 		doneUpdating();
 	}
 	
-	public boolean isSelected() { return _selected; }
-
+	public void setSelected(Operation operation, Selection selection) { setSelected(operation, selection, false); }
+	
+	
+	public boolean isPlayerHuman() { return _player != null; }
+	public boolean isSelected() { return _selection == Selection.MoveSelected; }
+	public boolean isGuideSelected() { return _selection == Selection.GuideSelected; }
+	
 	public PlayerModel getPlayer() { return _player; }
 	
     @Override public boolean isMovableTo() {
-    	return _player == null && !_selected;
+    	return _player == null && _selection != Selection.MoveSelected;
     }
     
 	@Override public boolean isPlayable() {
-		return _player != null && !_selected;
+		return _player != null && _selection != Selection.MoveSelected;
+	}
+
+	public void swapWith(TileModel tileModel) {
+		
+		// Update the player
+		PlayerModel player = _player;
+		_player = tileModel._player;
+		tileModel._player = player;
+		
+		// Update the players entry
+		tileModel._player.updatePlayerPiece(this, tileModel);
+		
+		// Send Signals
+		doneUpdating();
+		tileModel.doneUpdating(); // TODO - the default if no operations should be a refresh
 	}
 }

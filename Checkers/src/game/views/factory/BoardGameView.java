@@ -60,22 +60,17 @@ public final class BoardGameView extends BaseView {
 		TileModel tileModel = (TileModel)obs;
 		
 		for(GameModel.Operation operation : tileModel.getOperations()) {
-			boardGameController.addGameOperation(operation);
 			switch(operation) {
 			case PlayerPieceSelected:
-				boardGameController.addTileModelSelected(tileModel);
+				boardGameController.addTileModelOnSelected(tileModel);
 				break;
 			case PlayerPieceMoveCancel:
-				boardGameController.clear();
 				break;
 			case PlayerPieceMoveAccepted:
-				boardGameController.processCommands();
-				boardGameController.clear();
+				boardGameController.processTileMove(tileModel);
 				break;
 			}
 		}
-		
-		
 	};
 	
 	@Override public void render() {

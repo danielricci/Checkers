@@ -36,10 +36,11 @@ import java.util.Map;
 import java.util.Observable;
 
 import game.controllers.factory.TileController;
+import game.models.GameModel;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
-import game.models.PlayerPiece;
 import game.models.TileModel;
+import game.pieces.PlayerPiece;
 
 @SuppressWarnings("serial")
 public class TileView extends BaseView {
@@ -77,7 +78,6 @@ public class TileView extends BaseView {
 		
 		TileModel tileModel = (TileModel)obs;
 		TileController tileController = getController(TileController.class);
-
 		
 		for(Operation operation : tileModel.getOperations()) {
 			switch(operation) {
@@ -92,6 +92,7 @@ public class TileView extends BaseView {
 				tileController.tileGuidesCommand(tileModel, Operation.HideGuides);
 				break;
 			case PlayerPieceMoveAccepted:
+				updateSelectedCommand(_defaultColor);
 				break;
 			case HideGuides:
 				updateSelectedCommand(_defaultColor);
@@ -100,10 +101,11 @@ public class TileView extends BaseView {
 				updateSelectedCommand(_guideColor);
 				break;
 			default:
+				refresh(tileModel);
 				break;
 			}
 		}
-		
+		/*
 		if(_image == null) {
 			PlayerModel player = tileModel.getPlayer();
 			if(player != null) {
@@ -113,9 +115,10 @@ public class TileView extends BaseView {
 					repaint();
 				}
 			}
-		}
+		}*/
 	}
 	
+
 	@Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
@@ -129,5 +132,29 @@ public class TileView extends BaseView {
 	
 	@Override public void render() {
 		setBackground(_defaultColor);
+
+		if(_image == null) {
+			TileController controller = getController(TileController.class);
+			_image = controller.getTileImage();
+			repaint();
+		}
+	}
+	
+	@Override public void refresh(GameModel gameModel) {
+		
+		TileModel model = (TileModel)gameModel;
+		PlayerModel player = model.getPlayer();
+
+		if(player == null) {
+			_image = null;
+		}
+		else {
+			PlayerPiece piece = player.getPiece(model);
+			if(piece != null) {
+				_image = piece.getImage();				
+			}
+		}
+		
+		repaint();
 	}
 }

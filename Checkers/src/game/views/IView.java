@@ -26,6 +26,9 @@ package game.views;
 
 import java.util.Observer;
 
+import game.models.GameModel;
+
 public interface IView extends Observer {
 	void render();
+	void refresh(GameModel model);
 }
