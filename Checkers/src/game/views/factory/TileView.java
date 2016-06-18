@@ -105,17 +105,6 @@ public class TileView extends BaseView {
 				break;
 			}
 		}
-		/*
-		if(_image == null) {
-			PlayerModel player = tileModel.getPlayer();
-			if(player != null) {
-				PlayerPiece piece = player.getPiece(tileModel);
-				if(piece != null) {
-					_image = piece.getImage();
-					repaint();
-				}
-			}
-		}*/
 	}
 	
 

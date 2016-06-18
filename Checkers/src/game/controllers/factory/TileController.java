@@ -108,14 +108,11 @@ public class TileController extends BaseController {
 	}
 	
 	public void tileGuidesCommand(TileModel tileModel, Operation operation) {
+		Selection selection = operation == Operation.ShowGuides ? Selection.GuideSelected : Selection.None;
 		for(TileModel neighbor : tileModel.getNeighbors()) {
-			neighbor.setSelected(
-				operation, 
-				operation == Operation.ShowGuides ? Selection.GuideSelected : Selection.None,
-				false
-			);
+			if(neighbor.isMovableTo()) {
+				neighbor.setSelected(operation, selection, false);				
+			}
 		}
   	}
-	
-	
 }
