@@ -65,9 +65,12 @@ public final class BoardGameView extends BaseView {
 				boardGameController.addTileModelOnSelected(tileModel);
 				break;
 			case PlayerPieceMoveCancel:
+				boardGameController.processTileCancel(tileModel);
 				break;
 			case PlayerPieceMoveAccepted:
 				boardGameController.processTileMove(tileModel);
+				PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+				controller.nextPlayer();
 				break;
 			}
 		}

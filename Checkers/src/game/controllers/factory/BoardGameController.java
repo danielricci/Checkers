@@ -75,4 +75,11 @@ public class BoardGameController extends BaseController {
 		_selectedTile.swapWith(tileModel);
 		_selectedTile = null;
 	}
+
+	public void processTileCancel(TileModel tileModel) {
+		for(TileModel model : _selectedTile.getNeighbors()) {
+			model.setSelected(Operation.HideGuides, Selection.None, true);
+		}	
+		_selectedTile = null;
+	}
 }

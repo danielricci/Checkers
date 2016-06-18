@@ -61,8 +61,12 @@ public class TileController extends BaseController {
 		}
 		
 		if(_tile.isSelected() || _tile.isGuideSelected() && _tile.getPlayer() != playerController.getCurrentPlayer()) {
-			System.out.println("Player is accepting a move to a valid location");
-			_tile.setSelected(Operation.PlayerPieceMoveAccepted, Selection.None, true);
+			if(!_tile.isMovableTo()) {
+				_tile.setSelected(Operation.PlayerPieceMoveCancel, Selection.None);
+			} 
+			else {
+				_tile.setSelected(Operation.PlayerPieceMoveAccepted, Selection.None, true);				
+			}				
 		}
 		else {
 			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {

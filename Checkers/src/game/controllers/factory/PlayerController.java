@@ -47,5 +47,10 @@ public class PlayerController extends BaseController {
 
 	public PlayerModel getPlayer(int index) {
 		return _players.elementAt(index);
-	}	
+	}
+	
+	public void nextPlayer() {
+		_players.add(_players.firstElement());
+		_players.removeElement(_players.firstElement());
+	}
 }
