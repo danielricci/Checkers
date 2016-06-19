@@ -16,8 +16,7 @@ A simple two player checkers game.  The rules are based on standard Internationa
 
 <h3>Winning and Draws</h3>
 - A player that cannot move anymore loses, either through no more pieces or if none of the pieces can move anymore
-- A game is a draw if no one can win
-- A single king vs another single king is considered a draw
+- The game will not yield to a draw scenario, you must restart the game manually
 
 <h3>Sources</h3>
 - https://en.wikipedia.org/wiki/Draughts
