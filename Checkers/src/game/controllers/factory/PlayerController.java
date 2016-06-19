@@ -24,6 +24,7 @@
 
 package game.controllers.factory;
 
+import java.util.Collections;
 import java.util.Observer;
 import java.util.Vector;
 
@@ -32,25 +33,41 @@ import game.models.PlayerModel;
 public class PlayerController extends BaseController {
 
 	private final Vector<PlayerModel> _players = new Vector<PlayerModel>();
-		
+	private boolean _playerSelected = false;	
+	
 	public void populatePlayers(Observer observer) {
 		PlayerModel player1 = new PlayerModel(observer);
 		PlayerModel player2 = new PlayerModel(observer);
-		
+
 		_players.add(player1);
 		_players.add(player2);
 	}
 	
 	public PlayerModel getCurrentPlayer() {
-		return _players.firstElement();
+		return _playerSelected ? _players.firstElement() : null;
 	}
 
 	public PlayerModel getPlayer(int index) {
-		return _players.elementAt(index);
+		for(PlayerModel player : _players) {
+			if(player != null && player.getIdentifier() == index) {
+				return player;
+			}
+		}
+		return null;
 	}
 	
 	public void nextPlayer() {
 		_players.add(_players.firstElement());
 		_players.removeElement(_players.firstElement());
+	}
+
+	public void setCurrentPlayer(PlayerModel player) {
+		if(_players.contains(player) && player != null) {
+			PlayerModel firstPlayer = _players.get(_players.indexOf(player));
+			_players.remove(player);
+			_players.add(firstPlayer);
+			Collections.reverse(_players);
+			_playerSelected = true;
+		}
 	}
 }

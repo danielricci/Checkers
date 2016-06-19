@@ -37,7 +37,9 @@ public final class PlayerModel extends GameModel {
 	
 	private final Team _team;
 	private final Map<TileModel, PlayerPiece> _pieces = new HashMap<TileModel, PlayerPiece>();
-
+	private static int IDENTIFIER = 0;
+	private int _identifier = 0;
+	
 	public enum Team {
 		PlayerX("/data/red_piece.png", Orientation.DOWN), 
 		PlayerY("/data/black_piece.png", Orientation.UP);
@@ -59,6 +61,7 @@ public final class PlayerModel extends GameModel {
 	public PlayerModel(Observer observer) {
 		super(observer);
 		_team = Team.values()[TEAM_INDEX++];
+		_identifier = IDENTIFIER++;
 	}
 
 	public void updatePlayerPiece(TileModel oldTile, TileModel newTile) {
@@ -87,5 +90,9 @@ public final class PlayerModel extends GameModel {
 	
 	protected Orientation getPlayerOrientation() {
 		return _team._orientation;
+	}
+
+	public int getIdentifier() {
+		return _identifier;
 	}
 }

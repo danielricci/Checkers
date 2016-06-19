@@ -54,6 +54,13 @@ public class TileController extends BaseController {
 		
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
 		
+		// Makes it so that when we start a new game the first selected
+		// player will start the game
+		if(playerController.getCurrentPlayer() == null) {
+			playerController.setCurrentPlayer(_tile.getPlayer());
+		}
+		
+		
 		// Check if the player tries to select the piece of our opponent
 		if(_tile.getPlayer() != null && _tile.getPlayer() != playerController.getCurrentPlayer()) {
 			System.out.println("Cannot select other players pieces!");	
