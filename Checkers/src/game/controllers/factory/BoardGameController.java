@@ -50,7 +50,7 @@ public class BoardGameController extends BaseController {
 		if(_selectedTile != null) {
 			_selectedTile.setSelected(Operation.PlayerPieceMoveCancel, Selection.None, true);			
 			if(_selectedTile != tile) {
-				_selectedTile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected);
+				tile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected);
 				_selectedTile = tile;
 			}
 			else {
