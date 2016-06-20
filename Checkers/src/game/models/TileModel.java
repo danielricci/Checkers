@@ -46,6 +46,7 @@ public class TileModel extends GameModel implements IPlayableTile {
 	public enum Selection {
 		GuideSelected,
 		MoveSelected,
+		CaptureSelected,
 		None;
 	}
 	
@@ -53,7 +54,7 @@ public class TileModel extends GameModel implements IPlayableTile {
 		TOP,
 		BOTTOM;
 	
-		public static NeighborPosition flip(NeighborPosition pos) {
+		protected static NeighborPosition flip(NeighborPosition pos) {
 			switch(pos) {
 			case BOTTOM:
 				return TOP;
@@ -62,6 +63,12 @@ public class TileModel extends GameModel implements IPlayableTile {
 			default:
 				return pos;
 			}
+		}
+		
+		protected static NeighborPosition convertOrientation(Orientation orientation) {
+			return orientation == Orientation.UP 
+				? NeighborPosition.TOP 
+				: NeighborPosition.BOTTOM;
 		}
 	};
 	
@@ -74,20 +81,7 @@ public class TileModel extends GameModel implements IPlayableTile {
 		doneUpdating();
 	}
 
-	public void setNeighbors(NeighborPosition neighborPosition, TileModel... neighborTiles) {	
-		
-		Set<TileModel> tiles = new HashSet<TileModel>();
-		for(TileModel neighborTile : neighborTiles) {
-			tiles.add(neighborTile);
-		}
-		
-		if(_neighbors.containsKey(neighborPosition)) {
-			_neighbors.get(neighborPosition).addAll(tiles);
-		} 
-		else {
-			_neighbors.put(neighborPosition, tiles);	
-		}
-	}
+
 
 	private Set<TileModel> getNeighbors(NeighborPosition position) {
 		
@@ -129,22 +123,22 @@ public class TileModel extends GameModel implements IPlayableTile {
 	}
 	
 	public void setSelected(Operation operation, Selection selection) { setSelected(operation, selection, false); }
-	
-	
-	public boolean isPlayerHuman() { return _player != null; }
-	public boolean isSelected() { return _selection == Selection.MoveSelected; }
-	public boolean isGuideSelected() { return _selection == Selection.GuideSelected; }
-	
-	public PlayerModel getPlayer() { return _player; }
-	
-    @Override public boolean isMovableTo() {
-    	return _player == null && _selection != Selection.MoveSelected;
-    }
-    
-	@Override public boolean isPlayable() {
-		return _player != null && _selection != Selection.MoveSelected;
+		
+	public void setNeighbors(NeighborPosition neighborPosition, TileModel... neighborTiles) {	
+		
+		Set<TileModel> tiles = new HashSet<TileModel>();
+		for(TileModel neighborTile : neighborTiles) {
+			tiles.add(neighborTile);
+		}
+		
+		if(_neighbors.containsKey(neighborPosition)) {
+			_neighbors.get(neighborPosition).addAll(tiles);
+		} 
+		else {
+			_neighbors.put(neighborPosition, tiles);	
+		}
 	}
-
+	
 	public void swapWith(TileModel tileModel) {
 		
 		// Update the player
@@ -155,8 +149,44 @@ public class TileModel extends GameModel implements IPlayableTile {
 		// Update the players entry
 		tileModel._player.updatePlayerPiece(this, tileModel);
 		
-		// Send Signals
+		// Send done signals
 		doneUpdating();
-		tileModel.doneUpdating(); // TODO - the default if no operations should be a refresh
+		tileModel.doneUpdating();
+	}
+	
+	public boolean isPlayerHuman() { return _player != null; }
+	public boolean isSelected() { return _selection == Selection.MoveSelected; }
+	public boolean isGuideSelected() { return _selection == Selection.GuideSelected; }
+	
+	public PlayerModel getPlayer() { return _player; }
+	
+
+	
+	@Override public boolean isMovableTo() {
+    	return _player == null && _selection != Selection.MoveSelected;
+    }
+    
+	@Override public boolean isPlayable() {
+		return _player != null && _selection != Selection.MoveSelected;
+	}
+
+	@Override public boolean isCapturable(Set<TileModel> outCapturableTiles) {
+
+		if(_player == null) {
+			return false;
+		}
+		
+		// Get the position of our capturers neighbors
+		NeighborPosition position = NeighborPosition.convertOrientation(_player.getPlayerOrientation());
+		position = NeighborPosition.flip(position);
+		
+		// Check if any of them have any pieces associated to them
+		for(TileModel neighbor : getNeighbors(position)) {
+			if(neighbor._player == null) {
+				outCapturableTiles.add(neighbor);
+			}
+		}
+		
+		return outCapturableTiles.size() > 0;
 	}
 }

@@ -57,8 +57,7 @@ public class GameModel extends Observable
 		notifyObservers(_operations);
 		_operations.clear();
 	}
-	
-	
+		
 	protected final void addOperation(Operation operation) { _operations.add(operation); }
 	protected final void clearOperations() { _operations.clear(); }
 	

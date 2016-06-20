@@ -24,6 +24,8 @@
 
 package game.models;
 
+import java.util.Set;
+
 public interface IPlayableTile {
 	
 	/**
@@ -39,4 +41,11 @@ public interface IPlayableTile {
 	 * @return boolean
 	 */
 	public boolean isMovableTo();
+	
+	/**
+	 * Indicates if the tile is a tile where a capture can occur
+	 * meaning it is in a capturable state
+	 * @return boolean
+	 */
+	public boolean isCapturable(Set<TileModel> outCapturableTiles);
 }

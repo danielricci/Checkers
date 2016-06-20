@@ -48,6 +48,7 @@ public class TileView extends BaseView {
 	private static final Color _defaultColor = Color.LIGHT_GRAY;
 	private static final Color _selectedColor = Color.DARK_GRAY;
 	private static final Color _guideColor = Color.BLUE;
+	private static final Color _captureColor = Color.GREEN;
 	
 	private Image _image;
 	
@@ -85,11 +86,11 @@ public class TileView extends BaseView {
 				break;
 			case PlayerPieceSelected:
 				updateSelectedCommand(_selectedColor);
-				tileController.tileGuidesCommand(tileModel, Operation.ShowGuides);
+				tileController.tileGuidesCommand(tileModel, Operation.ShowGuides); // TODO - shouldn't this be done by the BoardGameController
 				break;
 			case PlayerPieceMoveCancel:
 				updateSelectedCommand(_defaultColor);
-				tileController.tileGuidesCommand(tileModel, Operation.HideGuides);
+				tileController.tileGuidesCommand(tileModel, Operation.HideGuides); // TODO - shouldn't this be done by the BoardGameController
 				break;
 			case PlayerPieceMoveAccepted:
 				updateSelectedCommand(_defaultColor);
@@ -107,7 +108,6 @@ public class TileView extends BaseView {
 		}
 	}
 	
-
 	@Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
