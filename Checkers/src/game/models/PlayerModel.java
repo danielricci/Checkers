@@ -56,6 +56,10 @@ public final class PlayerModel extends GameModel {
 			this._teamName = teamName;
 			this._orientation = orientation;
 		}
+		
+		@Override public String toString() {
+			return "Orientation: \t" + _orientation.toString() + "\n " + "Name: \t" +  _teamName;
+		}
 	}
 	
 	public PlayerModel(Observer observer) {
@@ -94,5 +98,9 @@ public final class PlayerModel extends GameModel {
 
 	public int getIdentifier() {
 		return _identifier;
+	}
+	
+	@Override public String toString() {
+		return "Index: \t" + _identifier + "\n " + _team;	
 	}
 }

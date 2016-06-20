@@ -41,6 +41,9 @@ public class PlayerController extends BaseController {
 
 		_players.add(player1);
 		_players.add(player2);
+		
+		System.out.println(player1);
+		System.out.println(player2);
 	}
 	
 	public PlayerModel getCurrentPlayer() {
