@@ -40,6 +40,7 @@ import game.models.GameModel;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
+import game.models.TileModel.Selection;
 import game.pieces.PlayerPiece;
 
 @SuppressWarnings("serial")
@@ -99,7 +100,7 @@ public class TileView extends BaseView {
 				updateSelectedCommand(_defaultColor);
 				break;
 			case ShowGuides:
-				updateSelectedCommand(_guideColor);
+				updateSelectedCommand(tileModel.getSelectionType() == Selection.CaptureSelected ? _captureColor : _guideColor);
 				break;
 			default:
 				refresh(tileModel);

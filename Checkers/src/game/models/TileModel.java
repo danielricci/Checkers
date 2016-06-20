@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Observer;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import game.models.PlayerModel.Team.Orientation;
 
 /** 
@@ -107,11 +109,7 @@ public class TileModel extends GameModel implements IPlayableTile {
 				_neighbors.get(neighborPosition) : new HashSet<TileModel>();
 	}
 	
-	public Set<TileModel> getAllNeighbors() {
-		Set<TileModel> allNeighbours = getNeighbors(NeighborPosition.TOP);
-		allNeighbours.addAll(getNeighbors(NeighborPosition.BOTTOM));
-		return allNeighbours;
-	}
+
    
 	public void setSelected(Operation operation, Selection selection, boolean flushBuffer) {
 		if(flushBuffer) {
@@ -157,10 +155,15 @@ public class TileModel extends GameModel implements IPlayableTile {
 	public boolean isPlayerHuman() { return _player != null; }
 	public boolean isSelected() { return _selection == Selection.MoveSelected; }
 	public boolean isGuideSelected() { return _selection == Selection.GuideSelected; }
-	
+
+	public Selection getSelectionType() { return _selection; }
 	public PlayerModel getPlayer() { return _player; }
 	
-
+	public Set<TileModel> getAllNeighbors() {
+		Set<TileModel> allNeighbours = getNeighbors(NeighborPosition.TOP);
+		allNeighbours.addAll(getNeighbors(NeighborPosition.BOTTOM));
+		return allNeighbours;
+	}
 	
 	@Override public boolean isMovableTo() {
     	return _player == null && _selection != Selection.MoveSelected;
@@ -170,23 +173,24 @@ public class TileModel extends GameModel implements IPlayableTile {
 		return _player != null && _selection != Selection.MoveSelected;
 	}
 
-	@Override public boolean isCapturable(Set<TileModel> outCapturableTiles) {
-
+	public @NonNull Set<TileModel> getCapturableNeighbors() {
+		
+		Set<TileModel> capturablePositions = new HashSet<TileModel>();
+		
 		if(_player == null) {
-			return false;
+			return capturablePositions;
 		}
 		
 		// Get the position of our capturers neighbors
 		NeighborPosition position = NeighborPosition.convertOrientation(_player.getPlayerOrientation());
-		position = NeighborPosition.flip(position);
 		
 		// Check if any of them have any pieces associated to them
 		for(TileModel neighbor : getNeighbors(position)) {
 			if(neighbor._player == null) {
-				outCapturableTiles.add(neighbor);
+				capturablePositions.add(neighbor);
 			}
 		}
 		
-		return outCapturableTiles.size() > 0;
+		return capturablePositions;
 	}
 }
