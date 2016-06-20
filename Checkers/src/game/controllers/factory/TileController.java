@@ -101,7 +101,7 @@ public class TileController extends BaseController {
 		}
 
 		for(TileModel neighbor : neighbors) {
-			if(neighbor.isMovableTo()) {
+			if(neighbor.isMovableTo() || neighbor.getCapturableNeighbors().size() > 0) {
 				return true;
 			}
 		}

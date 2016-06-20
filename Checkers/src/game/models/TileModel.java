@@ -52,10 +52,24 @@ public class TileModel extends GameModel implements IPlayableTile {
 		None;
 	}
 	
-	public enum NeighborPosition { 
-		TOP,
-		BOTTOM;
+	public enum NeighborPosition {
+		
+		/**
+		 * Note: Make sure that agnostic values follow non-agnostic ones
+		 */
+		TOP				(1 << 0, false),
+		TOP_AGNOSTIC	(1 << 1, true),
+		BOTTOM			(1 << 2, false),
+		BOTTOM_AGNOSTIC	(1 << 3, true);
 	
+		private final int _value;
+		private final boolean _agnostic;
+		
+		private NeighborPosition(int value, boolean agnostic ) {
+			_value = value;
+			_agnostic = agnostic;
+		}
+		
 		protected static NeighborPosition flip(NeighborPosition pos) {
 			switch(pos) {
 			case BOTTOM:
@@ -67,10 +81,58 @@ public class TileModel extends GameModel implements IPlayableTile {
 			}
 		}
 		
+		/**
+		 * Normalizes a position by removing its agnostic value
+		 */
+		protected static NeighborPosition fromAgnostic(NeighborPosition position) {
+			switch(position) {
+			case BOTTOM_AGNOSTIC:
+			case TOP_AGNOSTIC:
+				int val = position._value >> 1;
+				for(NeighborPosition pos : NeighborPosition.values()) {
+					if(pos._value == val) {
+						return pos;
+					}
+				}			
+				break;
+			}
+			System.out.println("Error with fromAgnostic");
+			System.out.println(java.util.Arrays.toString((new Throwable()).getStackTrace()));
+			return position;
+		}
+		
+		protected boolean isAgnostic() {
+			return _agnostic;
+		}
+		
 		protected static NeighborPosition convertOrientation(Orientation orientation) {
 			return orientation == Orientation.UP 
 				? NeighborPosition.TOP 
 				: NeighborPosition.BOTTOM;
+		}
+		
+		protected static NeighborPosition toAgnostic(NeighborPosition position) {
+			switch(position) {
+			case BOTTOM:
+			case TOP:
+				int val = position._value << 1;
+				for(NeighborPosition pos : NeighborPosition.values()) {
+					if(pos._value == val) {
+						return pos;
+					}
+				}
+				break;
+			case BOTTOM_AGNOSTIC:
+				break;
+			case TOP_AGNOSTIC:
+				break;
+			default:
+				break;
+			}
+			
+			System.out.println("Error with toAgnostic");
+			System.out.println(java.util.Arrays.toString((new Throwable()).getStackTrace()));
+			return position;
 		}
 	};
 	
@@ -82,21 +144,21 @@ public class TileModel extends GameModel implements IPlayableTile {
 		}
 		doneUpdating();
 	}
-
-
-
+   
 	private Set<TileModel> getNeighbors(NeighborPosition position) {
 		
-		// Fetch the correct point of view of the player
-		if(_player.getPlayerOrientation() == Orientation.DOWN)
-		{
+		if(position.isAgnostic()) {
+			position = NeighborPosition.fromAgnostic(position);
+		}
+		else if(_player.getPlayerOrientation() == Orientation.DOWN) {
+			// This is done to normalize the neighbor concept
 			position = NeighborPosition.flip(position);
 		}
 		
 		return _neighbors.containsKey(position) ?
 				_neighbors.get(position) : new HashSet<TileModel>(); 
 	}
-
+	
 	public Set<TileModel> getNeighbors() {
 		
 		NeighborPosition neighborPosition = NeighborPosition.TOP;
@@ -183,6 +245,9 @@ public class TileModel extends GameModel implements IPlayableTile {
 		
 		// Get the position of our capturers neighbors
 		NeighborPosition position = NeighborPosition.convertOrientation(_player.getPlayerOrientation());
+		position = NeighborPosition.flip(position);
+		position = NeighborPosition.toAgnostic(position);
+		
 		
 		// Check if any of them have any pieces associated to them
 		for(TileModel neighbor : getNeighbors(position)) {
