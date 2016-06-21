@@ -138,4 +138,8 @@ public class TileController extends BaseController {
 			}
 		}
   	}
+
+	public int getTileID() {
+		return _tile.getIdentifier();
+	}
 }

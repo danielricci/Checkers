@@ -37,8 +37,7 @@ public final class PlayerModel extends GameModel {
 	
 	private final Team _team;
 	private final Map<TileModel, PlayerPiece> _pieces = new HashMap<TileModel, PlayerPiece>();
-	private static int IDENTIFIER = 0;
-	private int _identifier = 0;
+	private final int _identifier = TEAM_INDEX;
 	
 	public enum Team {
 		PlayerX("/data/red_piece.png", Orientation.DOWN), 
@@ -65,39 +64,31 @@ public final class PlayerModel extends GameModel {
 	public PlayerModel(Observer observer) {
 		super(observer);
 		_team = Team.values()[TEAM_INDEX++];
-		_identifier = IDENTIFIER++;
 	}
 
 	public void updatePlayerPiece(TileModel oldTile, TileModel newTile) {
-		_pieces.put(newTile, _pieces.get(oldTile));
+		
+		if(newTile != null) {
+			_pieces.put(newTile, _pieces.get(oldTile));	
+		}
 		_pieces.remove(oldTile);
 	}
 	
-	public void removeTilePiece(TileModel tile) {
-		_pieces.remove(tile);
-	}
-	
 	public void addTilePiece(TileModel tile) {
-		removeTilePiece(tile);
-		_pieces.put(tile, new PlayerPiece(_team));
+		_pieces.remove(tile);
+		_pieces.put(tile, new PlayerPiece(_team));	
 	}
-	
-	public void updateTilePiece(TileModel oldTile, TileModel newTile) {
-		PlayerPiece piece = _pieces.get(oldTile);
-		removeTilePiece(oldTile);
-		_pieces.put(newTile, piece);
-	}	
 	
 	public PlayerPiece getPiece(TileModel tile) {
 		return _pieces.getOrDefault(tile, null);
 	}
 	
-	protected Orientation getPlayerOrientation() {
-		return _team._orientation;
-	}
-
 	public int getIdentifier() {
 		return _identifier;
+	}
+	
+	protected Orientation getPlayerOrientation() {
+		return _team._orientation;
 	}
 	
 	@Override public String toString() {

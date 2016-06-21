@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import javax.swing.JLabel;
+
 import game.controllers.factory.TileController;
 import game.models.GameModel;
 import game.models.GameModel.Operation;
@@ -122,12 +124,12 @@ public class TileView extends BaseView {
 	
 	@Override public void render() {
 		setBackground(_defaultColor);
-
-		if(_image == null) {
-			TileController controller = getController(TileController.class);
-			_image = controller.getTileImage();
-			repaint();
-		}
+		
+		TileController controller = getController(TileController.class);
+		add(new JLabel(controller.getTileID() + ""));
+		_image = controller.getTileImage();
+	
+		repaint();
 	}
 	
 	@Override public void refresh(GameModel gameModel) {

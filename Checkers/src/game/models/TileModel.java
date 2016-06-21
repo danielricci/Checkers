@@ -43,6 +43,9 @@ public class TileModel extends GameModel implements IPlayableTile {
 	private PlayerModel _player;	
 	private Selection _selection;
 	
+	private static int IDENTIFIER = 0;
+	private final int _identifier = ++IDENTIFIER;
+	
 	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>();
 		
 	public enum Selection {
@@ -199,6 +202,13 @@ public class TileModel extends GameModel implements IPlayableTile {
 		}
 	}
 	
+	public void removeTile() {
+		_player.updatePlayerPiece(this,  null);
+		_player = null;
+		clearOperations();
+		doneUpdating();
+	}
+	
 	public void swapWith(TileModel tileModel) {
 		
 		// Update the player
@@ -218,6 +228,8 @@ public class TileModel extends GameModel implements IPlayableTile {
 	public boolean isSelected() { return _selection == Selection.MoveSelected; }
 	public boolean isGuideSelected() { return _selection == Selection.GuideSelected; }
 
+	public int getIdentifier() { return _identifier; }
+	
 	public Selection getSelectionType() { return _selection; }
 	public PlayerModel getPlayer() { return _player; }
 	
@@ -257,5 +269,9 @@ public class TileModel extends GameModel implements IPlayableTile {
 		}
 		
 		return capturablePositions;
+	}
+	
+	@Override public String toString() {
+		return Integer.toString(_identifier);
 	}
 }

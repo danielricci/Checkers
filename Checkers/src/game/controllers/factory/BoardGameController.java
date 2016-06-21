@@ -37,7 +37,7 @@ public class BoardGameController extends BaseController {
 	private final Vector<TileModel> _tiles = new Vector<TileModel>();		
 	private static final int _rows = 12;
 	
-	private TileModel _selectedTile;
+	private TileModel _previouslySelectedTile;
 	
   	public TileModel populateTile(PlayerModel player, Observer... observers) {		
 		TileModel model = new TileModel(player, observers);
@@ -47,18 +47,18 @@ public class BoardGameController extends BaseController {
 	}
 
   	public void addTileModelOnSelected(TileModel tile) {
-		if(_selectedTile != null) {
-			_selectedTile.setSelected(Operation.PlayerPieceMoveCancel, Selection.None, true);			
-			if(_selectedTile != tile) {
+		if(_previouslySelectedTile != null) {
+			_previouslySelectedTile.setSelected(Operation.PlayerPieceMoveCancel, Selection.None, true);			
+			if(_previouslySelectedTile != tile) {
 				tile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected);
-				_selectedTile = tile;
+				_previouslySelectedTile = tile;
 			}
 			else {
-				_selectedTile = null;				
+				_previouslySelectedTile = null;				
 			}
 		} 
 		else {
-			_selectedTile = tile;	
+			_previouslySelectedTile = tile;	
 		}
   	} 	
 
@@ -66,20 +66,33 @@ public class BoardGameController extends BaseController {
 		return _rows;
 	}
 
-	public void processTileMove(TileModel tileModel) {		
-		_selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
-		for(TileModel model : _selectedTile.getNeighbors()) {
+	public void processTileMove(TileModel selectedTile) {		
+		_previouslySelectedTile.setSelected(Operation.HideGuides, Selection.None, true);
+		
+		// We are performing a capture, so the capture tile is a neighbor
+		// of what we have selected, so we need to handle the move to state
+		if(!_previouslySelectedTile.getNeighbors().contains(selectedTile)) {
+			// TODO - this causes the hide guides to be effectively called twice
+			// all just to clear its tile operation, can we do this a bit cleaner?
+			selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
+		}
+		
+		for(TileModel model : _previouslySelectedTile.getNeighbors()) {
+			// TODO - instead of get all neighbors can we have a getAgnosticNeighbors(NeighborPosition) ?
+			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(selectedTile)) {
+				model.removeTile();
+			}
 			model.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 		
-		_selectedTile.swapWith(tileModel);
-		_selectedTile = null;
+		_previouslySelectedTile.swapWith(selectedTile);
+		_previouslySelectedTile = null;
 	}
 
 	public void processTileCancel(TileModel tileModel) {
-		for(TileModel model : _selectedTile.getNeighbors()) {
+		for(TileModel model : _previouslySelectedTile.getNeighbors()) {
 			model.setSelected(Operation.HideGuides, Selection.None, true);
 		}	
-		_selectedTile = null;
+		_previouslySelectedTile = null;
 	}
 }
