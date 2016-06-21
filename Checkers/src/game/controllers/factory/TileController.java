@@ -57,6 +57,14 @@ public class TileController extends BaseController {
 		// Makes it so that when we start a new game the first selected
 		// player will start the game
 		if(playerController.getCurrentPlayer() == null) {
+			PlayerModel player = _tile.getPlayer();
+			
+			// Prevents exceptions from being thrown when determining the 
+			// player at the start of the game when the tile selected has
+			// no player
+			if(player == null) {
+				return;
+			}
 			playerController.setCurrentPlayer(_tile.getPlayer());
 		}
 		
