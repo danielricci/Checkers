@@ -56,21 +56,11 @@ public class TileView extends BaseView {
 	private Image _image;
 	
     @Override protected void registerListeners() {
-    	
-    	addMouseListener(new MouseAdapter() {  		
-    		
-    		@Override public void mouseEntered(MouseEvent event) {
-    			//setBackground(_hoverColor);
-			}
-    		
-    		@Override public void mouseExited(MouseEvent event) {
-    			//setBackground(_defaultColor);
-    		}
-
-    		@Override public void mouseClicked(MouseEvent event) {
+    	addMouseListener(new MouseAdapter() {  		    		
+    		@Override public void mouseReleased(MouseEvent e) {
     			TileController controller = getController(TileController.class);
     			controller.event_mouseClicked();
-			}
+    		}
 		});
     }
     
