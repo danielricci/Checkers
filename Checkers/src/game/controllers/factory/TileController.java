@@ -109,7 +109,7 @@ public class TileController extends BaseController {
 		}
 
 		for(TileModel neighbor : neighbors) {
-			if(neighbor.isMovableTo() || neighbor.getCapturableNeighbors().size() > 0) {
+			if(neighbor.isMovableTo() || neighbor.getCapturableNeighbors(_tile).size() > 0) {
 				return true;
 			}
 		}
@@ -127,16 +127,13 @@ public class TileController extends BaseController {
 	}
 	
 	public void tileGuidesCommand(TileModel tileModel, Operation operation) {
-		// todo - capturable scenarios should only occur
-		// on a linear trajectory only!!!!
-		
 		Selection selection = operation == Operation.ShowGuides ? Selection.GuideSelected : Selection.None;
 		for(TileModel neighbor : tileModel.getNeighbors()) {
 			if(neighbor.isMovableTo()) {
 				neighbor.setSelected(operation, selection);				
 			}
 			else if(neighbor.getPlayer() != tileModel.getPlayer()){
-				Set<TileModel> capturablePositions = neighbor.getCapturableNeighbors();
+				Set<TileModel> capturablePositions = neighbor.getCapturableNeighbors(_tile);
 				if(capturablePositions.size() > 0) {
 					for(TileModel capturablePosition : capturablePositions) {
 						capturablePosition.setSelected(operation, selection);

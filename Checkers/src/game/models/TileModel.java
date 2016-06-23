@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Observer;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -38,15 +40,15 @@ import game.models.PlayerModel.Team.Orientation;
  * A tile model represents a tile that knows about what it currently holds on itself
  * and its current state; it also is aware of its immediate neighbors
  */
-public class TileModel extends GameModel implements IPlayableTile {
+public class TileModel extends GameModel implements IPlayableTile, Comparable<TileModel> {
     
 	private PlayerModel _player;	
 	private Selection _selection;
 	
 	private static int IDENTIFIER = 0;
 	private final int _identifier = ++IDENTIFIER;
-	
-	private final Map<NeighborPosition, Set<TileModel>> _neighbors = new HashMap<NeighborPosition, Set<TileModel>>();
+    
+	private final Map<NeighborPosition, SortedSet<TileModel>> _neighbors = new HashMap<NeighborPosition, SortedSet<TileModel>>();
 		
 	public enum Selection {
 		GuideSelected,
@@ -188,8 +190,8 @@ public class TileModel extends GameModel implements IPlayableTile {
 	public void setSelected(Operation operation, Selection selection) { setSelected(operation, selection, false); }
 		
 	public void setNeighbors(NeighborPosition neighborPosition, TileModel... neighborTiles) {	
-		
-		Set<TileModel> tiles = new HashSet<TileModel>();
+
+		SortedSet<TileModel> tiles = new TreeSet<TileModel>();
 		for(TileModel neighborTile : neighborTiles) {
 			tiles.add(neighborTile);
 		}
@@ -247,7 +249,7 @@ public class TileModel extends GameModel implements IPlayableTile {
 		return _player != null && _selection != Selection.MoveSelected;
 	}
 
-	public @NonNull Set<TileModel> getCapturableNeighbors() {
+	public @NonNull Set<TileModel> getCapturableNeighbors(TileModel capturer) {
 		
 		Set<TileModel> capturablePositions = new HashSet<TileModel>();
 		
@@ -273,5 +275,13 @@ public class TileModel extends GameModel implements IPlayableTile {
 	
 	@Override public String toString() {
 		return Integer.toString(_identifier);
+	}
+
+	@Override public int compareTo(TileModel tileModel) {
+		if(tileModel == this || _identifier == tileModel._identifier) {
+			return 0;
+		}
+		
+		return _identifier < tileModel._identifier ? -1 : 1;
 	}
 }
