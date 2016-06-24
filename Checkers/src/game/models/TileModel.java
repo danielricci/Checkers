@@ -150,7 +150,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		doneUpdating();
 	}
    
-	private Set<TileModel> getNeighbors(NeighborPosition position) {
+	private SortedSet<TileModel> getNeighbors(NeighborPosition position) {
 		
 		if(position.isAgnostic()) {
 			position = NeighborPosition.fromAgnostic(position);
@@ -161,10 +161,10 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		}
 		
 		return _neighbors.containsKey(position) ?
-				_neighbors.get(position) : new HashSet<TileModel>(); 
+				_neighbors.get(position) : new TreeSet<TileModel>(); 
 	}
 	
-	public Set<TileModel> getNeighbors() {
+	public SortedSet<TileModel> getNeighbors() {
 		
 		NeighborPosition neighborPosition = NeighborPosition.TOP;
 		if(_player.getPlayerOrientation() == Orientation.DOWN)
@@ -173,7 +173,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		}
 		
 		return _neighbors.containsKey(neighborPosition) ?
-				_neighbors.get(neighborPosition) : new HashSet<TileModel>();
+				_neighbors.get(neighborPosition) : new TreeSet<TileModel>();
 	}
 	
 
@@ -252,22 +252,26 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	public @NonNull Set<TileModel> getCapturableNeighbors(TileModel capturer) {
 		
 		Set<TileModel> capturablePositions = new HashSet<TileModel>();
-		
 		if(_player == null) {
 			return capturablePositions;
 		}
+				
+		// TODO - put this into its own function as a helper?
+		int index = -1;
+		SortedSet<TileModel> capturerNeighbors = capturer.getNeighbors();
+		if(capturerNeighbors.contains(this)) {
+			index = capturerNeighbors.headSet(this).size();
+		}
+		assert index != -1 : "Error, cannot find the proper neighbor";
 		
 		// Get the position of our capturers neighbors
 		NeighborPosition position = NeighborPosition.convertOrientation(_player.getPlayerOrientation());
 		position = NeighborPosition.flip(position);
 		position = NeighborPosition.toAgnostic(position);
 		
-		
-		// Check if any of them have any pieces associated to them
-		for(TileModel neighbor : getNeighbors(position)) {
-			if(neighbor._player == null) {
-				capturablePositions.add(neighbor);
-			}
+		TileModel diagonalTile = (TileModel)getNeighbors(position).toArray()[index];
+		if(diagonalTile.isMovableTo()) {
+			capturablePositions.add(diagonalTile);
 		}
 		
 		return capturablePositions;
