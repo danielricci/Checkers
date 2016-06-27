@@ -24,7 +24,9 @@
 
 package game.models;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
@@ -32,6 +34,7 @@ import java.util.Queue;
 public class GameModel extends Observable 
 {
 	private final Queue<Operation> _operations = new LinkedList<Operation>();
+	private final Map<Operation, Object> _debugger = new HashMap<Operation, Object>();
 	
 	public enum Operation {
 		PlayerPieceSelected,
@@ -40,13 +43,26 @@ public class GameModel extends Observable
 		PlayerPieceMoveAccepted, 
 		ShowGuides,
 		HideGuides,
-		Refresh
+		Refresh,
+		Debugger_PlayerTiles
 	}
 	
 	protected GameModel(Observer... observer) {
 		for(Observer obs : observer) {
 			addObserver(obs);
 		}
+	}
+	
+	public void Debugger_PlayerTiles(boolean selected) {
+		_debugger.put(Operation.Debugger_PlayerTiles,  selected);
+		addOperation(Operation.Debugger_PlayerTiles);
+		doneUpdating();
+	}
+	public Object getDebuggerValue(Operation operation) {
+		return _debugger.get(operation);
+	}
+	public final Queue<Operation> getOperations() {
+		return _operations;
 	}
 	
 	protected final void doneUpdating() {
@@ -56,12 +72,7 @@ public class GameModel extends Observable
 		}
 		notifyObservers(_operations);
 		_operations.clear();
-	}
-		
+	}	
 	protected final void addOperation(Operation operation) { _operations.add(operation); }
 	protected final void clearOperations() { _operations.clear(); }
-	
-	public final Queue<Operation> getOperations() {
-		return _operations;
-	}
 }

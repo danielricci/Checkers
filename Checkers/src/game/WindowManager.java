@@ -28,10 +28,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -39,6 +42,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import game.controllers.factory.BoardGameController;
+import game.controllers.factory.ControllerFactory;
+import game.controllers.factory.ControllerFactory.ControllerType;
 import game.views.IView;
 import game.views.factory.ViewFactory;
 import game.views.factory.ViewFactory.ViewType;
@@ -92,11 +98,12 @@ public final class WindowManager extends JFrame {
 	private void SetWindowedInstanceMenu() {
 		JMenuBar menu = new JMenuBar();
 		PopulateFileMenu(menu);
+		PopulateDebuggerMenu(menu);
 		setJMenuBar(menu);
 	}
 	
 	private void PopulateFileMenu(JMenuBar menu) {
-
+		
 		// Create the file menu 
 		JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic('F');
@@ -133,5 +140,23 @@ public final class WindowManager extends JFrame {
        
         fileMenu.add(fileMenuExit);
         menu.add(fileMenu);
-	}	
+	}
+	
+	private void PopulateDebuggerMenu(JMenuBar menu) {
+		JMenu debuggerMenu = new JMenu("Debugger");			       
+        JCheckBoxMenuItem debuggerMenuToggleTileOwner = new JCheckBoxMenuItem("Debugger");
+        debuggerMenuToggleTileOwner.addItemListener(new ItemListener() {
+			@Override public void itemStateChanged(ItemEvent e) {
+				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
+				boolean option = item.isSelected();
+				BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+				boardGameController.debugger_playerTileVisibility(option);;
+			}
+		});
+        	debuggerMenu.add(debuggerMenuToggleTileOwner);
+        
+        debuggerMenuToggleTileOwner.setAccelerator(KeyStroke.getKeyStroke('P', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        debuggerMenu.add(debuggerMenu);	
+        menu.add(debuggerMenu);	
+	}
 }

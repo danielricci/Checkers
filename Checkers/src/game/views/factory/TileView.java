@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Observable;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import game.controllers.factory.TileController;
 import game.models.GameModel;
@@ -52,8 +53,25 @@ public class TileView extends BaseView {
 	private static final Color _selectedColor = Color.DARK_GRAY;
 	private static final Color _guideColor = Color.BLUE;
 	private static final Color _captureColor = Color.GREEN;
+		
+	private JPanel _debuggerPlayerColor;
 	
 	private Image _image;
+	
+	private void debugger_playerColorVisibility(TileModel tile, Operation operation) {
+		
+		TileController controller = getController(TileController.class);
+		Color color = controller.getTileColor();
+
+		boolean isSelected = (boolean)tile.getDebuggerValue(operation);
+		if(!isSelected || color == null) {
+			color = _defaultColor;
+		}
+		
+		updateSelectedCommand(color);
+		repaint();
+
+	}
 	
     @Override protected void registerListeners() {
     	addMouseListener(new MouseAdapter() {  		    		
@@ -94,6 +112,10 @@ public class TileView extends BaseView {
 			case ShowGuides:
 				updateSelectedCommand(tileModel.getSelectionType() == Selection.CaptureSelected ? _captureColor : _guideColor);
 				break;
+			case Debugger_PlayerTiles: {
+				debugger_playerColorVisibility(tileModel, operation);
+				break;
+			}
 			default:
 				refresh(tileModel);
 				break;

@@ -24,6 +24,7 @@
 
 package game.models;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observer;
@@ -40,20 +41,22 @@ public final class PlayerModel extends GameModel {
 	private final int _identifier = TEAM_INDEX;
 	
 	public enum Team {
-		PlayerX("/data/red_piece.png", Orientation.DOWN), 
-		PlayerY("/data/black_piece.png", Orientation.UP);
+		PlayerX("/data/red_piece.png", Orientation.DOWN, Color.RED), 
+		PlayerY("/data/black_piece.png", Orientation.UP, Color.BLACK);
 		
 		public enum Orientation { 
 			UP, 
 			DOWN
 		}
 		
+		public final Color _teamColor;
 		public final String _teamName;	
 		public final Orientation _orientation;
 		
-		private Team(String teamName, Orientation orientation) {
-			this._teamName = teamName;
-			this._orientation = orientation;
+		private Team(String teamName, Orientation orientation, Color teamColor) {
+			_teamName = teamName;
+			_orientation = orientation;
+			_teamColor = teamColor;
 		}
 		
 		@Override public String toString() {
@@ -86,6 +89,8 @@ public final class PlayerModel extends GameModel {
 	public int getIdentifier() {
 		return _identifier;
 	}
+	
+	public Color getTeamColor() { return _team._teamColor; }
 	
 	protected Orientation getPlayerOrientation() {
 		return _team._orientation;

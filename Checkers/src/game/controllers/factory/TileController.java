@@ -24,6 +24,7 @@
 
 package game.controllers.factory;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.util.Set;
 
@@ -146,5 +147,17 @@ public class TileController extends BaseController {
 
 	public int getTileID() {
 		return _tile.getIdentifier();
+	}
+
+	public Color getTileColor() {
+		Color color = null;
+		if(_tile != null) {
+			PlayerModel player = _tile.getPlayer();
+			if(player != null) {
+				color = player.getTeamColor();
+			}
+		}
+		
+		return color;
 	}
 }

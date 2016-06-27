@@ -46,6 +46,12 @@ public class BoardGameController extends BaseController {
 		return model;
 	}
 
+  	public void debugger_playerTileVisibility(boolean selected) {
+  		for(TileModel tile : _tiles) {
+  			tile.Debugger_PlayerTiles(selected);
+  		}
+  	}
+  	
   	public void addTileModelOnSelected(TileModel tile) {
 		if(_previouslySelectedTile != null) {
 			_previouslySelectedTile.setSelected(Operation.PlayerPieceMoveCancel, Selection.None, true);			
