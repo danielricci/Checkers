@@ -82,7 +82,7 @@ public class BoardGameController extends BaseController {
 			// all just to clear its tile operation, can we do this a bit cleaner?
 			selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
 		}
-		
+
 		for(TileModel model : _previouslySelectedTile.getNeighbors()) {
 			// TODO - instead of get all neighbors can we have a getAgnosticNeighbors(NeighborPosition) ?
 			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(selectedTile)) {

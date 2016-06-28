@@ -160,8 +160,11 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 			position = NeighborPosition.flip(position);
 		}
 		
-		return _neighbors.containsKey(position) ?
-				_neighbors.get(position) : new TreeSet<TileModel>(); 
+		SortedSet<TileModel> tiles = new TreeSet<TileModel>();
+		if(_neighbors.containsKey(position)) {
+			tiles.addAll(_neighbors.get(position));
+		}
+		return tiles;
 	}
 	
 	public SortedSet<TileModel> getNeighbors() {
@@ -235,9 +238,18 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	public Selection getSelectionType() { return _selection; }
 	public PlayerModel getPlayer() { return _player; }
 	
-	public Set<TileModel> getAllNeighbors() {
-		Set<TileModel> allNeighbours = getNeighbors(NeighborPosition.TOP);
+	/**
+	 * @deprecated Don't use this, ever, use getNeighbors instead
+	 * 
+	 *  Issues
+	 *  https://github.com/danielricci/Checkers/issues/40
+	 */
+	@Deprecated	public SortedSet<TileModel> getAllNeighbors() {
+		SortedSet<TileModel> allNeighbours = new TreeSet<TileModel>(
+			getNeighbors(NeighborPosition.TOP)
+		);
 		allNeighbours.addAll(getNeighbors(NeighborPosition.BOTTOM));
+		
 		return allNeighbours;
 	}
 	

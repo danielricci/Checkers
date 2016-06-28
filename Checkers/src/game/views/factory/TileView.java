@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Observable;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import game.controllers.factory.TileController;
 import game.models.GameModel;
@@ -46,7 +45,6 @@ import game.models.TileModel;
 import game.models.TileModel.Selection;
 import game.pieces.PlayerPiece;
 
-@SuppressWarnings("serial")
 public class TileView extends BaseView {
 
 	private static final Color _defaultColor = Color.LIGHT_GRAY;
@@ -54,8 +52,6 @@ public class TileView extends BaseView {
 	private static final Color _guideColor = Color.BLUE;
 	private static final Color _captureColor = Color.GREEN;
 		
-	private JPanel _debuggerPlayerColor;
-	
 	private Image _image;
 	
 	private void debugger_playerColorVisibility(TileModel tile, Operation operation) {
@@ -70,7 +66,6 @@ public class TileView extends BaseView {
 		
 		updateSelectedCommand(color);
 		repaint();
-
 	}
 	
     @Override protected void registerListeners() {
