@@ -57,7 +57,7 @@ public final class WindowManager extends JFrame {
 	private WindowManager() {
 		super("Checkers");
 		
-		Dimension _windowSize = new Dimension(800, 800);
+		Dimension _windowSize = new Dimension(1080, 1080);
 		setSize(_windowSize);
 		setResizable(false);
 				

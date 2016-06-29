@@ -28,11 +28,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 
 import javax.swing.JLabel;
@@ -121,12 +118,7 @@ public class TileView extends BaseView {
 	@Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
-        
-        Map<RenderingHints.Key, Object> hints = new HashMap<RenderingHints.Key, Object>();
-        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.addRenderingHints(hints);
-        g2d.drawImage(_image, 16, 16, 32, 32, null, null);       
+        g2d.drawImage(_image, 12, 12, 64, 64, null, null);       
 	}
 	
 	@Override public void render() {
