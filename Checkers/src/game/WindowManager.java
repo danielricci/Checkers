@@ -57,12 +57,13 @@ public final class WindowManager extends JFrame {
 	private WindowManager() {
 		super("Checkers");
 		
-		Dimension _windowSize = new Dimension(1080, 1080);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		Dimension _windowSize = new Dimension(screenSize.height, screenSize.height);
 		setSize(_windowSize);
 		setResizable(false);
 				
 		// Set the location of the window to be in middle of the screen
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(
 			screenSize.width / 2 - _windowSize.width / 2,
 			screenSize.height / 2 - _windowSize.height / 2
