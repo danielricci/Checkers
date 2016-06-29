@@ -32,6 +32,8 @@ import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
@@ -102,8 +104,7 @@ public final class BoardGameView extends BaseView {
 			}
 			
 			Vector<TileModel> tilesRow = new Vector<TileModel>();
-
-			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < 12; ++col) {
+			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < boardDimensions; ++col) {
 				
 				// determine if we should render our game tile for this cell
 				boolean shouldRender = (col + colorOffset) % 2 == 0 ? false : true;
@@ -114,12 +115,20 @@ public final class BoardGameView extends BaseView {
 				// Set our grid-bad-constraints and create the game tile
 				gbc.gridx = col;
 				gbc.gridy = row;
-
+				
+				// Create the tile and populate its contents
 				TileView view = new TileView();
 				TileModel tile = boardGameController.populateTile(player, view, this);
+				
+				// Set the border of the tile
+				Border border = new MatteBorder(1, 1, 1, 1, Color.BLACK);
+				view.setBorder(border);
+				
+				// Set the controller of the tile and render it
 				view.setController(new TileController(tile));
 				view.render();
 				
+				// Add our components to our view
 				_gamePanel.add(view, gbc);			
 				tilesRow.add(tile);
 			}
