@@ -44,7 +44,8 @@ public class GameModel extends Observable
 		ShowGuides,
 		HideGuides,
 		Refresh,
-		Debugger_PlayerTiles
+		Debugger_PlayerTiles,
+		Debugger_TileCoordinates
 	}
 	
 	protected GameModel(Observer... observer) {
@@ -53,13 +54,13 @@ public class GameModel extends Observable
 		}
 	}
 	
-	public void Debugger_PlayerTiles(boolean selected) {
-		_debugger.put(Operation.Debugger_PlayerTiles,  selected);
-		addOperation(Operation.Debugger_PlayerTiles);
+	public final void addCachedData(Operation operation, Object value) {
+		_debugger.put(operation, value);
+		addOperation(operation);
 		doneUpdating();
 	}
-	public Object getDebuggerValue(Operation operation) {
-		return _debugger.get(operation);
+	public final <T extends Object> T getCachedData(Operation operation) { 
+		return (T) _debugger.get(operation); 
 	}
 	public final Queue<Operation> getOperations() {
 		return _operations;

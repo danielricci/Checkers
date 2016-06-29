@@ -29,8 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observer;
 
+import game.content.PlayerPiece;
 import game.models.PlayerModel.Team.Orientation;
-import game.pieces.PlayerPiece;
 
 public final class PlayerModel extends GameModel {
 
@@ -38,7 +38,7 @@ public final class PlayerModel extends GameModel {
 	
 	private final Team _team;
 	private final Map<TileModel, PlayerPiece> _pieces = new HashMap<TileModel, PlayerPiece>();
-	private final int _identifier = TEAM_INDEX;
+	private final int _tileCoordinate = TEAM_INDEX;
 	
 	public enum Team {
 		PlayerX("/data/red_piece.png", Orientation.DOWN, Color.RED), 
@@ -86,8 +86,8 @@ public final class PlayerModel extends GameModel {
 		return _pieces.getOrDefault(tile, null);
 	}
 	
-	public int getIdentifier() {
-		return _identifier;
+	public int getTileCoordinate() {
+		return _tileCoordinate;
 	}
 	
 	public Color getTeamColor() { return _team._teamColor; }
@@ -97,6 +97,6 @@ public final class PlayerModel extends GameModel {
 	}
 	
 	@Override public String toString() {
-		return "Index: \t" + _identifier + "\n " + _team;	
+		return "Index: \t" + _tileCoordinate + "\n " + _team;	
 	}
 }

@@ -52,7 +52,7 @@ public class PlayerController extends BaseController {
 
 	public PlayerModel getPlayer(int index) {
 		for(PlayerModel player : _players) {
-			if(player != null && player.getIdentifier() == index) {
+			if(player != null && player.getTileCoordinate() == index) {
 				return player;
 			}
 		}

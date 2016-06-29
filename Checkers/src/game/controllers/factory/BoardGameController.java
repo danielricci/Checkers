@@ -46,9 +46,9 @@ public class BoardGameController extends BaseController {
 		return model;
 	}
 
-  	public void debugger_playerTileVisibility(boolean selected) {
+  	public void debuggerSelection(Operation operation, boolean selected) {
   		for(TileModel tile : _tiles) {
-  			tile.Debugger_PlayerTiles(selected);
+  			tile.addCachedData(operation, selected);
   		}
   	}
   	

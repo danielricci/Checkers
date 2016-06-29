@@ -45,6 +45,7 @@ import javax.swing.KeyStroke;
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
 import game.controllers.factory.ControllerFactory.ControllerType;
+import game.models.GameModel.Operation;
 import game.views.IView;
 import game.views.factory.ViewFactory;
 import game.views.factory.ViewFactory.ViewType;
@@ -145,18 +146,30 @@ public final class WindowManager extends JFrame {
 	
 	private void PopulateDebuggerMenu(JMenuBar menu) {
 		JMenu debuggerMenu = new JMenu("Debugger");			       
-        JCheckBoxMenuItem debuggerMenuToggleTileOwner = new JCheckBoxMenuItem("Debugger");
-        debuggerMenuToggleTileOwner.addItemListener(new ItemListener() {
+		
+		// Tile Owners Functionality 
+        JCheckBoxMenuItem tileOwners = new JCheckBoxMenuItem("Tile Owners");
+        tileOwners.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
 				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
-				boolean option = item.isSelected();
 				BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
-				boardGameController.debugger_playerTileVisibility(option);;
+				boardGameController.debuggerSelection(Operation.Debugger_PlayerTiles, item.isSelected());
 			}
 		});
-        	debuggerMenu.add(debuggerMenuToggleTileOwner);
+
+        // Tile Coordinates Functionality
+        JCheckBoxMenuItem tileCoordinates = new JCheckBoxMenuItem("Tile Coordinates");
+        tileCoordinates.addItemListener(new ItemListener() {
+  			@Override public void itemStateChanged(ItemEvent e) {
+  				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
+  				BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+  				boardGameController.debuggerSelection(Operation.Debugger_TileCoordinates, item.isSelected());
+  			}
+  		});
         
-        debuggerMenuToggleTileOwner.setAccelerator(KeyStroke.getKeyStroke('P', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        // Add options to the menu
+        debuggerMenu.add(tileOwners);
+        debuggerMenu.add(tileCoordinates);
         debuggerMenu.add(debuggerMenu);	
         menu.add(debuggerMenu);	
 	}

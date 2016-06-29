@@ -34,13 +34,13 @@ import java.util.Observable;
 
 import javax.swing.JLabel;
 
+import game.content.PlayerPiece;
 import game.controllers.factory.TileController;
 import game.models.GameModel;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
 import game.models.TileModel.Selection;
-import game.pieces.PlayerPiece;
 
 public class TileView extends BaseView {
 
@@ -49,6 +49,8 @@ public class TileView extends BaseView {
 	private static final Color _guideColor = Color.BLUE;
 	private static final Color _captureColor = Color.GREEN;
 		
+	private final JLabel _tileCoordinatesLabel = new JLabel();
+	
 	private Image _image;
 	
 	private void debugger_playerColorVisibility(TileModel tile, Operation operation) {
@@ -56,7 +58,7 @@ public class TileView extends BaseView {
 		TileController controller = getController(TileController.class);
 		Color color = controller.getTileColor();
 
-		boolean isSelected = (boolean)tile.getDebuggerValue(operation);
+		boolean isSelected = (boolean)tile.getCachedData(operation);
 		if(!isSelected || color == null) {
 			color = _defaultColor;
 		}
@@ -65,6 +67,14 @@ public class TileView extends BaseView {
 		repaint();
 	}
 	
+	private void tileCoordinateVisibility(boolean isVisible) { 
+		_tileCoordinatesLabel.setVisible(isVisible);
+    }
+	
+	private void updateSelectedCommand(Color color) {
+    	setBackground(color);
+    }
+	
     @Override protected void registerListeners() {
     	addMouseListener(new MouseAdapter() {  		    		
     		@Override public void mouseReleased(MouseEvent e) {
@@ -72,10 +82,6 @@ public class TileView extends BaseView {
     			controller.event_mouseClicked();
     		}
 		});
-    }
-    
-    private void updateSelectedCommand(Color color) {
-    	setBackground(color);
     }
     
 	@Override public void update(Observable obs, Object arg) {
@@ -108,6 +114,11 @@ public class TileView extends BaseView {
 				debugger_playerColorVisibility(tileModel, operation);
 				break;
 			}
+			case Debugger_TileCoordinates: {
+				boolean visibility = tileModel.getCachedData(operation);
+				tileCoordinateVisibility(visibility);
+				break;
+			}
 			default:
 				refresh(tileModel);
 				break;
@@ -122,12 +133,16 @@ public class TileView extends BaseView {
 	}
 	
 	@Override public void render() {
-		setBackground(_defaultColor);
-		
+		// Set the coordinates of this tile
 		TileController controller = getController(TileController.class);
-		add(new JLabel(controller.getTileID() + ""));
+		_tileCoordinatesLabel.setText(Integer.toString(controller.getTileCoordinate()));
+		_tileCoordinatesLabel.setVisible(false);
+		add(_tileCoordinatesLabel);
+		
+		// Set the image of this tile
 		_image = controller.getTileImage();
-	
+		
+		setBackground(_defaultColor);
 		repaint();
 	}
 	

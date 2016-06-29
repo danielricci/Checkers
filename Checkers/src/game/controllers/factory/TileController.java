@@ -145,7 +145,7 @@ public class TileController extends BaseController {
 		}
   	}
 
-	public int getTileID() {
+	public int getTileCoordinate() {
 		return _tile.getIdentifier();
 	}
 
