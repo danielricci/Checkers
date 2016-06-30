@@ -118,7 +118,7 @@ public final class BoardGameView extends BaseView {
 				
 				// Create the tile and populate its contents
 				TileView view = new TileView();
-				TileModel tile = boardGameController.populateTile(player, view, this);
+				TileModel tile = boardGameController.populateTile(player, row == 0 || row == boardDimensions - 1, view, this);
 				
 				// Set the border of the tile
 				Border border = new MatteBorder(1, 1, 1, 1, Color.BLACK);

@@ -48,6 +48,7 @@ public class TileView extends BaseView {
 	private static final Color _selectedColor = Color.DARK_GRAY;
 	private static final Color _guideColor = Color.BLUE;
 	private static final Color _captureColor = Color.GREEN;
+	private static final Color _kingTileColor = Color.CYAN;
 		
 	private final JLabel _tileCoordinatesLabel = new JLabel();
 	
@@ -71,6 +72,20 @@ public class TileView extends BaseView {
 		_tileCoordinatesLabel.setVisible(isVisible);
     }
 	
+	private void kingTileVisibility(TileModel tile, Operation operation) {
+		
+		Color color = _defaultColor;
+		if(tile.isKingTile()) {
+			boolean isVisible = (boolean)tile.getCachedData(operation);
+			if(isVisible) {
+				color = _kingTileColor;
+			}			
+		}
+		
+		updateSelectedCommand(color);
+		repaint();		
+	}
+
 	private void updateSelectedCommand(Color color) {
     	setBackground(color);
     }
@@ -117,6 +132,10 @@ public class TileView extends BaseView {
 			case Debugger_TileCoordinates: {
 				boolean visibility = tileModel.getCachedData(operation);
 				tileCoordinateVisibility(visibility);
+				break;
+			}
+			case Debugger_KingTiles: {
+				kingTileVisibility(tileModel, operation);
 				break;
 			}
 			default:

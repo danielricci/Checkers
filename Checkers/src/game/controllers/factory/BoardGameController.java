@@ -39,8 +39,8 @@ public class BoardGameController extends BaseController {
 	
 	private TileModel _previouslySelectedTile;
 	
-  	public TileModel populateTile(PlayerModel player, Observer... observers) {		
-		TileModel model = new TileModel(player, observers);
+  	public TileModel populateTile(PlayerModel player, boolean isKingTile, Observer... observers) {		
+		TileModel model = new TileModel(player, isKingTile, observers);
 		_tiles.addElement(model);
 		
 		return model;

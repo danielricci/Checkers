@@ -167,9 +167,20 @@ public final class WindowManager extends JFrame {
   			}
   		});
         
+        // King Tiles Functionality
+        JCheckBoxMenuItem kingTiles = new JCheckBoxMenuItem("King Tiles");
+        kingTiles.addItemListener(new ItemListener() {
+  			@Override public void itemStateChanged(ItemEvent e) {
+  				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
+  				BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+  				boardGameController.debuggerSelection(Operation.Debugger_KingTiles, item.isSelected());
+  			}
+  		});
+        
         // Add options to the menu
         debuggerMenu.add(tileOwners);
         debuggerMenu.add(tileCoordinates);
+        debuggerMenu.add(kingTiles);
         debuggerMenu.add(debuggerMenu);	
         menu.add(debuggerMenu);	
 	}

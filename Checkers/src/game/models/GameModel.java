@@ -45,7 +45,8 @@ public class GameModel extends Observable
 		HideGuides,
 		Refresh,
 		Debugger_PlayerTiles,
-		Debugger_TileCoordinates
+		Debugger_TileCoordinates, 
+		Debugger_KingTiles
 	}
 	
 	protected GameModel(Observer... observer) {

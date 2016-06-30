@@ -32,8 +32,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import game.models.PlayerModel.Team.Orientation;
 
 /** 
@@ -45,11 +43,13 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	private PlayerModel _player;	
 	private Selection _selection;
 	
-	private static int IDENTIFIER = 0;
+	private static int IDENTIFIER;
 	private final int _identifier = ++IDENTIFIER;
     
 	private final Map<NeighborPosition, SortedSet<TileModel>> _neighbors = new HashMap<NeighborPosition, SortedSet<TileModel>>();
 		
+	private final boolean _isKingTile;
+	
 	public enum Selection {
 		GuideSelected,
 		MoveSelected,
@@ -141,9 +141,12 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		}
 	};
 	
-    public TileModel(PlayerModel player, Observer... observers) {
+    public TileModel(PlayerModel player, boolean isKingTile, Observer... observers) {
 		super(observers);
+		
 		_player = player;
+		_isKingTile = isKingTile;
+		System.out.println("Tile " + _identifier + " is " + (isKingTile ? " a king " : "not a king"));
 		if(player != null) {
 			player.addTilePiece(this);
 		}
@@ -178,9 +181,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		return _neighbors.containsKey(neighborPosition) ?
 				_neighbors.get(neighborPosition) : new TreeSet<TileModel>();
 	}
-	
-
-   
+	 
 	public void setSelected(Operation operation, Selection selection, boolean flushBuffer) {
 		if(flushBuffer) {
 			clearOperations();
@@ -261,7 +262,11 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		return _player != null && _selection != Selection.MoveSelected;
 	}
 
-	public @NonNull Set<TileModel> getCapturableNeighbors(TileModel capturer) {
+	public boolean isKingTile() {
+		return _isKingTile;
+	}
+	
+	public Set<TileModel> getCapturableNeighbors(TileModel capturer) {
 		
 		Set<TileModel> capturablePositions = new HashSet<TileModel>();
 		if(_player == null) {
@@ -274,6 +279,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		if(capturerNeighbors.contains(this)) {
 			index = capturerNeighbors.headSet(this).size();
 		}
+		
 		assert index != -1 : "Error, cannot find the proper neighbor";
 		
 		// Get the position of our capturers neighbors
@@ -300,4 +306,5 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		
 		return _identifier < tileModel._identifier ? -1 : 1;
 	}
+
 }
