@@ -25,12 +25,11 @@
 package game.models;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Observer;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import game.models.PlayerModel.Team.Orientation;
 
@@ -46,7 +45,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	private static int IDENTIFIER;
 	private final int _identifier = ++IDENTIFIER;
     
-	private final Map<NeighborPosition, SortedSet<TileModel>> _neighbors = new HashMap<NeighborPosition, SortedSet<TileModel>>();
+	private final Map<NeighborPosition, SortedSet<TileModel>> _neighbors = new HashMap<>();
 		
 	private final boolean _isKingTile;
 	
@@ -163,14 +162,14 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 			position = NeighborPosition.flip(position);
 		}
 		
-		SortedSet<TileModel> tiles = new TreeSet<TileModel>();
+		SortedSet<TileModel> tiles = new TreeSet<>();
 		if(_neighbors.containsKey(position)) {
 			tiles.addAll(_neighbors.get(position));
 		}
 		return tiles;
 	}
 	public SortedSet<TileModel> getBackwardNeighbors() {
-		SortedSet<TileModel> neighbors = new TreeSet<TileModel>();
+		SortedSet<TileModel> neighbors = new TreeSet<>();
 		NeighborPosition neighborPosition = NeighborPosition.BOTTOM;
 		
 		if(_player.getPlayerOrientation() == Orientation.DOWN)
@@ -187,7 +186,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	
 	public SortedSet<TileModel> getForwardNeighbors() {
 		
-		SortedSet<TileModel> neighbors = new TreeSet<TileModel>();
+		SortedSet<TileModel> neighbors = new TreeSet<>();
 		
 		NeighborPosition neighborPosition = NeighborPosition.TOP;
 		if(_player.getPlayerOrientation() == Orientation.DOWN)
@@ -215,7 +214,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		
 	public void setNeighbors(NeighborPosition neighborPosition, TileModel... neighborTiles) {	
 
-		SortedSet<TileModel> tiles = new TreeSet<TileModel>();
+		SortedSet<TileModel> tiles = new TreeSet<>();
 		for(TileModel neighborTile : neighborTiles) {
 			tiles.add(neighborTile);
 		}
@@ -266,7 +265,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	 *  https://github.com/danielricci/Checkers/issues/40
 	 */
 	@Deprecated	public SortedSet<TileModel> getAllNeighbors() {
-		SortedSet<TileModel> allNeighbours = new TreeSet<TileModel>(
+		SortedSet<TileModel> allNeighbours = new TreeSet<>(
 			getNeighbors(NeighborPosition.TOP)
 		);
 		allNeighbours.addAll(getNeighbors(NeighborPosition.BOTTOM));
@@ -286,40 +285,42 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		return _isKingTile;
 	}
 	
-	public Set<TileModel> getCapturableNeighbors(TileModel capturer) {
+	public Vector<TileModel> getCapturableNeighbors(TileModel capturer) {
 		
-		Set<TileModel> capturablePositions = new HashSet<TileModel>();
+		Vector<TileModel> capturablePositions = new Vector<>();
 		if(_player == null) {
 			return capturablePositions;
 		}
-				
-		// TODO - make this into a function and make it less ugly
+		
+		NeighborPosition position = NeighborPosition.convertOrientation(_player.getPlayerOrientation());
+		populateCapturableTiles(capturablePositions, capturer.getForwardNeighbors(), position);
+		if(capturer.getPlayer().getPlayerPiece(capturer).getIsKinged()) {
+			populateCapturableTiles(capturablePositions, capturer.getBackwardNeighbors(), NeighborPosition.flip(position));
+		}
+		
+		return capturablePositions;
+	}
+	
+	private void populateCapturableTiles(Vector<TileModel> outCapturablePositions, SortedSet<TileModel> capturerNeighbors, NeighborPosition position) {
 		int index = -1;
-		SortedSet<TileModel> capturerNeighbors = capturer.getForwardNeighbors();
 		if(capturerNeighbors.contains(this)) {
 			index = capturerNeighbors.headSet(this).size();
-		}
+		} 
 		
 		if(index == -1) {
-			return capturablePositions;
+			return;
 		}
-		assert index != -1 : "Error, cannot find the proper neighbor";
-		
-		// Get the position of our capturers neighbors
-		NeighborPosition position = NeighborPosition.convertOrientation(_player.getPlayerOrientation());
+			
 		position = NeighborPosition.flip(position);
 		position = NeighborPosition.toAgnostic(position);
 		
-		// TODO - make this into a function and make it less ugly
 		Object[] neighborObjects = getNeighbors(position).toArray();
 		if(neighborObjects.length > 0) {
 			TileModel diagonalTile = (TileModel) neighborObjects[index];
 			if(diagonalTile.isMovableTo()) {
-				capturablePositions.add(diagonalTile);
+				outCapturablePositions.add(diagonalTile);
 			}	
 		}
-		
-		return capturablePositions;
 	}
 	
 	@Override public String toString() {

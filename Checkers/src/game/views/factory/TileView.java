@@ -54,7 +54,6 @@ public class TileView extends BaseView {
 	private Image _image;
 	
 	private void debugger_playerColorVisibility(TileModel tile, Operation operation) {
-		
 		TileController controller = getController(TileController.class);
 		Color color = controller.getTileColor();
 

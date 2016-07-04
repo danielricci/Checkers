@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.Vector;
 
 import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
@@ -35,6 +36,7 @@ import game.models.PlayerModel;
 import game.models.TileModel;
 import game.models.TileModel.NeighborPosition;
 import game.models.TileModel.Selection;
+
 
 public class TileController extends BaseController {
 	
@@ -145,7 +147,7 @@ public class TileController extends BaseController {
 				neighbor.setSelected(operation, selection);				
 			}
 			else if(neighbor.getPlayer() != tileModel.getPlayer()){
-				Set<TileModel> capturablePositions = neighbor.getCapturableNeighbors(_tile);
+				Vector<TileModel> capturablePositions = neighbor.getCapturableNeighbors(_tile);
 				if(capturablePositions.size() > 0) {
 					for(TileModel capturablePosition : capturablePositions) {
 						capturablePosition.setSelected(operation, selection);

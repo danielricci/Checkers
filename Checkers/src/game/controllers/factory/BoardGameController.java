@@ -34,7 +34,7 @@ import game.models.TileModel.Selection;
 
 public class BoardGameController extends BaseController {
 
-	private final Vector<TileModel> _tiles = new Vector<TileModel>();		
+	private final Vector<TileModel> _tiles = new Vector<>();		
 	private static final int _rows = 12;
 	
 	private TileModel _previouslySelectedTile;
@@ -80,11 +80,12 @@ public class BoardGameController extends BaseController {
 		if(!_previouslySelectedTile.getForwardNeighbors().contains(selectedTile)) {
 			// TODO - this causes the hide guides to be effectively called twice
 			// all just to clear its tile operation, can we do this a bit cleaner?
+			// TODO - would it be more efficient to just go through all the tiles and
+			// perform a hide guides operation?
 			selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 
-		for(TileModel model : _previouslySelectedTile.getForwardNeighbors()) {
-			// TODO - instead of get all neighbors can we have a getAgnosticNeighbors(NeighborPosition) ?
+		for(TileModel model : _previouslySelectedTile.getAllNeighbors()) {
 			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(selectedTile)) {
 				model.removeTile();
 			}
