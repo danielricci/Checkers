@@ -169,8 +169,25 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		}
 		return tiles;
 	}
+	public SortedSet<TileModel> getBackwardNeighbors() {
+		SortedSet<TileModel> neighbors = new TreeSet<TileModel>();
+		NeighborPosition neighborPosition = NeighborPosition.BOTTOM;
+		
+		if(_player.getPlayerOrientation() == Orientation.DOWN)
+		{
+			neighborPosition = NeighborPosition.flip(neighborPosition);
+		}
+		
+		if(_neighbors.containsKey(neighborPosition)) {
+			neighbors.addAll(_neighbors.get(neighborPosition));
+		}
+		
+		return neighbors;				
+	}
 	
-	public SortedSet<TileModel> getNeighbors() {
+	public SortedSet<TileModel> getForwardNeighbors() {
+		
+		SortedSet<TileModel> neighbors = new TreeSet<TileModel>();
 		
 		NeighborPosition neighborPosition = NeighborPosition.TOP;
 		if(_player.getPlayerOrientation() == Orientation.DOWN)
@@ -178,8 +195,11 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 			neighborPosition = NeighborPosition.flip(neighborPosition);
 		}
 		
-		return _neighbors.containsKey(neighborPosition) ?
-				_neighbors.get(neighborPosition) : new TreeSet<TileModel>();
+		if(_neighbors.containsKey(neighborPosition)) {
+			neighbors.addAll(_neighbors.get(neighborPosition));
+		}
+		
+		return neighbors;		
 	}
 	 
 	public void setSelected(Operation operation, Selection selection, boolean flushBuffer) {
@@ -261,8 +281,8 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	@Override public boolean isPlayable() {
 		return _player != null && _selection != Selection.MoveSelected;
 	}
-
-	public boolean isKingTile() {
+	
+	public boolean getIsKingTile() {
 		return _isKingTile;
 	}
 	
@@ -273,13 +293,16 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 			return capturablePositions;
 		}
 				
-		// TODO - put this into its own function as a helper?
+		// TODO - make this into a function and make it less ugly
 		int index = -1;
-		SortedSet<TileModel> capturerNeighbors = capturer.getNeighbors();
+		SortedSet<TileModel> capturerNeighbors = capturer.getForwardNeighbors();
 		if(capturerNeighbors.contains(this)) {
 			index = capturerNeighbors.headSet(this).size();
 		}
 		
+		if(index == -1) {
+			return capturablePositions;
+		}
 		assert index != -1 : "Error, cannot find the proper neighbor";
 		
 		// Get the position of our capturers neighbors
@@ -287,9 +310,13 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		position = NeighborPosition.flip(position);
 		position = NeighborPosition.toAgnostic(position);
 		
-		TileModel diagonalTile = (TileModel)getNeighbors(position).toArray()[index];
-		if(diagonalTile.isMovableTo()) {
-			capturablePositions.add(diagonalTile);
+		// TODO - make this into a function and make it less ugly
+		Object[] neighborObjects = getNeighbors(position).toArray();
+		if(neighborObjects.length > 0) {
+			TileModel diagonalTile = (TileModel) neighborObjects[index];
+			if(diagonalTile.isMovableTo()) {
+				capturablePositions.add(diagonalTile);
+			}	
 		}
 		
 		return capturablePositions;
@@ -306,5 +333,4 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		
 		return _identifier < tileModel._identifier ? -1 : 1;
 	}
-
 }

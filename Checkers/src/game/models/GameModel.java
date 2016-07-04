@@ -69,7 +69,7 @@ public class GameModel extends Observable
 	
 	protected final void doneUpdating() {
 		setChanged();
-		if(_operations.size() == 0) {
+		if(_operations.isEmpty()) {
 			_operations.add(Operation.Refresh);
 		}
 		notifyObservers(_operations);

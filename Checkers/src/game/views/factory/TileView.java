@@ -34,7 +34,6 @@ import java.util.Observable;
 
 import javax.swing.JLabel;
 
-import game.content.PlayerPiece;
 import game.controllers.factory.TileController;
 import game.models.GameModel;
 import game.models.GameModel.Operation;
@@ -75,7 +74,7 @@ public class TileView extends BaseView {
 	private void kingTileVisibility(TileModel tile, Operation operation) {
 		
 		Color color = _defaultColor;
-		if(tile.isKingTile()) {
+		if(tile.getIsKingTile()) {
 			boolean isVisible = (boolean)tile.getCachedData(operation);
 			if(isVisible) {
 				color = _kingTileColor;
@@ -125,20 +124,18 @@ public class TileView extends BaseView {
 			case ShowGuides:
 				updateSelectedCommand(tileModel.getSelectionType() == Selection.CaptureSelected ? _captureColor : _guideColor);
 				break;
-			case Debugger_PlayerTiles: {
+			case Debugger_PlayerTiles:
 				debugger_playerColorVisibility(tileModel, operation);
 				break;
-			}
 			case Debugger_TileCoordinates: {
 				boolean visibility = tileModel.getCachedData(operation);
 				tileCoordinateVisibility(visibility);
 				break;
 			}
-			case Debugger_KingTiles: {
+			case Debugger_KingTiles:
 				kingTileVisibility(tileModel, operation);
 				break;
-			}
-			default:
+			case Refresh:
 				refresh(tileModel);
 				break;
 			}
@@ -174,10 +171,7 @@ public class TileView extends BaseView {
 			_image = null;
 		}
 		else {
-			PlayerPiece piece = player.getPiece(model);
-			if(piece != null) {
-				_image = piece.getImage();				
-			}
+			_image = player.getPieceData(model);
 		}
 		
 		repaint();

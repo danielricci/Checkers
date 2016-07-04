@@ -25,6 +25,7 @@
 package game.models;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observer;
@@ -41,8 +42,10 @@ public final class PlayerModel extends GameModel {
 	private final int _tileCoordinate = TEAM_INDEX;
 	
 	public enum Team {
-		PlayerX("/data/red_piece.png", Orientation.DOWN, Color.RED), 
-		PlayerY("/data/black_piece.png", Orientation.UP, Color.BLACK);
+		PlayerX("/data/red_piece", ".png", Orientation.DOWN, Color.RED), 
+		PlayerY("/data/black_piece", ".png", Orientation.UP, Color.BLACK);
+	
+		private static String _kingPiecePath = "_king"; 
 		
 		public enum Orientation { 
 			UP, 
@@ -50,17 +53,19 @@ public final class PlayerModel extends GameModel {
 		}
 		
 		public final Color _teamColor;
-		public final String _teamName;	
+		public final String _piecePath;	
+		public final String _piecePathExtension;
 		public final Orientation _orientation;
 		
-		private Team(String teamName, Orientation orientation, Color teamColor) {
-			_teamName = teamName;
+		private Team(String piecePath, String piecePathExtension, Orientation orientation, Color teamColor) {
+			_piecePath = piecePath;
+			_piecePathExtension = piecePathExtension;
 			_orientation = orientation;
 			_teamColor = teamColor;
 		}
 		
 		@Override public String toString() {
-			return "Orientation: \t" + _orientation.toString() + "\n " + "Name: \t" +  _teamName;
+			return "Orientation: \t" + _orientation.toString() + "\n " + "Name: \t" +  _piecePath;
 		}
 	}
 	
@@ -70,20 +75,29 @@ public final class PlayerModel extends GameModel {
 	}
 
 	public void updatePlayerPiece(TileModel oldTile, TileModel newTile) {
-		
 		if(newTile != null) {
 			_pieces.put(newTile, _pieces.get(oldTile));	
+			if(newTile.getIsKingTile()) {
+				_pieces.get(newTile).setAsKinged();
+			}
 		}
 		_pieces.remove(oldTile);
 	}
 	
 	public void addTilePiece(TileModel tile) {
 		_pieces.remove(tile);
-		_pieces.put(tile, new PlayerPiece(_team));	
+		_pieces.put(tile, new PlayerPiece(this));	
 	}
 	
-	public PlayerPiece getPiece(TileModel tile) {
-		return _pieces.getOrDefault(tile, null);
+	public Image getPieceData(TileModel tile) {
+		
+		Image data = null;
+		PlayerPiece piece = _pieces.getOrDefault(tile,  null);
+		if(piece != null) {
+			data = piece.getImage(tile);
+		}
+		
+		return data;
 	}
 	
 	public int getTileCoordinate() {
@@ -98,5 +112,23 @@ public final class PlayerModel extends GameModel {
 	
 	@Override public String toString() {
 		return "Index: \t" + _tileCoordinate + "\n " + _team;	
+	}
+
+	public Orientation getOrientation() {
+		return _team._orientation;
+	}
+
+	// TODO - this should be in the game piece itself
+	public String getTeamPath(TileModel tile) {
+		String kingPath = "";
+				
+		if(_pieces.get(tile).getIsKinged() || (tile.getIsKingTile() && tile.getBackwardNeighbors().size() > 0)) {
+			kingPath = Team._kingPiecePath; 
+		}
+		return String.format("%s%s%s", _team._piecePath, kingPath, _team._piecePathExtension);
+	}
+
+	public PlayerPiece getPlayerPiece(TileModel tileModel) {
+		return _pieces.get(tileModel);
 	}
 }

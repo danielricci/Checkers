@@ -27,6 +27,7 @@ package game.controllers.factory;
 import java.awt.Color;
 import java.awt.Image;
 import java.util.Set;
+import java.util.SortedSet;
 
 import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
@@ -104,7 +105,11 @@ public class TileController extends BaseController {
 	
 	private boolean hasMoves() {
 		
-		Set<TileModel> neighbors = _tile.getNeighbors();
+		Set<TileModel> neighbors = _tile.getForwardNeighbors();
+		if(_tile.getIsKingTile()) {
+			neighbors.addAll(_tile.getBackwardNeighbors());
+		}
+		
 		if(neighbors.size() == 0) {
 			return false;
 		}
@@ -121,7 +126,7 @@ public class TileController extends BaseController {
 	public Image getTileImage() {
 		PlayerModel model = _tile.getPlayer();
 		if(model != null) {
-			return model.getPiece(_tile).getImage();
+			return model.getPieceData(_tile);
 		}
 		
 		return null;
@@ -129,7 +134,13 @@ public class TileController extends BaseController {
 	
 	public void tileGuidesCommand(TileModel tileModel, Operation operation) {
 		Selection selection = operation == Operation.ShowGuides ? Selection.GuideSelected : Selection.None;
-		for(TileModel neighbor : tileModel.getNeighbors()) {
+		
+		SortedSet<TileModel> tileNeighbors = tileModel.getForwardNeighbors();
+		if(tileModel.getIsKingTile() || tileModel.getPlayer().getPlayerPiece(tileModel).getIsKinged()) {
+			tileNeighbors.addAll(tileModel.getBackwardNeighbors());
+		}
+		
+		for(TileModel neighbor : tileNeighbors) {
 			if(neighbor.isMovableTo()) {
 				neighbor.setSelected(operation, selection);				
 			}

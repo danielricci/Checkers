@@ -29,21 +29,32 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import game.models.PlayerModel;
-import game.models.PlayerModel.Team;
 import game.models.PlayerModel.Team.Orientation;
+import game.models.TileModel;
 
 public class PlayerPiece {
 	
-	private PlayerModel.Team _team;
-	private Image _image;
-	
-	public PlayerPiece(PlayerModel.Team team) {
-		_team = team;
-		_image = new ImageIcon(getClass().getResource(_team._teamName)).getImage();
+	private PlayerModel _playerModel;
+	private boolean _isKinged;
+		
+	public PlayerPiece(PlayerModel playerModel) {
+		_playerModel = playerModel;
 	}	
 	
-	public Image getImage() { return _image; }
+	// TODO - this shouldn't be here; the playermodel should only be used for the image
 	public Orientation getPlayerOrientation() {
-		return _team._orientation;
+		return _playerModel.getOrientation();
+	}
+
+	public Image getImage(TileModel tile) {
+		return new ImageIcon(getClass().getResource(_playerModel.getTeamPath(tile))).getImage();
+	}
+	
+	public void setAsKinged() { 
+		_isKinged = true;
+	}
+	
+	public boolean getIsKinged() {
+		return _isKinged;
 	}
 }

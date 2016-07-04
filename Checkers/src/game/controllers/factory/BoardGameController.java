@@ -77,13 +77,13 @@ public class BoardGameController extends BaseController {
 		
 		// We are performing a capture, so the capture tile is a neighbor
 		// of what we have selected, so we need to handle the move to state
-		if(!_previouslySelectedTile.getNeighbors().contains(selectedTile)) {
+		if(!_previouslySelectedTile.getForwardNeighbors().contains(selectedTile)) {
 			// TODO - this causes the hide guides to be effectively called twice
 			// all just to clear its tile operation, can we do this a bit cleaner?
 			selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 
-		for(TileModel model : _previouslySelectedTile.getNeighbors()) {
+		for(TileModel model : _previouslySelectedTile.getForwardNeighbors()) {
 			// TODO - instead of get all neighbors can we have a getAgnosticNeighbors(NeighborPosition) ?
 			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(selectedTile)) {
 				model.removeTile();
@@ -96,7 +96,7 @@ public class BoardGameController extends BaseController {
 	}
 
 	public void processTileCancel(TileModel tileModel) {
-		for(TileModel model : _previouslySelectedTile.getNeighbors()) {
+		for(TileModel model : _previouslySelectedTile.getForwardNeighbors()) {
 			model.setSelected(Operation.HideGuides, Selection.None, true);
 		}	
 		_previouslySelectedTile = null;
