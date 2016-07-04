@@ -9,9 +9,10 @@ The following are the gameplay elements introduced in this checkers game
 
 <h5>Moves</h5>
 - All moves are made diagonally
-- A player can only move at most one piece per turn
+- A player can only move at most one piece per turn unless performing a multi-capture
 - Only kings can move backwards
 - Flying kings is not allowed in this game
+- When you crown a piece, it can perform a backwards capture if already in a multi-capture state
 
 <h5>Captures</h5>
 - A piece can be captured if there is a free space opposite of its capturer
