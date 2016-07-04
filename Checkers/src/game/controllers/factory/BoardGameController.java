@@ -73,33 +73,43 @@ public class BoardGameController extends BaseController {
 		return _rows;
 	}
 
-	public void processTileMove(TileModel selectedTile) {		
+	public void processTileMove(TileModel captureTile) {		
 		_previouslySelectedTile.setSelected(Operation.HideGuides, Selection.None, true);
 		
 		// We are performing a capture, so the capture tile is a neighbor
 		// of what we have selected, so we need to handle the move to state
-		if(!_previouslySelectedTile.getForwardNeighbors().contains(selectedTile)) {
+		if(!_previouslySelectedTile.getForwardNeighbors().contains(captureTile)) {
 			// TODO - this causes the hide guides to be effectively called twice
 			// all just to clear its tile operation, can we do this a bit cleaner?
 			// TODO - would it be more efficient to just go through all the tiles and
 			// perform a hide guides operation?
-			selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
+			captureTile.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 
+		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
 		boolean tileCaptured = false;
+		
 		for(TileModel model : _previouslySelectedTile.getAllNeighbors()) {
-			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(selectedTile)) {
+			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(captureTile)) {
 				tileCaptured = true;
-				model.removeTile();
+				
+				// If the tile we are capturing is a king then the player performing
+				// the capture assumes control over the piece
+				if(model.getPlayer().getPlayerPiece(model).getIsKinged()) {
+					model.updateOwner(controller.getCurrentPlayer());
+				}
+				else {
+					model.removeTile();					
+				}
 			}
 			model.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 		
-		_previouslySelectedTile.swapWith(selectedTile);
+		_previouslySelectedTile.swapWith(captureTile);
 		_previouslySelectedTile = null;
 		
-		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
-		if(!(tileCaptured && controller.canContinuePlaying(selectedTile))) {
+		
+		if(!(tileCaptured && controller.canContinuePlaying(captureTile))) {
 			controller.moveFinished();
 		}
 		else{

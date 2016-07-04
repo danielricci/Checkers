@@ -230,8 +230,18 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	public void removeTile() {
 		_player.updatePlayerPiece(this,  null);
 		_player = null;
+
 		clearOperations();
 		doneUpdating();
+	}
+	
+	/**
+	 * Updates the player of this 
+	 * @param player
+	 */
+	public void updateOwner(PlayerModel player) {
+		player.addTilePiece(this, _player.getPlayerPiece(this));
+		_player.updatePlayerPiece(this, null);
 	}
 	
 	public void swapWith(TileModel tileModel) {
@@ -259,7 +269,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	public PlayerModel getPlayer() { return _player; }
 	
 	/**
-	 * @deprecated Don't use this, ever, use getNeighbors instead
+	 * @deprecated use {@link #getNeighbors(NeighborPosition)} or one of the varients instead
 	 * 
 	 *  Issues
 	 *  https://github.com/danielricci/Checkers/issues/40

@@ -46,6 +46,10 @@ public class PlayerPiece {
 		return _playerModel.getOrientation();
 	}
 
+	public void updatePlayerPiece(PlayerModel playerModel) {
+		_playerModel = playerModel;
+	}
+	
 	public Image getImage(TileModel tile) {
 		return new ImageIcon(getClass().getResource(_playerModel.getTeamPath(tile))).getImage();
 	}
