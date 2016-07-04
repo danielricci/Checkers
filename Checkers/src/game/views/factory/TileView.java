@@ -126,11 +126,9 @@ public class TileView extends BaseView {
 			case Debugger_PlayerTiles:
 				debugger_playerColorVisibility(tileModel, operation);
 				break;
-			case Debugger_TileCoordinates: {
-				boolean visibility = tileModel.getCachedData(operation);
-				tileCoordinateVisibility(visibility);
+			case Debugger_TileCoordinates:
+				tileCoordinateVisibility(tileModel.getCachedData(operation));
 				break;
-			}
 			case Debugger_KingTiles:
 				kingTileVisibility(tileModel, operation);
 				break;

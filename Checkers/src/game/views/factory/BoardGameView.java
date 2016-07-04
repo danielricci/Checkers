@@ -71,8 +71,6 @@ public final class BoardGameView extends BaseView {
 				break;
 			case PlayerPieceMoveAccepted:
 				boardGameController.processTileMove(tileModel);
-				PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
-				controller.nextPlayer();
 				break;
 			}
 		}
@@ -93,7 +91,7 @@ public final class BoardGameView extends BaseView {
 
 		int boardDimensions = boardGameController.getBoardDimensions();
 		
-		Vector<Vector<TileModel>> tiles = new Vector<Vector<TileModel>>();
+		Vector<Vector<TileModel>> tiles = new Vector<>();
 		for (int row = 0; row < boardDimensions; ++row) {
 			
 			PlayerModel player = null;
@@ -103,7 +101,7 @@ public final class BoardGameView extends BaseView {
 				player = playerController.getPlayer(1);
 			}
 			
-			Vector<TileModel> tilesRow = new Vector<TileModel>();
+			Vector<TileModel> tilesRow = new Vector<>();
 			for (int col = 0, colorOffset = (row % 2 == 0 ? 0 : 1); col < boardDimensions; ++col) {
 				
 				// determine if we should render our game tile for this cell

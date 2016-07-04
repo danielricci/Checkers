@@ -285,6 +285,13 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		return _isKingTile;
 	}
 	
+	/**
+	 * Gets all of the tiles surrounding this tile that are considered "capturable" w.r.t the passed in capturer
+	 * 
+	 * @param capturer The tile performing the capture on this tile
+	 * 
+	 * @return List of tiles that are capturable by the capturer
+	 */
 	public Vector<TileModel> getCapturableNeighbors(TileModel capturer) {
 		
 		Vector<TileModel> capturablePositions = new Vector<>();

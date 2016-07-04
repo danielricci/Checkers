@@ -26,13 +26,15 @@ package game.controllers.factory;
 
 import java.util.Collections;
 import java.util.Observer;
+import java.util.SortedSet;
 import java.util.Vector;
 
 import game.models.PlayerModel;
+import game.models.TileModel;
 
 public class PlayerController extends BaseController {
 
-	private final Vector<PlayerModel> _players = new Vector<PlayerModel>();
+	private final Vector<PlayerModel> _players = new Vector<>();
 	private boolean _playerSelected = false;	
 	
 	public void populatePlayers(Observer observer) {
@@ -59,11 +61,31 @@ public class PlayerController extends BaseController {
 		return null;
 	}
 	
-	public void nextPlayer() {
+	public boolean canContinuePlaying(TileModel tile) {
+		if(tile.getPlayer() == null || tile.getPlayer() != getCurrentPlayer()) {
+			System.out.println("Warning: Trying to call canContinuePlaying on a tile that is either null or doesnt belong to the player currently playing!");
+			return false;
+		}
+		
+		SortedSet<TileModel> neighbors = tile.getForwardNeighbors();
+		if(tile.getPlayer().getPlayerPiece(tile).getIsKinged()) {
+			neighbors.addAll(tile.getBackwardNeighbors());
+		}
+		
+		for(TileModel neighbor : neighbors) {
+			if(neighbor.getCapturableNeighbors(tile).size() > 0) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public void moveFinished() {
 		_players.add(_players.firstElement());
 		_players.removeElement(_players.firstElement());
 	}
-
+	
 	public void setCurrentPlayer(PlayerModel player) {
 		if(_players.contains(player) && player != null) {
 			PlayerModel firstPlayer = _players.get(_players.indexOf(player));

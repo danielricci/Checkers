@@ -27,6 +27,7 @@ package game.controllers.factory;
 import java.util.Observer;
 import java.util.Vector;
 
+import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
@@ -85,8 +86,10 @@ public class BoardGameController extends BaseController {
 			selectedTile.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 
+		boolean tileCaptured = false;
 		for(TileModel model : _previouslySelectedTile.getAllNeighbors()) {
 			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(selectedTile)) {
+				tileCaptured = true;
 				model.removeTile();
 			}
 			model.setSelected(Operation.HideGuides, Selection.None, true);
@@ -94,6 +97,14 @@ public class BoardGameController extends BaseController {
 		
 		_previouslySelectedTile.swapWith(selectedTile);
 		_previouslySelectedTile = null;
+		
+		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		if(!(tileCaptured && controller.canContinuePlaying(selectedTile))) {
+			controller.moveFinished();
+		}
+		else{
+			System.out.println("Player can still continue playing.");
+		}
 	}
 
 	public void processTileCancel(TileModel tileModel) {
