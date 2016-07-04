@@ -59,8 +59,7 @@ public final class WindowManager extends JFrame {
 		super("Checkers");
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
-		Dimension _windowSize = new Dimension(screenSize.height, screenSize.height);
+		Dimension _windowSize = new Dimension(800, 800);
 		setSize(_windowSize);
 		setResizable(false);
 				

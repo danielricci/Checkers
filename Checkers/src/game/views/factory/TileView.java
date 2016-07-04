@@ -145,7 +145,7 @@ public class TileView extends BaseView {
 	@Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
-        g2d.drawImage(_image, 12, 12, 64, 64, null, null);       
+        g2d.drawImage(_image, 10, 8, 48, 48, null, null);       
 	}
 	
 	@Override public void render() {
