@@ -114,6 +114,7 @@ public class BoardGameController extends BaseController {
 		}
 		else{
 			System.out.println("Player can still continue playing.");
+			captureTile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected, true);	
 		}
 	}
 

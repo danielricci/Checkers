@@ -54,7 +54,7 @@ public class TileController extends BaseController {
 		_tile.setNeighbors(neighborPosition, neighborTiles);
 	}
 
-	public void event_mouseClicked() {
+	public void processTileSelected() {
 		
 		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
 		

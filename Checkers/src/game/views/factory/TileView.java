@@ -92,7 +92,7 @@ public class TileView extends BaseView {
     	addMouseListener(new MouseAdapter() {  		    		
     		@Override public void mouseReleased(MouseEvent e) {
     			TileController controller = getController(TileController.class);
-    			controller.event_mouseClicked();
+    			controller.processTileSelected();
     		}
 		});
     }
