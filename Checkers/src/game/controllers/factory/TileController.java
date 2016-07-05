@@ -69,6 +69,9 @@ public class TileController extends BaseController {
 			if(player == null) {
 				return;
 			}
+			
+			// This ensures that the first player to start the game is based on
+			// the team of the first piece that is selected for play
 			playerController.setCurrentPlayer(_tile.getPlayer());
 		}
 		
@@ -91,7 +94,6 @@ public class TileController extends BaseController {
 			if(_tile.getPlayer() == playerController.getCurrentPlayer()) {
 				if(hasMoves())
 				{
-					System.out.println("Player has selected a piece to be moved");
 					_tile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected, true);	
 				}
 				else 
@@ -142,20 +144,28 @@ public class TileController extends BaseController {
 			tileNeighbors.addAll(tileModel.getBackwardNeighbors());
 		}
 		
+		boolean captureExists = false;
 		for(TileModel neighbor : tileNeighbors) {
-			if(neighbor.isMovableTo()) {
-				neighbor.setSelected(operation, selection);				
-			}
-			else if(neighbor.getPlayer() != tileModel.getPlayer()){
+			if(neighbor.getPlayer() != tileModel.getPlayer()){
 				Vector<TileModel> capturablePositions = neighbor.getCapturableNeighbors(_tile);
 				if(capturablePositions.size() > 0) {
 					for(TileModel capturablePosition : capturablePositions) {
 						capturablePosition.setSelected(operation, selection);
 					}
-					neighbor.setSelected(operation, Selection.CaptureSelected);					
+					neighbor.setSelected(operation, Selection.CaptureSelected);
+					captureExists = true;
 				}
 			}
 		}
+		
+		
+		if(!captureExists) {
+			for(TileModel neighbor : tileNeighbors) {
+				if(neighbor.isMovableTo()) {
+					neighbor.setSelected(operation, selection);				
+				}
+			}
+		}		
   	}
 
 	public int getTileCoordinate() {
