@@ -31,6 +31,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import game.content.PlayerPiece;
 import game.models.PlayerModel.Team.Orientation;
 
 /** 
@@ -240,8 +241,19 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	 * @param player
 	 */
 	public void updateOwner(PlayerModel player) {
-		player.addTilePiece(this, _player.getPlayerPiece(this));
-		_player.updatePlayerPiece(this, null);
+		
+		// Update the piece of the tile so that it is now
+		// associated to this tile
+		PlayerPiece piece = _player.getPlayerPiece(this);
+		
+		// Update the piece to indicate the new player that owns it
+		piece.updatePlayerPiece(this, player);
+		
+		// Update the tile to indicate the player is currently playing on it
+		_player = player;
+				
+		// Update the players list of pieces that it owns
+		player.addTilePiece(this, piece);
 	}
 	
 	public void swapWith(TileModel tileModel) {

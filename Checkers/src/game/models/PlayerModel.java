@@ -90,8 +90,6 @@ public final class PlayerModel extends GameModel {
 	}
 	
 	public void addTilePiece(TileModel tile, PlayerPiece playerPiece) {
-		_pieces.remove(tile);
-		playerPiece.updatePlayerPiece(this);
 		_pieces.put(tile, playerPiece);
 	}
 	

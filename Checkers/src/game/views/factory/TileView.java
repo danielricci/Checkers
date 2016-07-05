@@ -132,13 +132,12 @@ public class TileView extends BaseView {
 			case Debugger_KingTiles:
 				kingTileVisibility(tileModel, operation);
 				break;
-			case Refresh:
-				refresh(tileModel);
-				break;
 			}
+			refresh(tileModel); // TODO - can we remove the "refresh" part in the model that defaults?
 		}
+		
 	}
-	
+		
 	@Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;

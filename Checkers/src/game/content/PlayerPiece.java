@@ -46,7 +46,8 @@ public class PlayerPiece {
 		return _playerModel.getOrientation();
 	}
 
-	public void updatePlayerPiece(PlayerModel playerModel) {
+	public void updatePlayerPiece(TileModel tileModel, PlayerModel playerModel) {
+		_playerModel.updatePlayerPiece(tileModel, null);
 		_playerModel = playerModel;
 	}
 	
