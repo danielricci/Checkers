@@ -26,7 +26,6 @@ The following are the gameplay elements introduced in this checkers game
 <h5>Game Results</h5>
 - A draw occurs if both players have only one king left
 - A player loses when it has no more pieces left to play
-- A draw occurs if there are no more pieces left to play on both sides
 - A player loses when it cannot move any of its pieces
 - A player wins when it has captured all of the opposing teams pieces
 - A player wins when its opposing teams pieces can no longer move
