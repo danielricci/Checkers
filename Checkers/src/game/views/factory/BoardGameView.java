@@ -95,9 +95,9 @@ public final class BoardGameView extends BaseView {
 		for (int row = 0; row < boardDimensions; ++row) {
 			
 			PlayerModel player = null;
-			if(EngineHelper.isBetweenOrEqual(row, 0, 4)) {
+			if(EngineHelper.isBetweenOrEqual(row, 4, 4)) {
 				player = playerController.getPlayer(0);
-			} else if(EngineHelper.isBetweenOrEqual(row, 7, 11)) {
+			} else if(EngineHelper.isBetweenOrEqual(row, 7, 7)) {
 				player = playerController.getPlayer(1);
 			}
 			

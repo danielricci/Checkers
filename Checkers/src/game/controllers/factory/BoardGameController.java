@@ -27,6 +27,8 @@ package game.controllers.factory;
 import java.util.Observer;
 import java.util.Vector;
 
+import game.WindowManager;
+import game.content.PlayerPiece;
 import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
@@ -109,15 +111,67 @@ public class BoardGameController extends BaseController {
 		_previouslySelectedTile = null;
 		
 		
-		if(!(tileCaptured && controller.canContinuePlaying(captureTile))) {
+		if(!(tileCaptured && controller.canContinueChain(captureTile))) {
 			controller.moveFinished();
+
+			if(isGameOver()) {
+				WindowManager.getInstance().showGameOverDialog();
+			}
 		}
 		else{
 			System.out.println("Player can still continue playing.");
 			captureTile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected, true);	
 		}
 	}
+	
+	private boolean isGameOver() {
+		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		Vector<PlayerModel> players = controller.getPlayers();
+		
+		return 
+			isGameOverOneKingRemains(players) || 
+			isGameOverPlayerHasNoPieces(players) ||
+			isGameOverNoMoreMoves(players);	
+	}
+	
+	private boolean isGameOverOneKingRemains(Vector<PlayerModel> players) {
+		
+		for(PlayerModel player : players) {
+			Vector<PlayerPiece> playerPieces = player.getPlayerPieces();
+			if(!(playerPieces.size() == 1 && playerPieces.firstElement().getIsKinged())) {
+				return false;
+			}
+		}
+		
+		System.out.println("DRAW: Both players have only one king remaining");
+		return true;	
+	}
+	
+	private boolean isGameOverPlayerHasNoPieces(Vector<PlayerModel> players) {
+		for(PlayerModel player : players) {
+			Vector<PlayerPiece> playerPieces = player.getPlayerPieces();
+			if(playerPieces.isEmpty()) {
+				System.out.println("GAME OVER: Player has no more pieces left");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isGameOverNoMoreMoves(Vector<PlayerModel> players) {
+		for(PlayerModel player : players) {
+			Vector<TileModel> ownedTiles = player.getPlayerOwnedTiles();
+			for(TileModel ownedTile : ownedTiles) {
+				if(ownedTile.<TileController>getController().hasMoves()) {
+					return false;
+				}
+			}
+		}
 
+		System.out.println("GAME OVER: Player has no more moves to make");
+		return true;
+	}
+	
 	public void processTileCancel(TileModel tileModel) {
 		for(TileModel model : _previouslySelectedTile.getForwardNeighbors()) {
 			model.setSelected(Operation.HideGuides, Selection.None, true);

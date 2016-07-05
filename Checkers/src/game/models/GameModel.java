@@ -31,10 +31,13 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
+import game.controllers.factory.BaseController;
+
 public class GameModel extends Observable 
 {
-	private final Queue<Operation> _operations = new LinkedList<Operation>();
-	private final Map<Operation, Object> _debugger = new HashMap<Operation, Object>();
+	private final Queue<Operation> _operations = new LinkedList<>();
+	private final Map<Operation, Object> _debugger = new HashMap<>();
+	private BaseController _controller = null;
 	
 	public enum Operation {
 		PlayerPieceSelected,
@@ -61,10 +64,18 @@ public class GameModel extends Observable
 		doneUpdating();
 	}
 	public final <T extends Object> T getCachedData(Operation operation) { 
-		return (T) _debugger.get(operation); 
+		return (T)_debugger.get(operation); 
 	}
 	public final Queue<Operation> getOperations() {
 		return _operations;
+	}
+	
+	public final void setController(BaseController controller) {
+		_controller = controller;
+	}
+	
+	public final <T extends BaseController> T getController() {
+		return _controller != null ? (T)_controller : null;
 	}
 	
 	protected final void doneUpdating() {

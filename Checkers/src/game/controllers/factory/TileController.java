@@ -41,9 +41,10 @@ import game.models.TileModel.Selection;
 public class TileController extends BaseController {
 	
 	private TileModel _tile;
-
+	
 	public TileController(TileModel tile) {
 		_tile = tile;
+		_tile.setController(this);
 	}
 	
 	public TileModel tileSelected() {
@@ -107,7 +108,7 @@ public class TileController extends BaseController {
 		}
 	}
 	
-	private boolean hasMoves() {
+	public boolean hasMoves() {
 		
 		Set<TileModel> neighbors = _tile.getForwardNeighbors();
 		if(_tile.getIsKingTile()) {

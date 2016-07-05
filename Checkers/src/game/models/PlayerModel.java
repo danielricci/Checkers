@@ -29,6 +29,7 @@ import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observer;
+import java.util.Vector;
 
 import game.content.PlayerPiece;
 import game.models.PlayerModel.Team.Orientation;
@@ -72,6 +73,14 @@ public final class PlayerModel extends GameModel {
 	public PlayerModel(Observer observer) {
 		super(observer);
 		_team = Team.values()[TEAM_INDEX++];
+	}
+	
+	public Vector<TileModel> getPlayerOwnedTiles() {
+		return new Vector<>(_pieces.keySet());
+	}
+	
+	public Vector<PlayerPiece> getPlayerPieces() {
+		return new Vector<>(_pieces.values());
 	}
 
 	public void updatePlayerPiece(TileModel oldTile, TileModel newTile) {

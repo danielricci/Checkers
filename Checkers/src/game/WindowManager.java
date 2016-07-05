@@ -120,7 +120,7 @@ public final class WindowManager extends JFrame {
         			IView mainWindowView = ViewFactory.getView(ViewType.MainWindowView);
         			mainWindowView.render();
         			add((Component) mainWindowView);
-        			
+        		
         			validate();						
 				}
 			}	
@@ -182,5 +182,9 @@ public final class WindowManager extends JFrame {
         debuggerMenu.add(kingTiles);
         debuggerMenu.add(debuggerMenu);	
         menu.add(debuggerMenu);	
+	}
+
+	public void showGameOverDialog() {
+		JOptionPane.showMessageDialog(this, "Game Finished", "Game Finished", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

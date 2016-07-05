@@ -51,6 +51,10 @@ public class PlayerController extends BaseController {
 	public PlayerModel getCurrentPlayer() {
 		return _playerSelected ? _players.firstElement() : null;
 	}
+	
+	public Vector<PlayerModel> getPlayers() {
+		return new Vector<>(_players);
+	}
 
 	public PlayerModel getPlayer(int index) {
 		for(PlayerModel player : _players) {
@@ -61,7 +65,7 @@ public class PlayerController extends BaseController {
 		return null;
 	}
 	
-	public boolean canContinuePlaying(TileModel tile) {
+	public boolean canContinueChain(TileModel tile) {
 		if(tile.getPlayer() == null || tile.getPlayer() != getCurrentPlayer()) {
 			System.out.println("Warning: Trying to call canContinuePlaying on a tile that is either null or doesnt belong to the player currently playing!");
 			return false;
