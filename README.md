@@ -24,8 +24,9 @@ The following are the gameplay elements introduced in this checkers game
 - A piece is crowned once reaching the opposite end of its starting position
 
 <h5>Game Results</h5>
-- There is no such thing as a draw
+- A draw occurs if both players have only one king left
 - A player loses when it has no more pieces left to play
+- A draw occurs if there are no more pieces left to play on both sides
 - A player loses when it cannot move any of its pieces
 - A player wins when it has captured all of the opposing teams pieces
 - A player wins when its opposing teams pieces can no longer move
