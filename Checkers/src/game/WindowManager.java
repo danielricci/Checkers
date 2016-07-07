@@ -44,7 +44,6 @@ import javax.swing.KeyStroke;
 
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
-import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
 import game.views.IView;
 import game.views.factory.ViewFactory;
@@ -151,7 +150,7 @@ public final class WindowManager extends JFrame {
         tileOwners.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
 				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
-				BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+				BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
 				boardGameController.debuggerSelection(Operation.Debugger_PlayerTiles, item.isSelected());
 			}
 		});
@@ -161,7 +160,7 @@ public final class WindowManager extends JFrame {
         tileCoordinates.addItemListener(new ItemListener() {
   			@Override public void itemStateChanged(ItemEvent e) {
   				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
-  				BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+  				BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
   				boardGameController.debuggerSelection(Operation.Debugger_TileCoordinates, item.isSelected());
   			}
   		});
@@ -171,7 +170,7 @@ public final class WindowManager extends JFrame {
         kingTiles.addItemListener(new ItemListener() {
   			@Override public void itemStateChanged(ItemEvent e) {
   				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
-  				BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+  				BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
   				boardGameController.debuggerSelection(Operation.Debugger_KingTiles, item.isSelected());
   			}
   		});

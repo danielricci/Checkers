@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.Vector;
 
-import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
@@ -57,7 +56,7 @@ public class TileController extends BaseController {
 
 	public void processTileSelected() {
 		
-		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		PlayerController playerController = ControllerFactory.getController(PlayerController.class);
 		
 		// Makes it so that when we start a new game the first selected
 		// player will start the game

@@ -29,7 +29,6 @@ import java.util.Vector;
 
 import game.WindowManager;
 import game.content.PlayerPiece;
-import game.controllers.factory.ControllerFactory.ControllerType;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
@@ -88,7 +87,7 @@ public class BoardGameController extends BaseController {
 			captureTile.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 
-		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		PlayerController controller = ControllerFactory.getController(PlayerController.class);
 		boolean tileCaptured = false;
 		
 		for(TileModel model : _previouslySelectedTile.getAllNeighbors()) {
@@ -125,7 +124,7 @@ public class BoardGameController extends BaseController {
 	}
 	
 	private boolean isGameOver() {
-		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		PlayerController controller = ControllerFactory.getController(PlayerController.class);
 		Vector<PlayerModel> players = controller.getPlayers();
 		
 		return 

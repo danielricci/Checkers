@@ -132,6 +132,10 @@ public class TileView extends BaseView {
 			case Debugger_KingTiles:
 				kingTileVisibility(tileModel, operation);
 				break;
+			case Refresh:
+				break;
+			default:
+				break;
 			}
 			refresh(tileModel); // TODO - can we remove the "refresh" part in the model that defaults?
 		}

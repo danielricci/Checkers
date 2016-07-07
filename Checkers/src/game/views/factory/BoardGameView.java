@@ -37,7 +37,6 @@ import javax.swing.border.MatteBorder;
 
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
-import game.controllers.factory.ControllerFactory.ControllerType;
 import game.controllers.factory.PlayerController;
 import game.controllers.factory.TileController;
 import game.external.EngineHelper;
@@ -52,13 +51,13 @@ public final class BoardGameView extends BaseView {
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 	
 	public BoardGameView() {
-		PlayerController controller = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
+		PlayerController controller = ControllerFactory.getController(PlayerController.class);
 		controller.populatePlayers(this);
 	}
 
 	@Override public void update(Observable obs, Object arg) {
 		
-		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+		BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
 		TileModel tileModel = (TileModel)obs;
 		
 		for(GameModel.Operation operation : tileModel.getOperations()) {
@@ -71,6 +70,22 @@ public final class BoardGameView extends BaseView {
 				break;
 			case PlayerPieceMoveAccepted:
 				boardGameController.processTileMove(tileModel);
+				break;
+			case Debugger_KingTiles:
+				break;
+			case Debugger_PlayerTiles:
+				break;
+			case Debugger_TileCoordinates:
+				break;
+			case EmptyTileSelected:
+				break;
+			case HideGuides:
+				break;
+			case Refresh:
+				break;
+			case ShowGuides:
+				break;
+			default:
 				break;
 			}
 		}
@@ -86,8 +101,8 @@ public final class BoardGameView extends BaseView {
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		
-		PlayerController playerController = (PlayerController) ControllerFactory.getController(ControllerType.PlayerController);
-		BoardGameController boardGameController = (BoardGameController) ControllerFactory.getController(ControllerType.BoardGameController);
+		PlayerController playerController = ControllerFactory.getController(PlayerController.class);
+		BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
 
 		int boardDimensions = boardGameController.getBoardDimensions();
 		

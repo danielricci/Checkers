@@ -100,6 +100,12 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 					}
 				}			
 				break;
+			case BOTTOM:
+				break;
+			case TOP:
+				break;
+			default:
+				break;
 			}
 			System.out.println("Error with fromAgnostic");
 			System.out.println(java.util.Arrays.toString((new Throwable()).getStackTrace()));

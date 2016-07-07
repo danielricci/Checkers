@@ -27,6 +27,4 @@ package game.controllers.factory;
 import game.controllers.IController;
 
 public class BaseController implements IController {
-	protected BaseController(){		
-	}
 }

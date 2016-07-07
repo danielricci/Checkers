@@ -30,52 +30,23 @@ import game.controllers.IController;
 
 public class ControllerFactory {
 
-	private static final Vector<IController> _controllers = new Vector<IController>(); 
+	private static final Vector<IController> _controllers = new Vector<>(); 
 	
-	public enum ControllerType {
-		BoardGameController,
-		PlayerController
-	}
-	
-	protected ControllerFactory() {
-	}
-	
-	// TODO - remove this enum and replace it with more generic Class<T> like below
-	public static IController getController(ControllerType controllerType) {
+	public static <T extends IController> T getController(Class<T> controllerClass) {
 		
-		IController controller = null;
-		switch(controllerType) {
-			case BoardGameController: 
-			{
-				if((controller = getController(BoardGameController.class)) != null) {
-					return controller;
-				}
-				controller = new BoardGameController();
-				break;
-			}
-			case PlayerController:
-			{
-				if((controller = getController(PlayerController.class)) != null) {
-					return controller;
-				}
-				controller = new PlayerController();
-				break;
+		for(IController item : _controllers) {
+			if(item.getClass() == controllerClass) {
+				return (T)item;
 			}
 		}
-				
-		assert controller != null : "Error: Cannot create a controller of the specified type " + controllerType.toString();
-		_controllers.add(controller);
-		
-		return controller;
-	}
-	
-	private static <T extends IController> T getController(Class<T> controllerClass) {
-		for(IController controller : _controllers) {
-			if(controller.getClass() == controllerClass) {
-				return (T) controller;
-			}
+
+		try {
+	        _controllers.add(controllerClass.getConstructor().newInstance());	        
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		return null;
-	}
+		
+		return (T)_controllers.lastElement();
+	}	
 }
