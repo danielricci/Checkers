@@ -29,7 +29,6 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import game.models.PlayerModel;
-import game.models.PlayerModel.Team.Orientation;
 import game.models.TileModel;
 
 public class PlayerPiece {
@@ -40,11 +39,6 @@ public class PlayerPiece {
 	public PlayerPiece(PlayerModel playerModel) {
 		_playerModel = playerModel;
 	}	
-	
-	// TODO - this shouldn't be here; the playermodel should only be used for the image
-	public Orientation getPlayerOrientation() {
-		return _playerModel.getOrientation();
-	}
 
 	public void updatePlayerPiece(TileModel tileModel, PlayerModel playerModel) {
 		_playerModel.updatePlayerPiece(tileModel, null);

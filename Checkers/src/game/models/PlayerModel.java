@@ -131,7 +131,6 @@ public final class PlayerModel extends GameModel {
 		return _team._orientation;
 	}
 
-	// TODO - this should be in the game piece itself
 	public String getTeamPath(TileModel tile) {
 		String kingPath = "";
 				

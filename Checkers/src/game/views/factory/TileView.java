@@ -108,11 +108,11 @@ public class TileView extends BaseView {
 				break;
 			case PlayerPieceSelected:
 				updateSelectedCommand(_selectedColor);
-				tileController.tileGuidesCommand(tileModel, Operation.ShowGuides); // TODO - shouldn't this be done by the BoardGameController
+				tileController.tileGuidesCommand(tileModel, Operation.ShowGuides);
 				break;
 			case PlayerPieceMoveCancel:
 				updateSelectedCommand(_defaultColor);
-				tileController.tileGuidesCommand(tileModel, Operation.HideGuides); // TODO - shouldn't this be done by the BoardGameController
+				tileController.tileGuidesCommand(tileModel, Operation.HideGuides); 
 				break;
 			case PlayerPieceMoveAccepted:
 				updateSelectedCommand(_defaultColor);

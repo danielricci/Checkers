@@ -286,13 +286,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	public Selection getSelectionType() { return _selection; }
 	public PlayerModel getPlayer() { return _player; }
 	
-	/**
-	 * @deprecated use {@link #getNeighbors(NeighborPosition)} or one of the varients instead
-	 * 
-	 *  Issues
-	 *  https://github.com/danielricci/Checkers/issues/40
-	 */
-	@Deprecated	public SortedSet<TileModel> getAllNeighbors() {
+	public SortedSet<TileModel> getAllNeighbors() {
 		SortedSet<TileModel> allNeighbours = new TreeSet<>(
 			getNeighbors(NeighborPosition.TOP)
 		);

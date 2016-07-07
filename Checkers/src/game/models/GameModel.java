@@ -31,8 +31,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import game.controllers.factory.BaseController;
 
 public class GameModel extends Observable 
@@ -76,10 +74,8 @@ public class GameModel extends Observable
 		_controller = controller;
 	}
 	
-	public final <@Nullable T extends BaseController> T getController() {
-		return _controller != null 
-				? (T)_controller 
-				: null;
+	public final <T extends BaseController> T getController() {
+		return (T)_controller;
 	}
 	
 	protected final void doneUpdating() {
