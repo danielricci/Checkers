@@ -32,6 +32,7 @@ import java.util.Observer;
 import java.util.Vector;
 
 import game.content.PlayerPiece;
+import game.controllers.factory.TileController;
 import game.models.PlayerModel.Team.Orientation;
 
 public final class PlayerModel extends GameModel {
@@ -73,6 +74,15 @@ public final class PlayerModel extends GameModel {
 	public PlayerModel(Observer observer) {
 		super(observer);
 		_team = Team.values()[TEAM_INDEX++];
+	}
+	
+	public boolean hasCaptures() {
+		for(TileModel tile :_pieces.keySet()) {
+			if(tile.<TileController>getController().hasCapturePosition()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Vector<TileModel> getPlayerOwnedTiles() {

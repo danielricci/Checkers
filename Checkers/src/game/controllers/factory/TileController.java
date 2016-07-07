@@ -136,17 +136,38 @@ public class TileController extends BaseController {
 		return null;
 	}
 	
-	public void tileGuidesCommand(TileModel tileModel, Operation operation) {
+	public boolean hasCapturePosition() {
+		
+		SortedSet<TileModel> neighbors = _tile.getForwardNeighbors();
+		if(_tile.getIsKingTile() || _tile.getPlayer().getPlayerPiece(_tile).getIsKinged()) {
+			neighbors.addAll(_tile.getBackwardNeighbors());
+		}
+
+		for(TileModel neighbor : neighbors) {
+			if(neighbor.getPlayer() != null && neighbor.getPlayer() != _tile.getPlayer()){
+				Vector<TileModel> capturablePositions = neighbor.getCapturableNeighbors(_tile);
+				if(capturablePositions.size() > 0) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public void tileGuidesCommand(Operation operation) {
 		Selection selection = operation == Operation.ShowGuides ? Selection.GuideSelected : Selection.None;
 		
-		SortedSet<TileModel> tileNeighbors = tileModel.getForwardNeighbors();
-		if(tileModel.getIsKingTile() || tileModel.getPlayer().getPlayerPiece(tileModel).getIsKinged()) {
-			tileNeighbors.addAll(tileModel.getBackwardNeighbors());
+		SortedSet<TileModel> tileNeighbors = _tile.getForwardNeighbors();
+		if(_tile.getIsKingTile() || _tile.getPlayer().getPlayerPiece(_tile).getIsKinged()) {
+			tileNeighbors.addAll(_tile.getBackwardNeighbors());
 		}
 		
 		boolean captureExists = false;
+		
+		// Check to see locally if a capture exists
 		for(TileModel neighbor : tileNeighbors) {
-			if(neighbor.getPlayer() != tileModel.getPlayer()){
+			if(neighbor.getPlayer() != _tile.getPlayer()){
 				Vector<TileModel> capturablePositions = neighbor.getCapturableNeighbors(_tile);
 				if(capturablePositions.size() > 0) {
 					for(TileModel capturablePosition : capturablePositions) {
@@ -157,13 +178,18 @@ public class TileController extends BaseController {
 				}
 			}
 		}
-		
-		
+
 		if(!captureExists) {
-			for(TileModel neighbor : tileNeighbors) {
-				if(neighbor.isMovableTo()) {
-					neighbor.setSelected(operation, selection);				
-				}
+			// Before going forward, make sure that no other captures exist on the board
+			if(_tile.getPlayer().hasCaptures()) {
+				System.out.println("Capture exists elsewhere, please perform that!");
+			}
+			else {
+				for(TileModel neighbor : tileNeighbors) {
+					if(neighbor.isMovableTo()) {
+						neighbor.setSelected(operation, selection);				
+					}
+				}		
 			}
 		}		
   	}

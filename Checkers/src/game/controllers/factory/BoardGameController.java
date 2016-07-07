@@ -123,6 +123,13 @@ public class BoardGameController extends BaseController {
 		}
 	}
 	
+	public void processTileCancel(TileModel tileModel) {
+		for(TileModel model : _previouslySelectedTile.getForwardNeighbors()) {
+			model.setSelected(Operation.HideGuides, Selection.None, true);
+		}	
+		_previouslySelectedTile = null;
+	}
+
 	private boolean isGameOver() {
 		PlayerController controller = ControllerFactory.getController(PlayerController.class);
 		Vector<PlayerModel> players = controller.getPlayers();
@@ -169,12 +176,5 @@ public class BoardGameController extends BaseController {
 
 		System.out.println("GAME OVER: Player has no more moves to make");
 		return true;
-	}
-	
-	public void processTileCancel(TileModel tileModel) {
-		for(TileModel model : _previouslySelectedTile.getForwardNeighbors()) {
-			model.setSelected(Operation.HideGuides, Selection.None, true);
-		}	
-		_previouslySelectedTile = null;
 	}
 }
