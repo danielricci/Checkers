@@ -317,7 +317,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 	public Vector<TileModel> getCapturableNeighbors(TileModel capturer) {
 		
 		Vector<TileModel> capturablePositions = new Vector<>();
-		if(_player == null) {
+		if(_player == null || capturer.getPlayer() == _player) {
 			return capturablePositions;
 		}
 		
