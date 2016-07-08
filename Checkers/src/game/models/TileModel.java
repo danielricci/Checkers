@@ -344,7 +344,7 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		position = NeighborPosition.toAgnostic(position);
 		
 		Object[] neighborObjects = getNeighbors(position).toArray();
-		if(neighborObjects.length > 0) {
+		if(neighborObjects.length > 1) { // we say greater than 1 because of corner tiles, this is an edge case
 			TileModel diagonalTile = (TileModel) neighborObjects[index];
 			if(diagonalTile.isMovableTo()) {
 				outCapturablePositions.add(diagonalTile);
