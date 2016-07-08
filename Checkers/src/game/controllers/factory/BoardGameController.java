@@ -54,7 +54,7 @@ public class BoardGameController extends BaseController {
   		}
   	}
   	
-  	public void addTileModelOnSelected(TileModel tile) {
+  	public void processTileSelected(TileModel tile) {
 		if(_previouslySelectedTile != null) {
 			_previouslySelectedTile.setSelected(Operation.PlayerPieceMoveCancel, Selection.None, true);			
 			if(_previouslySelectedTile != tile) {
@@ -74,18 +74,7 @@ public class BoardGameController extends BaseController {
 		return _rows;
 	}
 
-	public void processTileMove(TileModel captureTile) {		
-		_previouslySelectedTile.setSelected(Operation.HideGuides, Selection.None, true);
-		
-		// We are performing a capture, so the capture tile is a neighbor
-		// of what we have selected, so we need to handle the move to state
-		if(!_previouslySelectedTile.getForwardNeighbors().contains(captureTile)) {
-			// TODO - this causes the hide guides to be effectively called twice
-			// all just to clear its tile operation, can we do this a bit cleaner?
-			// TODO - would it be more efficient to just go through all the tiles and
-			// perform a hide guides operation?
-			captureTile.setSelected(Operation.HideGuides, Selection.None, true);
-		}
+	public void processTileMove(TileModel captureTile) {
 
 		PlayerController controller = ControllerFactory.getController(PlayerController.class);
 		boolean tileCaptured = false;
@@ -103,12 +92,13 @@ public class BoardGameController extends BaseController {
 					model.removeTile();					
 				}
 			}
-			model.setSelected(Operation.HideGuides, Selection.None, true);
 		}
+		
+		// Removes all guides from the board
+		processTileHideAllGuides();
 		
 		_previouslySelectedTile.swapWith(captureTile);
 		_previouslySelectedTile = null;
-		
 		
 		if(!(tileCaptured && controller.canContinueChain(captureTile))) {
 			controller.moveFinished();
@@ -120,6 +110,12 @@ public class BoardGameController extends BaseController {
 		else{
 			System.out.println("Player can still continue playing.");
 			captureTile.setSelected(Operation.PlayerPieceSelected, Selection.MoveSelected, true);	
+		}
+	}
+	
+	public void processTileHideAllGuides() {
+		for(TileModel model : _tiles) {
+			model.setSelected(Operation.HideGuides, Selection.None, true);
 		}
 	}
 	

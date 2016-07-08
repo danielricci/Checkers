@@ -63,7 +63,7 @@ public final class BoardGameView extends BaseView {
 		for(GameModel.Operation operation : tileModel.getOperations()) {
 			switch(operation) {
 			case PlayerPieceSelected:
-				boardGameController.addTileModelOnSelected(tileModel);
+				boardGameController.processTileSelected(tileModel);
 				break;
 			case PlayerPieceMoveCancel:
 				boardGameController.processTileCancel(tileModel);
@@ -72,20 +72,12 @@ public final class BoardGameView extends BaseView {
 				boardGameController.processTileMove(tileModel);
 				break;
 			case Debugger_KingTiles:
-				break;
 			case Debugger_PlayerTiles:
-				break;
 			case Debugger_TileCoordinates:
-				break;
 			case EmptyTileSelected:
-				break;
 			case HideGuides:
-				break;
 			case Refresh:
-				break;
 			case ShowGuides:
-				break;
-			default:
 				break;
 			}
 		}

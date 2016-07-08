@@ -39,6 +39,8 @@ public class GameModel extends Observable
 	private final Map<Operation, Object> _debugger = new HashMap<>();
 	private BaseController _controller = null;
 	
+	// NOTE: We need these operations to be reduced, for example show guides and hide guides and player piece commands are pretty
+	// much the same thing, we need a separation of concerns
 	public enum Operation {
 		PlayerPieceSelected,
 		PlayerPieceMoveCancel,
