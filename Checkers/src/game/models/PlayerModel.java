@@ -78,7 +78,7 @@ public final class PlayerModel extends GameModel {
 	
 	public boolean hasCaptures() {
 		for(TileModel tile :_pieces.keySet()) {
-			if(tile.getPlayer() != null && tile.getPlayer() != this && tile.<TileController>getController().hasCapturePosition()) {
+			if(tile.getPlayer() != null && tile.<TileController>getController().hasCapturePosition()) {
 				return true;
 			}
 		}
