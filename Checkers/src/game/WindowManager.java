@@ -98,7 +98,7 @@ public final class WindowManager extends JFrame {
 	private void SetWindowedInstanceMenu() {
 		JMenuBar menu = new JMenuBar();
 		PopulateFileMenu(menu);
-		PopulateDebuggerMenu(menu);
+		//PopulateDebuggerMenu(menu);
 		setJMenuBar(menu);
 	}
 	
