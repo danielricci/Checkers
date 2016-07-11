@@ -197,7 +197,7 @@ public class TileModel extends GameModel implements IPlayableTile, IDestructable
 		SortedSet<TileModel> neighbors = new TreeSet<>();
 		
 		NeighborPosition neighborPosition = NeighborPosition.TOP;
-		if(_player.getPlayerOrientation() == Orientation.DOWN)
+		if(_player != null && _player.getPlayerOrientation() == Orientation.DOWN)
 		{
 			neighborPosition = NeighborPosition.flip(neighborPosition);
 		}
@@ -323,15 +323,15 @@ public class TileModel extends GameModel implements IPlayableTile, IDestructable
 		}
 		
 		NeighborPosition position = NeighborPosition.convertOrientation(_player.getPlayerOrientation());
-		populateCapturableTiles(capturablePositions, capturer.getForwardNeighbors(), position);
+		populateCapturableTiles(capturer, capturablePositions, capturer.getForwardNeighbors(), position);
 		if(capturer.getPlayer().getPlayerPiece(capturer).getIsKinged()) {
-			populateCapturableTiles(capturablePositions, capturer.getBackwardNeighbors(), NeighborPosition.flip(position));
+			populateCapturableTiles(capturer, capturablePositions, capturer.getBackwardNeighbors(), NeighborPosition.flip(position));
 		}
 		
 		return capturablePositions;
 	}
 	
-	private void populateCapturableTiles(Vector<TileModel> outCapturablePositions, SortedSet<TileModel> capturerNeighbors, NeighborPosition position) {
+	private void populateCapturableTiles(TileModel capturer, Vector<TileModel> outCapturablePositions, SortedSet<TileModel> capturerNeighbors, NeighborPosition position) {
 		int index = -1;
 		if(capturerNeighbors.contains(this)) {
 			index = capturerNeighbors.headSet(this).size();
@@ -345,8 +345,12 @@ public class TileModel extends GameModel implements IPlayableTile, IDestructable
 		position = NeighborPosition.toAgnostic(position);
 		
 		Object[] neighborObjects = getNeighbors(position).toArray();
-		if(neighborObjects.length > 1) { // we say greater than 1 because of corner tiles, this is an edge case
+		if(neighborObjects.length > 1) {
 			TileModel diagonalTile = (TileModel) neighborObjects[index];
+			if(capturer.getForwardNeighbors().size() == 1 && diagonalTile.getForwardNeighbors().size() == 1) {
+				diagonalTile = (TileModel)neighborObjects[++index];
+			}
+			
 			if(diagonalTile.isMovableTo()) {
 				outCapturablePositions.add(diagonalTile);
 			}	
