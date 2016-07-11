@@ -1,5 +1,7 @@
 # Checkers
 
+Version 1.0 has been released. For any bugs/feature requests, please contact me at thedanny09@gmail.com
+
 <h3>Rules</h3>
 The following are the gameplay elements introduced in this checkers game
 
@@ -12,7 +14,6 @@ The following are the gameplay elements introduced in this checkers game
 - A player can only move at most one piece per turn unless performing a multi-capture
 - Only kings can move backwards
 - Flying kings is not allowed in this game
-- When you crown a piece, it can perform a backwards capture if already in a multi-capture state
 
 <h5>Captures</h5>
 - A piece can be captured if there is a free space opposite of its capturer
