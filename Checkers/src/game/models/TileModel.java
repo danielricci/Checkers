@@ -31,6 +31,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import game.IDestructable;
 import game.content.PlayerPiece;
 import game.models.PlayerModel.Team.Orientation;
 
@@ -38,7 +39,7 @@ import game.models.PlayerModel.Team.Orientation;
  * A tile model represents a tile that knows about what it currently holds on itself
  * and its current state; it also is aware of its immediate neighbors
  */
-public class TileModel extends GameModel implements IPlayableTile, Comparable<TileModel> {
+public class TileModel extends GameModel implements IPlayableTile, IDestructable, Comparable<TileModel> {
     
 	private PlayerModel _player;	
 	private Selection _selection;
@@ -362,5 +363,9 @@ public class TileModel extends GameModel implements IPlayableTile, Comparable<Ti
 		}
 		
 		return _identifier < tileModel._identifier ? -1 : 1;
+	}
+
+	@Override public void destroy() {
+		
 	}
 }

@@ -137,7 +137,7 @@ public class TileView extends BaseView {
 			default:
 				break;
 			}
-			refresh(tileModel); // TODO - can we remove the "refresh" part in the model that defaults?
+			refresh(tileModel); 
 		}
 		
 	}
@@ -175,5 +175,9 @@ public class TileView extends BaseView {
 		}
 		
 		repaint();
+	}
+
+	@Override public void destroy() {
+		removeAll();
 	}
 }

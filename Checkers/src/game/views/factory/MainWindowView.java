@@ -25,20 +25,36 @@
 package game.views.factory;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.util.Observable;
 
-import game.views.IView;
+import game.models.GameModel;
 import game.views.factory.ViewFactory.ViewType;
 
 @SuppressWarnings("serial")
 public final class MainWindowView extends BaseView {
 	@Override public void render() {
 		setLayout(new BorderLayout());
-		IView boardGameView = ViewFactory.getView(ViewType.BoardGameView);
+		BaseView boardGameView = ViewFactory.instance().getView(ViewType.BoardGameView);
 		boardGameView.render();
-		add((Component) boardGameView);
+		add(boardGameView);
 	}
 
 	@Override protected void registerListeners() {		
+	}
+
+	@Override
+	public void refresh(GameModel model) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override public void destroy() {
+		removeAll();
 	}
 }

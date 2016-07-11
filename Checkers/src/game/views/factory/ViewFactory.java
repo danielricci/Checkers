@@ -26,23 +26,39 @@ package game.views.factory;
 
 import java.util.Vector;
 
-import game.views.IView;
+import game.IDestructable;
 
-public class ViewFactory {
+public class ViewFactory implements IDestructable {
 
-	private static final Vector<IView> _views = new Vector<IView>(); 
+	private final Vector<BaseView> _views = new Vector<>(); 
+	private static ViewFactory _instance;
 	
 	public enum ViewType {
 		BoardGameView,
 		MainWindowView
 	}
 	
-	protected ViewFactory() {
+	private ViewFactory() {
 	}
 	
-	public static IView getView(ViewType viewType) {
+	public synchronized static ViewFactory instance() {
+		if(_instance == null) {
+			_instance = new ViewFactory();
+		}
+		return _instance;
+	}
+	
+	@Override public void destroy() {
+		for(BaseView view : _views) {
+			view.destroy();
+		}
+		_instance = null;
+	}
+	
+	// TODO - just like the factory controller, we shouldnt rely on an enum, make it Class<T>
+	public BaseView getView(ViewType viewType) {
 		
-		IView view = null;
+		BaseView view = null;
 		switch(viewType) {
 			case BoardGameView: 
 			{
@@ -68,8 +84,8 @@ public class ViewFactory {
 		return view;
 	}
 	
-	private static <T extends IView> IView getView(Class<T> viewClass) {
-		for(IView view : _views) {
+	private <T extends BaseView> BaseView getView(Class<T> viewClass) {
+		for(BaseView view : _views) {
 			if(view.getClass() == viewClass) {
 				return view;
 			}

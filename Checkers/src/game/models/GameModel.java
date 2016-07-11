@@ -33,7 +33,7 @@ import java.util.Queue;
 
 import game.controllers.factory.BaseController;
 
-public class GameModel extends Observable 
+public class GameModel extends Observable
 {
 	private final Queue<Operation> _operations = new LinkedList<>();
 	private final Map<Operation, Object> _debugger = new HashMap<>();

@@ -37,7 +37,7 @@ import game.models.PlayerModel.Team.Orientation;
 
 public final class PlayerModel extends GameModel {
 
-	private static int TEAM_INDEX = 0;
+	public static int TEAM_INDEX = 0;
 	
 	private final Team _team;
 	private final Map<TileModel, PlayerPiece> _pieces = new HashMap<>();

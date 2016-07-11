@@ -56,7 +56,7 @@ public class TileController extends BaseController {
 
 	public void processTileSelected() {
 		
-		PlayerController playerController = ControllerFactory.getController(PlayerController.class);
+		PlayerController playerController = ControllerFactory.instance().getController(PlayerController.class);
 		
 		// Makes it so that when we start a new game the first selected
 		// player will start the game
@@ -208,5 +208,9 @@ public class TileController extends BaseController {
 		}
 		
 		return color;
+	}
+
+	@Override public void destroy() {
+		_tile = null;		
 	}
 }

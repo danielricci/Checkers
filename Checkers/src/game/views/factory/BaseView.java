@@ -25,34 +25,35 @@
 package game.views.factory;
 
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import game.controllers.IController;
+import game.IDestructable;
+import game.controllers.factory.BaseController;
 import game.models.GameModel;
-import game.views.IView;
 
-public abstract class BaseView extends JPanel implements IView {
+public abstract class BaseView extends JPanel implements IDestructable, Observer {
 
-	private final Vector<IController> _controllers = new Vector<IController>();
+	private final Vector<BaseController> _controllers = new Vector<>();
 	
 	protected BaseView(){
 		registerListeners();
 	}
 	
-	protected BaseView(IController... controllers) {			
+	protected BaseView(BaseController... controllers) {			
 		this();
-		for(IController controller : controllers) {
+		for(BaseController controller : controllers) {
 			if(!controllerExists(controller)) {
 				_controllers.add(controller);
 			}			
 		}
 	}
-
-	protected final <T extends IController> T getController(Class<T> controllerClass) {	
-		IController myController = null;
-		for(IController controller : _controllers) {
+	
+	protected final <T extends BaseController> T getController(Class<T> controllerClass) {	
+		BaseController myController = null;
+		for(BaseController controller : _controllers) {
 			if(controller.getClass() == controllerClass) {
 				myController = controller;
 				break;
@@ -61,18 +62,18 @@ public abstract class BaseView extends JPanel implements IView {
 		return (T) myController;
 	}
 	
-	public final <T extends IController> void setController(T controller) {
+	public final <T extends BaseController> void setController(T controller) {
 		assert controller != null : "Cannot add null controller into baseview";
 		if(!controllerExists(controller)) {
 			_controllers.add(controller);
 		}
 	}
 	
-	private boolean controllerExists(IController controller) {
+	private boolean controllerExists(BaseController controller) {
 		assert controller != null : "Cannot pass a null controller";
 		boolean found = false;
 		
-		for(IController _controller : _controllers) {
+		for(BaseController _controller : _controllers) {
 			if(_controller.getClass() == controller.getClass()) {
 				found = true;
 				break;
@@ -82,15 +83,13 @@ public abstract class BaseView extends JPanel implements IView {
 		return found;
 	}
 	
-	protected void registerListeners() {
-	}
-
-	@Override public void render() {
-	}
+	protected abstract void registerListeners();
+	public abstract void render();
+	public abstract void refresh(GameModel model);
+	@Override public abstract void update(Observable o, Object arg); 
 	
-	@Override public void refresh(GameModel model){
-	}
-
-	@Override public void update(Observable o, Object arg) {
+	@Override public void destroy() {
+		_controllers.clear();
+		removeAll();
 	}
 }

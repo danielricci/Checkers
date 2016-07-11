@@ -26,15 +26,26 @@ package game.controllers.factory;
 
 import java.util.Vector;
 
-import game.controllers.IController;
+import game.IDestructable;
 
-public class ControllerFactory {
+public class ControllerFactory implements IDestructable {
 
-	private static final Vector<IController> _controllers = new Vector<>(); 
+	private final Vector<BaseController> _controllers = new Vector<>(); 
+	private static ControllerFactory _instance;
 	
-	public static <T extends IController> T getController(Class<T> controllerClass) {
+	private ControllerFactory() {
+	}
+	
+	public synchronized static ControllerFactory instance() {
+		if(_instance == null) {
+			_instance = new ControllerFactory();
+		}	
+		return _instance;
+	}
+	
+	public <T extends BaseController> T getController(Class<T> controllerClass) {
 		
-		for(IController item : _controllers) {
+		for(BaseController item : _controllers) {
 			if(item.getClass() == controllerClass) {
 				return (T)item;
 			}
@@ -48,5 +59,12 @@ public class ControllerFactory {
 		
 		
 		return (T)_controllers.lastElement();
+	}
+
+	@Override public void destroy() {
+		for(BaseController controller : _controllers) {
+			controller.destroy();
+		}
+		_instance = null;
 	}	
 }

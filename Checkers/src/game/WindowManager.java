@@ -24,7 +24,6 @@
 
 package game;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -45,7 +44,7 @@ import javax.swing.KeyStroke;
 import game.controllers.factory.BoardGameController;
 import game.controllers.factory.ControllerFactory;
 import game.models.GameModel.Operation;
-import game.views.IView;
+import game.views.factory.BaseView;
 import game.views.factory.ViewFactory;
 import game.views.factory.ViewFactory.ViewType;
 
@@ -53,6 +52,7 @@ import game.views.factory.ViewFactory.ViewType;
 public final class WindowManager extends JFrame {
 	
 	private static WindowManager _instance;	
+	private boolean _isPlaying;
 	
 	private WindowManager() {
 		super("Checkers");
@@ -112,16 +112,20 @@ public final class WindowManager extends JFrame {
         JMenuItem fileMenuNew = new JMenuItem(new AbstractAction("New") {
         	
 			@Override public void actionPerformed(ActionEvent event) {	
-        		int response = JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
-				if(response == JOptionPane.YES_OPTION) {
-	        		getContentPane().removeAll();
-	        		
-        			IView mainWindowView = ViewFactory.getView(ViewType.MainWindowView);
-        			mainWindowView.render();
-        			add((Component) mainWindowView);
-        		
-        			validate();						
+	    		
+				if(_isPlaying) {
+					ControllerFactory.instance().destroy();
+					ViewFactory.instance().destroy();
+					getContentPane().removeAll();					
+
 				}
+				_isPlaying = true;
+				
+				BaseView mainWindowView = ViewFactory.instance().getView(ViewType.MainWindowView);
+				mainWindowView.render();
+				add(mainWindowView);
+				
+				validate();						
 			}	
 			
         });
@@ -150,7 +154,7 @@ public final class WindowManager extends JFrame {
         tileOwners.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
 				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
-				BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
+				BoardGameController boardGameController = ControllerFactory.instance().getController(BoardGameController.class);
 				boardGameController.debuggerSelection(Operation.Debugger_PlayerTiles, item.isSelected());
 			}
 		});
@@ -160,7 +164,7 @@ public final class WindowManager extends JFrame {
         tileCoordinates.addItemListener(new ItemListener() {
   			@Override public void itemStateChanged(ItemEvent e) {
   				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
-  				BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
+  				BoardGameController boardGameController = ControllerFactory.instance().getController(BoardGameController.class);
   				boardGameController.debuggerSelection(Operation.Debugger_TileCoordinates, item.isSelected());
   			}
   		});
@@ -170,7 +174,7 @@ public final class WindowManager extends JFrame {
         kingTiles.addItemListener(new ItemListener() {
   			@Override public void itemStateChanged(ItemEvent e) {
   				JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getItem();
-  				BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
+  				BoardGameController boardGameController = ControllerFactory.instance().getController(BoardGameController.class);
   				boardGameController.debuggerSelection(Operation.Debugger_KingTiles, item.isSelected());
   			}
   		});

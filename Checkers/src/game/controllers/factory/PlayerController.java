@@ -99,4 +99,11 @@ public class PlayerController extends BaseController {
 			_playerSelected = true;
 		}
 	}
+
+	@Override
+	public void destroy() {
+		_players.clear();
+		PlayerModel.TEAM_INDEX = 0;
+		_playerSelected = false;
+	}
 }

@@ -76,7 +76,7 @@ public class BoardGameController extends BaseController {
 
 	public void processTileMove(TileModel captureTile) {
 
-		PlayerController controller = ControllerFactory.getController(PlayerController.class);
+		PlayerController controller = ControllerFactory.instance().getController(PlayerController.class);
 		boolean tileCaptured = false;
 		
 		for(TileModel model : _previouslySelectedTile.getAllNeighbors()) {
@@ -127,7 +127,7 @@ public class BoardGameController extends BaseController {
 	}
 
 	private boolean isGameOver() {
-		PlayerController controller = ControllerFactory.getController(PlayerController.class);
+		PlayerController controller = ControllerFactory.instance().getController(PlayerController.class);
 		Vector<PlayerModel> players = controller.getPlayers();
 		
 		return 
@@ -172,5 +172,9 @@ public class BoardGameController extends BaseController {
 
 		System.out.println("GAME OVER: Player has no more moves to make");
 		return true;
+	}
+
+	@Override public void destroy() {
+		_tiles.clear();
 	}
 }

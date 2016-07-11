@@ -51,13 +51,13 @@ public final class BoardGameView extends BaseView {
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 	
 	public BoardGameView() {
-		PlayerController controller = ControllerFactory.getController(PlayerController.class);
+		PlayerController controller = ControllerFactory.instance().getController(PlayerController.class);
 		controller.populatePlayers(this);
 	}
 
 	@Override public void update(Observable obs, Object arg) {
 		
-		BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
+		BoardGameController boardGameController = ControllerFactory.instance().getController(BoardGameController.class);
 		TileModel tileModel = (TileModel)obs;
 		
 		for(GameModel.Operation operation : tileModel.getOperations()) {
@@ -93,8 +93,8 @@ public final class BoardGameView extends BaseView {
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		
-		PlayerController playerController = ControllerFactory.getController(PlayerController.class);
-		BoardGameController boardGameController = ControllerFactory.getController(BoardGameController.class);
+		PlayerController playerController = ControllerFactory.instance().getController(PlayerController.class);
+		BoardGameController boardGameController = ControllerFactory.instance().getController(BoardGameController.class);
 
 		int boardDimensions = boardGameController.getBoardDimensions();
 		
@@ -185,5 +185,15 @@ public final class BoardGameView extends BaseView {
 		}
 		
 		add(_gamePanel);
+	}
+
+	@Override protected void registerListeners() {
+	}
+
+	@Override public void refresh(GameModel model) {
+	}
+
+	@Override public void destroy() {
+		_gamePanel.removeAll();
 	}
 }
