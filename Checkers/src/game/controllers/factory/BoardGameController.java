@@ -82,15 +82,7 @@ public class BoardGameController extends BaseController {
 		for(TileModel model : _previouslySelectedTile.getAllNeighbors()) {
 			if(model.getSelectionType() == Selection.CaptureSelected && model.getAllNeighbors().contains(captureTile)) {
 				tileCaptured = true;
-				
-				// If the tile we are capturing is a king then the player performing
-				// the capture assumes control over the piece
-				if(model.getPlayer().getPlayerPiece(model).getIsKinged()) {
-					model.updateOwner(controller.getCurrentPlayer());
-				}
-				else {
-					model.removeTile();					
-				}
+				model.removeTile();
 			}
 		}
 		
