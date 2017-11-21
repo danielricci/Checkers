@@ -1,7 +1,5 @@
 # Checkers
 
-Version 1.0 has been released. For any bugs/feature requests, please contact me at thedanny09@gmail.com
-
 <h3>Rules</h3>
 The following are the gameplay elements introduced in this checkers game
 
@@ -19,7 +17,6 @@ The following are the gameplay elements introduced in this checkers game
 - A piece can be captured if there is a free space opposite of its capturer
 - A piece must perform a capture if a capture is present
 - A piece cannot capture backwards unless it is a king
-- If a king is captured then it is awarded to the capturer
 
 <h5>Crowning</h5>
 - A piece is crowned once reaching the opposite end of its starting position
