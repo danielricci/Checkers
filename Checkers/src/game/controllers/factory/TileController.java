@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.Vector;
 
+import game.content.PlayerPiece;
 import game.models.GameModel.Operation;
 import game.models.PlayerModel;
 import game.models.TileModel;
@@ -110,7 +111,8 @@ public class TileController extends BaseController {
 	public boolean hasMoves() {
 		
 		Set<TileModel> neighbors = _tile.getForwardNeighbors();
-		if(_tile.getIsKingTile()) {
+		PlayerPiece piece = _tile.getPlayer().getPlayerPiece(_tile);
+		if(piece != null && piece.getIsKinged()) {
 			neighbors.addAll(_tile.getBackwardNeighbors());
 		}
 		
