@@ -1,7 +1,6 @@
 # Checkers
 
-<h3>Rules</h3>
-The following are the gameplay elements introduced in this checkers game
+<h1>Rules</h1>
 
 <h5>Starting Position</h5>
 - The game consists of two players opposite eachother, each containing 30 checker pieces
@@ -25,3 +24,12 @@ The following are the gameplay elements introduced in this checkers game
 - A draw occurs if both players have only one king left
 - A player wins when it has captured all of the opposing teams pieces
 - A player wins when its opposing teams pieces can no longer move
+
+<h1>Releases</h1>
+
+<h3>checkers-1.0.1-release May November 20 2017</h3>
+- Fixed a bug where king checker piece moves were not being properly calculated
+- Capturing the opposing king checker piece will no longer award it to you
+
+<h3>checkers-1.0.0-release July 11, 2016</h3>
+This release is the first official version of the game
