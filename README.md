@@ -32,4 +32,4 @@
 - Capturing the opposing king checker piece will no longer award it to you
 
 <h3>checkers-1.0.0-release July 11, 2016</h3>
-This release is the first official version of the game
+- This release is the first official version of the game
