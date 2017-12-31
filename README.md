@@ -3,7 +3,7 @@
 <h1>Rules</h1>
 
 <h5>Starting Position</h5>
-- The game consists of two players opposite eachother, each containing 30 checker pieces
+- The game consists of two players opposite eachother, each containing 30 checker pieces<br />
 - The game is played on a 12x12 board
 
 <h5>Moves</h5>
