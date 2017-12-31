@@ -27,7 +27,7 @@
 
 <h1>Releases</h1>
 
-<h3>checkers-1.0.1-release May November 20 2017</h3>
+<h3>checkers-1.0.1-release November 20 2017</h3>
 - Fixed a bug where king checker piece moves were not being properly calculated<br />
 - Capturing the opposing king checker piece will no longer award it to you
 
