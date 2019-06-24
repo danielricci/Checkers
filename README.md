@@ -1,6 +1,11 @@
 # Checkers
 
-![](README.gif)
+
+
+
+<div align="center">
+<img src="readme.gif" width="90%" />
+</div>
 
 <h1>Rules</h1>
 
