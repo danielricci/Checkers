@@ -1,5 +1,7 @@
 # Checkers
 
+![](README.gif)
+
 <h1>Rules</h1>
 
 <h5>Starting Position</h5>

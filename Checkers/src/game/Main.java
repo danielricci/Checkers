@@ -25,10 +25,7 @@ package game;
 
 public final class Main {
 	public static void main(String[] argv) {
-        try {
-        	WindowManager.getInstance().setVisible(true);
-        } catch (Exception exception) {
-        	System.out.println(exception.getStackTrace());
-        }
+    	WindowManager.getInstance().setVisible(true);
+    	WindowManager.getInstance().newGame();
     }
 }

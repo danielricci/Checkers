@@ -2,7 +2,5 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="Checkers/src"/>
-	<classpathentry kind="lib" path="Checkers/gradle/wrapper/gradle-wrapper.jar"/>
-	<classpathentry kind="lib" path="Checkers/org.eclipse.jdt.annotation_2.0.100.v20150311-1658.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

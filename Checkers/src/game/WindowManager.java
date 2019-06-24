@@ -82,10 +82,10 @@ public final class WindowManager extends JFrame {
 	private void SetWindowedInstanceListeners() {
 		
 		// Needed to manually handle closing of the window
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 		// Add a listener to whenever the window is closed
-		addWindowListener(new WindowAdapter() {
+		/*addWindowListener(new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent event) {
 				int response= JOptionPane.showConfirmDialog(null, "Are you sure that you wish to exit the game?", "Exit Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
@@ -93,13 +93,30 @@ public final class WindowManager extends JFrame {
 				}
 			}
 		});
+		*/
 	}
 	
 	private void SetWindowedInstanceMenu() {
 		JMenuBar menu = new JMenuBar();
-		PopulateFileMenu(menu);
+		//PopulateFileMenu(menu);
 		//PopulateDebuggerMenu(menu);
 		setJMenuBar(menu);
+	}
+	
+	public void newGame() {
+		if(_isPlaying) {
+			ControllerFactory.instance().destroy();
+			ViewFactory.instance().destroy();
+			getContentPane().removeAll();					
+
+		}
+		_isPlaying = true;
+		
+		BaseView mainWindowView = ViewFactory.instance().getView(ViewType.MainWindowView);
+		mainWindowView.render();
+		add(mainWindowView);
+		
+		validate();
 	}
 	
 	private void PopulateFileMenu(JMenuBar menu) {
@@ -111,21 +128,7 @@ public final class WindowManager extends JFrame {
         // Set the event handler
         JMenuItem fileMenuNew = new JMenuItem(new AbstractAction("New") {
         	
-			@Override public void actionPerformed(ActionEvent event) {	
-	    		
-				if(_isPlaying) {
-					ControllerFactory.instance().destroy();
-					ViewFactory.instance().destroy();
-					getContentPane().removeAll();					
-
-				}
-				_isPlaying = true;
-				
-				BaseView mainWindowView = ViewFactory.instance().getView(ViewType.MainWindowView);
-				mainWindowView.render();
-				add(mainWindowView);
-				
-				validate();						
+			@Override public void actionPerformed(ActionEvent event) {							
 			}	
 			
         });
